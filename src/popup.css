@@ -1,0 +1,218 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 1rem;
+}
+
+body {
+    width: 16rem;
+    font-family: 'OpenDyslexic', system-ui, -apple-system, sans-serif;
+    background: #181818;
+}
+
+.popup-container {
+    padding: 1rem;
+    margin: 0.2rem;
+    border: 1px solid #404040;
+    border-radius: 8px;
+    background: #222222;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(184, 134, 11, 0.1);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    /* margin-inline: 0.5rem; */
+    /* border-bottom: 1px solid #333; */
+}
+
+h2 {
+    padding: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: -0.08em;
+    color: #b1b1b1;
+}
+
+.toggle-button {
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 0.25rem;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.toggle-button:hover {
+    transform: scale(1.1);
+}
+
+.toggle-button.active {
+    box-shadow:
+        0 0 4px rgba(184, 134, 11, 0.4),
+        0 0 8px rgba(184, 134, 11, 0.2);
+}
+
+.toggle-button.active:hover {
+    box-shadow:
+        0 0 6px rgba(184, 134, 11, 0.5),
+        0 0 10px rgba(184, 134, 11, 0.3);
+}
+
+.toggle-icon {
+    color: #5e5c64;
+    transition: color 0.3s ease;
+}
+
+.toggle-button.active .toggle-icon {
+    color: #b8860b;
+}
+
+.setting {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background: #2a2a2a;
+    border-radius: 0.5rem;
+    border: 1px solid #3a3a3a;
+}
+
+label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    word-spacing: -0.5em;
+    letter-spacing: -0.05em;
+    color: #ccc;
+}
+
+.exclusion-setting label {
+    margin-bottom: 0;
+    align-items: center;
+}
+
+.exclusion-setting input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 2px solid #5e5c64;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: all 0.2s ease;
+    position: relative;
+    background-color: transparent;
+}
+
+.exclusion-setting input[type="checkbox"]:checked {
+    background-color: #b8860b;
+    border-color: #b8860b;
+}
+
+.exclusion-setting input[type="checkbox"]:checked::after {
+    content: '✓';
+    color: #ffffff;
+    font-size: 0.8rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+label span {
+    color: #daa520;
+    font-variant-numeric: tabular-nums;
+    min-width: 2rem;
+    text-align: right;
+}
+
+input[type="range"] {
+    width: 100%;
+    height: 0.25rem;
+    border-radius: 0.125rem;
+    background: #2e2e2e;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: initial;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 50%;
+    background: #b8860b;
+    cursor: pointer;
+    box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3);
+    transition: all 0.15s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: #9a6c08;
+    transform: scale(1.1);
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+    background: #7a5a0c;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 50%;
+    background: #b8860b;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3);
+    transition: all 0.15s;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+    background: #9a6c08;
+    transform: scale(1.1);
+}
+
+input[type="range"]::-moz-range-thumb:active {
+    background: #7a5a0c;
+}
+
+.reset-btn {
+    width: 100%;
+    padding: 0.25rem;
+    border: 1px solid #444;
+    border-radius: 0.5rem;
+    background: #2a2a2a;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 0.75rem;
+    word-spacing: -0.5em;
+    letter-spacing: -0.05em;
+    margin-top: 0.5rem;
+    transition: all 0.15s;
+    font-family: 'OpenDyslexic', system-ui, -apple-system, sans-serif;
+}
+
+.reset-btn:hover {
+    background: #2e2e2e;
+    color: #f0f0f0;
+    border-color: #555;
+}
+
+.reset-btn:active {
+    transform: scale(0.98);
+    background: #252525;
+}

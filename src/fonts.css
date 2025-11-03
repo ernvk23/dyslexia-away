@@ -1,0 +1,58 @@
+/* Define OpenDyslexic font faces from extension folder */
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexic-Regular.woff2') format('woff2'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexic-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexic-Bold.woff2') format('woff2'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexic-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexic-Italic.woff2') format('woff2'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexic-Italic.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexic-BoldItalic.woff2') format('woff2'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexic-BoldItalic.woff') format('woff');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+/*
+  Note: The actual styling is applied dynamically via content.js
+  This file only preloads the fonts to prevent FOUC (Flash of Unstyled Content)
+*/
+
+/* Define Font Awesome font faces from extension folder */
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/FontAwesome-Bold.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/FontAwesome-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}

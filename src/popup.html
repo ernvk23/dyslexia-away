@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <div class="popup-container">
+        <div class="header">
+            <h2>DyslexicFix</h2>
+            <button class="toggle-button" id="toggleBtn" type="button" aria-label="Toggle OpenDyslexic font"
+                tabindex="0">
+                <svg class="toggle-icon" width="4rem" height="4rem" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M16.6,4.2c-0.5-0.3-1.1-0.1-1.4,0.4c-0.3,0.5-0.1,1.1,0.4,1.4c2.1,1.3,3.5,3.6,3.5,6c0,3.9-3.1,7-7,7s-7-3.1-7-7 c0-2.5,1.4-4.8,3.5-6.1C9,5.6,9.2,5,8.9,4.6C8.6,4.1,8,3.9,7.5,4.2C4.7,5.8,3,8.8,3,12c0,5,4,9,9,9s9-4,9-9 C21,8.8,19.3,5.9,16.6,4.2z"
+                        fill="currentColor" />
+                    <path d="M12,13c0.6,0,1-0.4,1-1V3c0-0.6-0.4-1-1-1s-1,0.4-1,1v9C11,12.6,11.4,13,12,13z"
+                        fill="currentColor" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="setting">
+            <label>Letter Spacing <span id="letterValue"></span></label>
+            <input type="range" id="letterSpacing" min="-200" max="100" value="-30" step="1">
+        </div>
+
+        <div class="setting">
+            <label>Word Spacing <span id="wordValue"></span></label>
+            <input type="range" id="wordSpacing" min="-500" max="300" value="0" step="1">
+        </div>
+
+        <div class="setting">
+            <label>Line Height <span id="lineValue"></span></label>
+            <input type="range" id="lineHeight" min="100" max="200" value="130" step="1">
+        </div>
+
+        <div class="setting">
+            <label>Font Size <span id="fontSizeValue"></span></label>
+            <input type="range" id="fontSize" min="80" max="150" value="100" step="1">
+        </div>
+
+        <div class="setting exclusion-setting">
+            <label for="excludeSite">
+                Exclude current site
+                <input type="checkbox" id="excludeSite">
+            </label>
+        </div>
+
+        <button class="reset-btn" id="resetBtn" type="button">Reset to Defaults</button>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

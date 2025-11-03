@@ -1,0 +1,31 @@
+{
+    "name": "dyslexic-fix",
+    "version": "1.0",
+    "description": "A browser extension that applies OpenDyslexic font to webpages for improved readability",
+    "main": "background.js",
+    "scripts": {
+        "build": "node src/build.js",
+        "clean": "rm -rf dist/"
+    },
+    "keywords": [
+        "chrome-extension",
+        "dyslexia",
+        "accessibility",
+        "font",
+        "opendyslexic"
+    ],
+    "author": "ernvk23",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ernvk23/dyslexic-fix.git"
+    },
+    "devDependencies": {
+        "archiver": "^5.3.1",
+        "fs-extra": "^11.1.1"
+    },
+    "private": true,
+    "engines": {
+        "node": ">=14.0.0"
+    }
+}

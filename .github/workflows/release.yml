@@ -1,0 +1,48 @@
+name: Release Extension
+
+on:
+    push:
+        tags:
+            - "v*"
+
+permissions:
+    contents: write
+
+jobs:
+    build-and-release:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Build extension and create zip
+              run: npm run build
+
+            - name: Get extension version
+              id: get_version
+              run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+            - name: Create Release
+              uses: softprops/action-gh-release@v1
+              with:
+                  files: ./dist/dyslexic-fix.zip
+                  name: Release ${{ github.ref_name }}
+                  tag_name: ${{ github.ref_name }}
+                  body: |
+                      DyslexicFix browser extension release ${{ github.ref_name }}
+
+                      ## Installation
+                      1. Download the `dyslexic-fix-v${{ steps.get_version.outputs.VERSION }}.zip` file
+                      2. Go to `chrome://extensions`
+                      3. Drag and drop the ZIP file onto the page
+                      4. Click "Add extension" when prompted
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

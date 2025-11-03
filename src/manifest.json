@@ -1,0 +1,57 @@
+{
+    "manifest_version": 3,
+    "name": "DyslexicFix",
+    "version": "1.0",
+    "description": "Applies OpenDyslexic font and custom settings to improve readability for those who struggle with common fonts.",
+    "permissions": [
+        "storage",
+        "activeTab",
+        "tabs",
+        "scripting"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png"
+        },
+        "default_title": "DyslexicFix",
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "css": [
+                "fonts.css"
+            ],
+            "run_at": "document_start",
+            "all_frames": true
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "fonts/*"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ],
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    }
+}
