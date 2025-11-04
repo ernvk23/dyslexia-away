@@ -121,7 +121,12 @@ function buildExtension() {
 
 function createZipPackage() {
     try {
-        const zipFileName = 'dyslexic-fix.zip';
+        // Read package.json to get version
+        const packageJsonPath = path.join(rootDir, 'package.json');
+        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+        const version = packageJson.version || '1.0';
+
+        const zipFileName = `dyslexic-fix-${version}.zip`;
         const zipPath = path.join(distDir, zipFileName);
 
         // Remove existing zip file
@@ -131,6 +136,7 @@ function createZipPackage() {
 
         // Create zip using system command. We cd into distDir and zip its contents into the root.
         execSync(`cd "${distDir}" && zip -r "${zipPath}" .`, { stdio: 'inherit' });
+        console.log(`✓ ZIP file created at: ${zipPath}`);
 
         const stats = fs.statSync(zipPath);
         console.log(`✓ Created ${zipFileName} (${stats.size} bytes)`);

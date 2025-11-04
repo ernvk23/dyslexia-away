@@ -90,7 +90,7 @@ async function initializeExclusion(excludedDomains, isGloballyEnabled) {
             updateSliderDisabledState(isExcluded, isGloballyEnabled);
 
         } catch (e) {
-            console.error('Could not parse URL or access tab:', e);
+            // Could not parse URL or access tab
             // Disable the checkbox if we can't get a valid domain (e.g., chrome:// pages)
             excludeSiteCheckbox.disabled = true;
             updateSliderDisabledState(true, isGloballyEnabled); // Disable sliders if we can't determine domain
@@ -124,7 +124,7 @@ excludeSiteCheckbox.addEventListener('change', async () => {
 
     // 3. Save updated list
     await chrome.storage.local.set({ excludedDomains: excludedDomains });
-    console.log('Excluded domains updated:', excludedDomains);
+    // Excluded domains updated
 
     // 4. Update slider state based on new exclusion state
     const { enabled } = await chrome.storage.local.get('enabled');
@@ -139,7 +139,7 @@ excludeSiteCheckbox.addEventListener('change', async () => {
             });
             console.log('Recheck exclusion message sent to active tab');
         } catch (e) {
-            console.log('Failed to send recheckExclusion message:', e.message);
+            // Failed to send recheckExclusion message
             // If content script is not running, a simple reload might be necessary,
             // but for now, we rely on the content script's storage listener.
         }
@@ -153,22 +153,22 @@ toggleBtn.addEventListener('click', async (e) => {
 
     // Prevent multiple rapid clicks
     if (isToggling) {
-        console.log('Toggle already in progress, ignoring click');
+        // Toggle already in progress, ignoring click
         return;
     }
 
     isToggling = true;
-    console.log('Toggle initiated');
+    // Toggle initiated
 
     try {
         // Get current state
         const result = await chrome.storage.local.get('enabled');
         const newState = !result.enabled;
-        console.log(`Toggling from ${result.enabled} to ${newState}`);
+        // Toggling extension state
 
         // Update storage FIRST as the single source of truth
         await chrome.storage.local.set({ enabled: newState });
-        console.log('Storage updated to:', newState);
+        // Storage updated
 
         // Update UI to match
         updateToggleUI(newState);
@@ -194,10 +194,10 @@ toggleBtn.addEventListener('click', async (e) => {
                         action: 'toggle',
                         enabled: newState
                     });
-                    console.log(`Toggle sent to tab ${tab.id}:`, response);
+                    // Toggle sent to tab
                 } catch (e) {
                     // Content script not ready, inject it manually
-                    console.log(`Content script not ready on tab ${tab.id}, injecting...`);
+                    // Content script not ready, injecting
                     try {
                         await chrome.scripting.executeScript({
                             target: { tabId: tab.id },
@@ -210,23 +210,23 @@ toggleBtn.addEventListener('click', async (e) => {
                             action: 'toggle',
                             enabled: newState
                         });
-                        console.log(`Successfully injected and toggled tab ${tab.id}`);
+                        // Successfully injected and toggled tab
                     } catch (injectError) {
-                        console.log(`Could not inject into tab ${tab.id}:`, injectError.message);
+                        // Could not inject into tab
                     }
                 }
             });
 
         await Promise.allSettled(messageTasks);
-        console.log('Toggle messages sent to all tabs');
+        // Toggle messages sent to all tabs
 
     } catch (error) {
-        console.error('Toggle error:', error);
+        // Toggle error
     } finally {
         // Longer delay to prevent accidental double-clicks
         setTimeout(() => {
             isToggling = false;
-            console.log('Toggle lock released');
+            // Toggle lock released
         }, 200);
     }
 });
@@ -265,7 +265,7 @@ async function sendUpdate() {
         fontSize: parseInt(fontSizeSlider.value)
     };
 
-    console.log('Sending settings update:', settings);
+    // Sending settings update
 
     // Save to storage
     await chrome.storage.local.set(settings);
@@ -279,7 +279,7 @@ async function sendUpdate() {
 
     // Only update active tab if extension is enabled AND not excluded
     if (!enabled || currentIsExcluded) {
-        console.log('Extension disabled or site excluded, skipping slider update');
+        // Extension disabled or site excluded, skipping slider update
         return;
     }
 
@@ -292,9 +292,9 @@ async function sendUpdate() {
                 action: 'updateSpacing',
                 ...settings
             });
-            console.log('Settings update sent to active tab');
+            // Settings update sent to active tab
         } catch (e) {
-            console.log('Failed to update active tab dynamically:', e.message);
+            // Failed to update active tab dynamically
         }
     }
 }
@@ -337,16 +337,14 @@ function handleSliderWheel(event) {
     slider.addEventListener('wheel', handleSliderWheel);
 });
 
-// Reset button
 resetBtn.addEventListener('click', async () => {
     letterSlider.value = defaults.letterSpacing;
     wordSlider.value = defaults.wordSpacing;
     lineSlider.value = defaults.lineHeight;
     fontSizeSlider.value = defaults.fontSize;
     updateDisplayValues();
-    handleSliderChange(); // Trigger immediate update
+    handleSliderChange();
 
-    // Remove current domain from excluded domains if present
     if (currentDomain) {
         const result = await chrome.storage.local.get('excludedDomains');
         let excludedDomains = result.excludedDomains || [];
@@ -354,16 +352,13 @@ resetBtn.addEventListener('click', async () => {
         await chrome.storage.local.set({ excludedDomains: excludedDomains });
     }
 
-    // Update exclusion UI for current site
     if (!excludeSiteCheckbox.disabled) {
         excludeSiteCheckbox.checked = false;
     }
 
-    // Update slider state (resetting exclusion means sliders should be enabled if globally enabled)
     const { enabled } = await chrome.storage.local.get('enabled');
-    updateSliderDisabledState(false, enabled); // Exclusion is false, use global enabled state.
+    updateSliderDisabledState(false, enabled);
 
-    // Notify active tab to recheck exclusion status
     const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
     if (activeTab && activeTab.id) {
         try {
@@ -371,7 +366,7 @@ resetBtn.addEventListener('click', async () => {
                 action: 'recheckExclusion'
             });
         } catch (e) {
-            console.log('Failed to send recheckExclusion message after reset:', e.message);
+            // Failed to send recheckExclusion message after reset
         }
     }
 });

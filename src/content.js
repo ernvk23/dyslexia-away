@@ -22,7 +22,7 @@ function injectStyles() {
 
 function updateCustomStyles(letterSpacing, wordSpacing, lineHeight, fontSize) {
     if (isApplyingStyles) {
-        console.log('Style update already in progress, skipping');
+        // Style update already in progress, skipping
         return;
     }
 
@@ -36,8 +36,7 @@ function updateCustomStyles(letterSpacing, wordSpacing, lineHeight, fontSize) {
 
         const formatEm = (value) => {
             const result = value / 1000;
-            if (result === 0) return '0em';
-            return result.toFixed(3) + 'em';
+            return result === 0 ? '0em' : result.toFixed(3) + 'em';
         };
 
         const letterS = formatEm(letterSpacing);
@@ -140,7 +139,7 @@ function updateCustomStyles(letterSpacing, wordSpacing, lineHeight, fontSize) {
         }
 
     } catch (error) {
-        console.error('Error updating styles:', error);
+        // Error updating styles
     } finally {
         isApplyingStyles = false;
     }
@@ -149,38 +148,30 @@ function updateCustomStyles(letterSpacing, wordSpacing, lineHeight, fontSize) {
 function applyInitialSettings(result) {
     try {
         isEnabled = result.enabled || false;
-        currentLetterSpacing = result.letterSpacing !== undefined ? result.letterSpacing : -30;
-        currentWordSpacing = result.wordSpacing !== undefined ? result.wordSpacing : -100;
-        currentLineHeight = result.lineHeight !== undefined ? result.lineHeight : 140;
-        currentFontSize = result.fontSize !== undefined ? result.fontSize : 100;
+        currentLetterSpacing = result.letterSpacing ?? -30;
+        currentWordSpacing = result.wordSpacing ?? -100;
+        currentLineHeight = result.lineHeight ?? 140;
+        currentFontSize = result.fontSize ?? 100;
 
         const excludedDomains = result.excludedDomains || [];
         const currentDomain = window.location.hostname;
         isExcluded = excludedDomains.includes(currentDomain);
 
-        console.log('Initial settings loaded:', { isEnabled, isExcluded, currentLetterSpacing, currentWordSpacing, currentLineHeight, currentFontSize });
-
         if (isEnabled && !isExcluded) {
-            // Wait for fonts to load before applying styles to prevent FOUC/fallback font display
             document.fonts.ready.then(() => {
                 updateCustomStyles(currentLetterSpacing, currentWordSpacing, currentLineHeight, currentFontSize);
                 if (document.documentElement) {
                     document.documentElement.classList.add('opendyslexic-active');
-                    console.log('OpenDyslexic activated on page load');
                 }
             });
-        } else if (isExcluded) {
-            console.log(`OpenDyslexic skipped for excluded domain: ${currentDomain}`);
         }
     } catch (error) {
-        console.error('Error applying initial settings:', error);
+        // Error applying initial settings
     }
 }
 
-// Load initial settings - this runs immediately when content script loads
 function loadInitialSettings() {
     chrome.storage.local.get(['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontSize', 'excludedDomains'], (result) => {
-        console.log('Loading initial settings:', result);
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => applyInitialSettings(result));
         } else {
@@ -189,16 +180,18 @@ function loadInitialSettings() {
     });
 }
 
-// Run immediately
 loadInitialSettings();
 
-// Message handler - handles toggle and slider updates
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    // Validate message origin - only accept from this extension
+    if (sender.id !== chrome.runtime.id) {
+        return false;
+    }
+
     try {
         if (message.action === 'toggle') {
             const newState = message.enabled;
 
-            // Prevent re-triggering if state is already correct
             if (isEnabled === newState) {
                 sendResponse({ success: true, alreadyInState: true });
                 return true;
@@ -206,14 +199,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
             isEnabled = newState;
             handleToggleStateChange();
-
             sendResponse({ success: true });
 
         } else if (message.action === 'updateSpacing') {
-            console.log('Slider update received');
-
             if (!isEnabled || isExcluded) {
-                console.log('Extension disabled or site excluded, ignoring slider update');
                 sendResponse({ success: true, skipped: true });
                 return true;
             }
@@ -232,24 +221,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             sendResponse({ success: true });
         }
     } catch (error) {
-        console.error('Message handler error:', error);
         sendResponse({ success: false, error: error.message });
     }
 
-    return true; // Keep message channel open for async response
+    return true;
 });
 
-// Listen for storage changes (backup mechanism)
 chrome.storage.onChanged.addListener((changes, namespace) => {
     if (namespace !== 'local') return;
 
-    // Handle enabled state changes from storage
     if (changes.enabled && changes.enabled.newValue !== isEnabled) {
         isEnabled = changes.enabled.newValue;
         handleToggleStateChange();
     }
 
-    // Handle exclusion list changes from storage
     if (changes.excludedDomains) {
         const currentDomain = window.location.hostname;
         const newExcludedDomains = changes.excludedDomains.newValue || [];
@@ -261,7 +246,6 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
         }
     }
 
-    // Handle slider changes
     let shouldUpdateStyles = false;
     const newSettings = {};
 
@@ -277,7 +261,6 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
         newSettings.lineHeight = changes.lineHeight.newValue;
         shouldUpdateStyles = true;
     }
-
     if (changes.fontSize) {
         newSettings.fontSize = changes.fontSize.newValue;
         shouldUpdateStyles = true;
@@ -285,10 +268,10 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 
     if (shouldUpdateStyles && isEnabled && !isExcluded) {
         const finalSettings = {
-            letterSpacing: newSettings.letterSpacing !== undefined ? newSettings.letterSpacing : currentLetterSpacing,
-            wordSpacing: newSettings.wordSpacing !== undefined ? newSettings.wordSpacing : currentWordSpacing,
-            lineHeight: newSettings.lineHeight !== undefined ? newSettings.lineHeight : currentLineHeight,
-            fontSize: newSettings.fontSize !== undefined ? newSettings.fontSize : currentFontSize,
+            letterSpacing: newSettings.letterSpacing ?? currentLetterSpacing,
+            wordSpacing: newSettings.wordSpacing ?? currentWordSpacing,
+            lineHeight: newSettings.lineHeight ?? currentLineHeight,
+            fontSize: newSettings.fontSize ?? currentFontSize,
         };
 
         updateCustomStyles(
@@ -300,18 +283,15 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     }
 });
 
-// New function to handle state changes (toggle or exclusion)
 function handleToggleStateChange() {
     observer.disconnect();
 
     if (isEnabled && !isExcluded) {
-        // Wait for fonts to load before applying styles to prevent FOUC/fallback font display
         document.fonts.ready.then(() => {
             updateCustomStyles(currentLetterSpacing, currentWordSpacing, currentLineHeight, currentFontSize);
             if (document.documentElement) {
                 document.documentElement.classList.add('opendyslexic-active');
             }
-            console.log('OpenDyslexic activated via storage/message');
         });
     } else {
         if (document.documentElement) {
@@ -321,10 +301,8 @@ function handleToggleStateChange() {
         if (styleElement) {
             styleElement.remove();
         }
-        console.log('OpenDyslexic deactivated via storage/message');
     }
 
-    // Reconnect observer
     if (document.documentElement) {
         observer.observe(document.documentElement, {
             childList: true,
@@ -333,11 +311,13 @@ function handleToggleStateChange() {
     }
 }
 
-// Handle recheckExclusion message from popup.js
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    // Validate message origin - only accept from this extension
+    if (sender.id !== chrome.runtime.id) {
+        return false;
+    }
+
     if (message.action === 'recheckExclusion') {
-        console.log('Recheck exclusion requested.');
-        // Re-read settings to update isExcluded state and re-apply styles if needed
         chrome.storage.local.get(['enabled', 'excludedDomains'], (result) => {
             const currentDomain = window.location.hostname;
             const excludedDomains = result.excludedDomains || [];
@@ -350,10 +330,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             }
             sendResponse({ success: true });
         });
-        return true; // Keep channel open for async response
+        return true;
     }
 });
-// Mutation observer for dynamic content
 const observer = new MutationObserver((mutations) => {
     if (!isEnabled || isApplyingStyles) return;
 
@@ -372,10 +351,8 @@ const observer = new MutationObserver((mutations) => {
     }
 
     if (hasSignificantChanges) {
-        // Ensure class is still applied after DOM changes
         if (document.documentElement && !document.documentElement.classList.contains('opendyslexic-active')) {
             document.documentElement.classList.add('opendyslexic-active');
-            console.log('Re-applied opendyslexic-active class after DOM mutation');
         }
     }
 });

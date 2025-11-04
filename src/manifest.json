@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "DyslexicFix",
-    "version": "1.0",
+    "version": "0.1",
     "description": "Applies OpenDyslexic font and custom settings to improve readability for those who struggle with common fonts.",
     "permissions": [
         "storage",
@@ -10,7 +10,8 @@
         "scripting"
     ],
     "host_permissions": [
-        "<all_urls>"
+        "http://*/*",
+        "https://*/*"
     ],
     "background": {
         "service_worker": "background.js"
@@ -53,5 +54,8 @@
         "16": "icons/icon16.png",
         "48": "icons/icon48.png",
         "128": "icons/icon128.png"
+    },
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
     }
 }

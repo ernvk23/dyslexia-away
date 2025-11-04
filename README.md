@@ -18,7 +18,7 @@ For some of us, that small change makes reading a lot easier. ✨
 
 ## Installation (Chromium Browsers)
 
-1. **Download:** Get the latest `dyslexic-fix-v1.0.zip` from the [Releases page](https://github.com/ernvk23/dyslexic-fix/releases)
+1. **Download:** Get the latest `dyslexic-fix-*.zip` from the [Releases page](https://github.com/ernvk23/dyslexic-fix/releases)
 2. **Install:** Go to `chrome://extensions` and drag & drop the ZIP file onto the page
 3. **Confirm:** Click "Add extension" when prompted
 

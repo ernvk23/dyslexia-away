@@ -1,6 +1,6 @@
 {
     "name": "dyslexic-fix",
-    "version": "1.0",
+    "version": "0.1",
     "description": "A browser extension that applies OpenDyslexic font to webpages for improved readability",
     "main": "background.js",
     "scripts": {
