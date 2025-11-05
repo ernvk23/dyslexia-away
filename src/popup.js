@@ -1,10 +1,12 @@
 const defaults = {
     enabled: false,
-    letterSpacing: -30,
-    wordSpacing: -100,
+    letterSpacing: -50,
+    wordSpacing: -200,
     lineHeight: 140,
-    fontSize: 100 // Default slider value for 1.0rem scaling
+    fontSize: 100 // Default slider value for 100% scaling
 };
+
+const restrictedProtocols = ['chrome://', 'chrome-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
 
 const toggleBtn = document.getElementById('toggleBtn');
 const letterSlider = document.getElementById('letterSpacing');
@@ -37,7 +39,8 @@ function updateDisplayValues() {
     letterValue.textContent = formatSpacing(letterSlider.value) + ' em';
     wordValue.textContent = formatSpacing(wordSlider.value) + ' em';
     lineValue.textContent = formatLineHeight(lineSlider.value);
-    fontSizeValue.textContent = (fontSizeSlider.value / 100).toFixed(2) + 'x';
+    // Show font size as percentage (100% = 1em, 150% = 1.5em, etc.)
+    fontSizeValue.textContent = fontSizeSlider.value + '%';
 }
 
 function updateToggleUI(enabled) {
@@ -184,7 +187,6 @@ toggleBtn.addEventListener('click', async (e) => {
 
         // Send message to all eligible tabs
         const tabs = await chrome.tabs.query({});
-        const restrictedProtocols = ['chrome://', 'chrome-extension://', 'file://', 'about:'];
 
         const messageTasks = tabs
             .filter(tab => tab.url && !restrictedProtocols.some(p => tab.url.startsWith(p)))
@@ -284,7 +286,6 @@ async function sendUpdate() {
     }
 
     const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    const restrictedProtocols = ['chrome://', 'chrome-extension://', 'file://', 'about:'];
 
     if (activeTab && activeTab.url && !restrictedProtocols.some(p => activeTab.url.startsWith(p))) {
         try {

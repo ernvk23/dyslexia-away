@@ -29,7 +29,7 @@ chrome.runtime.onStartup.addListener(() => {
 });
 
 function isRestrictedUrl(url) {
-    const restrictedProtocols = ['chrome://', 'chrome-extension://', 'file://', 'about:', 'edge://'];
+    const restrictedProtocols = ['chrome://', 'chrome-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
     return restrictedProtocols.some(protocol => url.startsWith(protocol));
 }
 

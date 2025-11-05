@@ -1,7 +1,7 @@
 let isEnabled = false;
 let isExcluded = false;
-let currentLetterSpacing = -30;
-let currentWordSpacing = -100;
+let currentLetterSpacing = -50;
+let currentWordSpacing = -200;
 let currentLineHeight = 140;
 let currentFontSize = 100;
 let isApplyingStyles = false;
@@ -42,7 +42,9 @@ function updateCustomStyles(letterSpacing, wordSpacing, lineHeight, fontSize) {
         const letterS = formatEm(letterSpacing);
         const wordS = formatEm(wordSpacing);
         const lineH = (lineHeight / 100).toFixed(2);
-        const fontS = (fontSize / 100).toFixed(2) + 'rem';
+        // Convert percentage to em units for proper font scaling
+        // 100% = 1em, 150% = 1.5em, 50% = 0.5em
+        const fontS = (fontSize / 100).toFixed(2) + 'em';
 
         const styleElement = injectStyles();
 
@@ -54,80 +56,114 @@ function updateCustomStyles(letterSpacing, wordSpacing, lineHeight, fontSize) {
                 --od-font-size: ${fontS};
             }
             
-            /* Apply base styles to body text elements only */
-            html.opendyslexic-active,
-            html.opendyslexic-active body,
+            /* Apply OpenDyslexic to text elements only */
             html.opendyslexic-active p,
-            html.opendyslexic-active span,
-            html.opendyslexic-active div,
-            html.opendyslexic-active li,
-            html.opendyslexic-active td,
-            html.opendyslexic-active th,
-            html.opendyslexic-active label,
-            html.opendyslexic-active button,
-            html.opendyslexic-active input,
-            html.opendyslexic-active textarea,
-            html.opendyslexic-active select,
-            html.opendyslexic-active a,
             html.opendyslexic-active h1,
             html.opendyslexic-active h2,
             html.opendyslexic-active h3,
             html.opendyslexic-active h4,
             html.opendyslexic-active h5,
-            html.opendyslexic-active h6 {
+            html.opendyslexic-active h6,
+            html.opendyslexic-active span,
+            html.opendyslexic-active a,
+            html.opendyslexic-active li,
+            html.opendyslexic-active td,
+            html.opendyslexic-active th,
+            html.opendyslexic-active button,
+            html.opendyslexic-active div:not([class*="fa-"]):not([class*="material-"]):not([class*="icon-"]):not([class*="bi-"]):not([class*="ri-"]):not([class*="feather-"]):not([class*="tabler-"]):not([class*="la-"]):not([class*="ion-"]):not([role="img"]):not(.emoji):not([class*="emoji"]):not(svg):not(code):not(pre):not(kbd):not(samp):not(img) {
                 font-family: 'OpenDyslexic', sans-serif !important;
                 letter-spacing: var(--od-letter-spacing) !important;
                 word-spacing: var(--od-word-spacing) !important;
                 line-height: var(--od-line-height) !important;
+            }
+
+            /* Apply font-size only to reading content (not form elements) */
+            html.opendyslexic-active p,
+            html.opendyslexic-active h1,
+            html.opendyslexic-active h2,
+            html.opendyslexic-active h3,
+            html.opendyslexic-active h4,
+            html.opendyslexic-active h5,
+            html.opendyslexic-active h6,
+            html.opendyslexic-active span,
+            html.opendyslexic-active a,
+            html.opendyslexic-active li,
+            html.opendyslexic-active td,
+            html.opendyslexic-active th,
+            html.opendyslexic-active div:not([class*="fa-"]):not([class*="material-"]):not([class*="icon-"]):not([class*="bi-"]):not([class*="ri-"]):not([class*="feather-"]):not([class*="tabler-"]):not([class*="la-"]):not([class*="ion-"]):not([role="img"]):not(.emoji):not([class*="emoji"]):not(svg):not(code):not(pre):not(kbd):not(samp):not(img):not(input):not(label):not(button):not(textarea):not(select) {
                 font-size: var(--od-font-size) !important;
             }
 
-            /* Headings get larger sizes to maintain hierarchy */
-            html.opendyslexic-active h1,
-            html.opendyslexic-active h1 a {
-                font-size: calc(${fontS} * 1.5) !important;
-            }
-            
-            html.opendyslexic-active h2,
-            html.opendyslexic-active h2 a {
-                font-size: calc(${fontS} * 1.2) !important;
-            }
-            
-            html.opendyslexic-active h3 {
-                font-size: calc(${fontS} * 1.1) !important;
-            }
-            
-            html.opendyslexic-active h4 {
-                font-size: calc(${fontS} * 1.05) !important;
-            }
-            
-            html.opendyslexic-active h5 {
-                font-size: calc(${fontS} * 1.02) !important;
-            }
-            
-            html.opendyslexic-active h6 {
-                font-size: calc(${fontS} * 1.00) !important;
+            /* Apply font-family to inputs and labels but NOT font-size */
+            html.opendyslexic-active input,
+            html.opendyslexic-active label,
+            html.opendyslexic-active textarea,
+            html.opendyslexic-active select {
+                font-family: 'OpenDyslexic', sans-serif !important;
+                letter-spacing: var(--od-letter-spacing) !important;
+                word-spacing: var(--od-word-spacing) !important;
+                line-height: var(--od-line-height) !important;
             }
 
-            
-            /* Exclude icon elements and monospace code */
-            html.opendyslexic-active i,
-            html.opendyslexic-active i *,
-            html.opendyslexic-active [class*="icon"],
+            /* Restore original font families for icons */
+            html.opendyslexic-active .fa,
+            html.opendyslexic-active .fas,
+            html.opendyslexic-active .far,
+            html.opendyslexic-active .fal,
+            html.opendyslexic-active .fab,
+            html.opendyslexic-active .fad,
+            html.opendyslexic-active .fat,
+            html.opendyslexic-active .fass,
+            html.opendyslexic-active [class*="fa-"],
+            html.opendyslexic-active .material-icons,
+            html.opendyslexic-active .material-icons-outlined,
+            html.opendyslexic-active .material-icons-round,
+            html.opendyslexic-active .material-icons-sharp,
+            html.opendyslexic-active .material-icons-two-tone,
+            html.opendyslexic-active [class*="material-"],
+            html.opendyslexic-active .bi,
+            html.opendyslexic-active [class*="bi-"],
+            html.opendyslexic-active [class*="icon-"],
+            html.opendyslexic-active [class*="-icon"],
+            html.opendyslexic-active .icon,
+            html.opendyslexic-active [class*="ri-"],
+            html.opendyslexic-active [class*="feather-"],
+            html.opendyslexic-active [class*="tabler-"],
+            html.opendyslexic-active [class*="la-"],
+            html.opendyslexic-active [class*="ion-"],
             html.opendyslexic-active [data-icon],
-            html.opendyslexic-active [aria-hidden="true"],
             html.opendyslexic-active svg,
+            html.opendyslexic-active svg *,
             html.opendyslexic-active code,
             html.opendyslexic-active pre,
             html.opendyslexic-active kbd,
             html.opendyslexic-active samp,
-            html.opendyslexic-active [class*="mono"],
-            html.opendyslexic-active [class*="code"] {
-                font-family: 'FontAwesome', "Material Icons", sans-serif !important;
-                letter-spacing: revert !important;
-                word-spacing: revert !important;
-                line-height: revert !important;
-                font-size: revert !important;
+            html.opendyslexic-active img,
+            html.opendyslexic-active [role="img"],
+            html.opendyslexic-active .emoji,
+            html.opendyslexic-active [class*="emoji"],
+            html.opendyslexic-active .fa::before,
+            html.opendyslexic-active .fa::after,
+            html.opendyslexic-active .fas::before,
+            html.opendyslexic-active .fas::after,
+            html.opendyslexic-active .far::before,
+            html.opendyslexic-active .far::after,
+            html.opendyslexic-active .fab::before,
+            html.opendyslexic-active .fab::after,
+            html.opendyslexic-active [class*="fa-"]::before,
+            html.opendyslexic-active [class*="fa-"]::before,
+            html.opendyslexic-active [class*="fa-"]::after,
+            html.opendyslexic-active [class*="icon"]::before,
+            html.opendyslexic-active [class*="icon"]::after,
+            html.opendyslexic-active [class*="material-"]::before,
+            html.opendyslexic-active [class*="material-"]::after,
+            html.opendyslexic-active [data-icon]::before,
+            html.opendyslexic-active [data-icon]::after {
+                font-family: 'Font Awesome 7 Free', 'Font Awesome 7 Pro', 'Font Awesome 7 Brands', 'Font Awesome 6 Free', 'Font Awesome 6 Pro', 'Font Awesome 6 Brands', 'Font Awesome 5 Free', 'Font Awesome 5 Pro', 'Font Awesome 5 Brands', 'FontAwesome', 'Material Icons', 'Material Icons Outlined', 'bootstrap-icons', 'remixicon', 'feather', 'tabler-icons', 'Line Awesome Free', 'Ionicons', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
+                font-size: inherit !important;
+                letter-spacing: inherit !important;
+                word-spacing: inherit !important;
+                line-height: inherit !important;
             }
         `;
 
@@ -148,8 +184,8 @@ function updateCustomStyles(letterSpacing, wordSpacing, lineHeight, fontSize) {
 function applyInitialSettings(result) {
     try {
         isEnabled = result.enabled || false;
-        currentLetterSpacing = result.letterSpacing ?? -30;
-        currentWordSpacing = result.wordSpacing ?? -100;
+        currentLetterSpacing = result.letterSpacing ?? -50;
+        currentWordSpacing = result.wordSpacing ?? -200;
         currentLineHeight = result.lineHeight ?? 140;
         currentFontSize = result.fontSize ?? 100;
 

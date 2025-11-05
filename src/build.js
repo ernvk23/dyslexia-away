@@ -121,13 +121,8 @@ function buildExtension() {
 
 function createZipPackage() {
     try {
-        // Read package.json to get version
-        const packageJsonPath = path.join(rootDir, 'package.json');
-        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-        const version = packageJson.version || '1.0';
-
-        const zipFileName = `dyslexic-fix-${version}.zip`;
-        const zipPath = path.join(distDir, zipFileName);
+        const zipFileName = `dyslexic-fix.zip`;
+        const zipPath = path.join(rootDir, zipFileName);
 
         // Remove existing zip file
         if (fs.existsSync(zipPath)) {

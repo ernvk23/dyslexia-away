@@ -2,8 +2,8 @@ name: Release Extension
 
 on:
     push:
-        tags:
-            - "v*"
+        branches: [main]
+    workflow_dispatch: # Allow manual triggering
 
 permissions:
     contents: write
@@ -20,31 +20,41 @@ jobs:
               with:
                   node-version: "20"
 
-            - name: Clean workspace
-              run: |
-                  rm -rf dist/
-                  rm -f *.zip
-                  rm -rf node_modules/
-
             - name: Install dependencies
               run: npm install
 
             - name: Build extension
               run: npm run build
 
-            - name: Create Release
+            - name: Create ZIP file
+              run: |
+                  cd dist
+                  # Create a simple filename without version
+                  zip -r ../dyslexic-fix.zip .
+                  cd ..
+
+            - name: Create or Update Release
               uses: softprops/action-gh-release@v1
               with:
-                  files: ./dist/dyslexic-fix-*.zip
-                  name: Release ${{ github.ref_name }}
-                  tag_name: ${{ github.ref_name }}
+                  files: dyslexic-fix.zip
+                  name: Latest Release
+                  tag_name: latest
                   body: |
-                      DyslexicFix browser extension release ${{ github.ref_name }}
+                      DyslexicFix browser extension
 
                       ## Installation
-                      1. Download the `dyslexic-fix-*.zip` file
+                      1. Download the `dyslexic-fix.zip` file
                       2. Go to `chrome://extensions`
-                      3. Drag and drop the ZIP file onto the page
-                      4. Click "Add extension" when prompted
+                      3. Enable "Developer mode"
+                      4. Drag and drop the ZIP file onto the page
+                      5. Click "Add extension" when prompted
+
+                      ## Features
+                      - Applies OpenDyslexic font to webpages
+                      - Improves readability for dyslexic users
+                      - Customizable font settings
+                  draft: false
+                  prerelease: false
+                  generate_release_notes: true
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
