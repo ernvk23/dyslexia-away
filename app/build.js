@@ -17,6 +17,7 @@ const srcFiles = [
     'popup.html',
     'popup.css',
     'fonts.css',
+    'style.css',
 ];
 
 // Files in root/ to include in the extension package
