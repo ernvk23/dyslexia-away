@@ -91,12 +91,11 @@ body {
 .main-toggle-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.3rem;
 }
 
 h2 {
-    padding: 0.5rem;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
     letter-spacing: -0.08em;
     color: var(--text-primary);
@@ -145,7 +144,8 @@ h2 {
 
 .setting {
     margin-bottom: 0.5rem;
-    padding: 0.5rem;
+    padding-inline: 0.5rem;
+    padding-block: 0.2rem;
     background: var(--setting-bg);
     border-radius: 0.5rem;
     border: 1px solid var(--setting-border);
@@ -154,7 +154,7 @@ h2 {
 label {
     display: flex;
     justify-content: space-between;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     word-spacing: -0.5em;
     letter-spacing: -0.05em;
     color: var(--text-secondary);
@@ -277,13 +277,13 @@ input[type="range"]::-moz-range-thumb:active {
 
 .reset-btn {
     width: 100%;
-    padding: 0.25rem;
+    padding: 0.2rem;
     border: 1px solid var(--border-color);
     border-radius: 0.5rem;
     background: var(--setting-bg);
     color: var(--text-secondary);
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     word-spacing: -0.5em;
     letter-spacing: -0.05em;
     margin-top: 0.5rem;
