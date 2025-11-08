@@ -18,9 +18,9 @@
     },
     "action": {
         "default_icon": {
-            "16": "icons/icon16.png",
-            "48": "icons/icon48.png",
-            "128": "icons/icon128.png"
+            "16": "assets/icons/icon16.png",
+            "48": "assets/icons/icon48.png",
+            "128": "assets/icons/icon128.png"
         },
         "default_title": "DyslexicFix",
         "default_popup": "popup.html"
@@ -35,7 +35,8 @@
                 "content.js"
             ],
             "css": [
-                "fonts.css"
+                "fonts.css",
+                "style.css"
             ],
             "run_at": "document_start",
             "all_frames": true
@@ -44,7 +45,7 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "fonts/*"
+                "assets/fonts/*"
             ],
             "matches": [
                 "<all_urls>"
@@ -52,9 +53,9 @@
         }
     ],
     "icons": {
-        "16": "icons/icon16.png",
-        "48": "icons/icon48.png",
-        "128": "icons/icon128.png"
+        "16": "assets/icons/icon16.png",
+        "48": "assets/icons/icon48.png",
+        "128": "assets/icons/icon128.png"
     },
     "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'"

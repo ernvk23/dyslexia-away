@@ -26,13 +26,6 @@ jobs:
             - name: Build extension
               run: npm run build
 
-            - name: Create ZIP file
-              run: |
-                  cd dist
-                  # Create a simple filename without version
-                  zip -r ../dyslexic-fix.zip .
-                  cd ..
-
             - name: Create or Update Release
               uses: softprops/action-gh-release@v1
               with:

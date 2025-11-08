@@ -4,8 +4,8 @@
     "description": "A browser extension that applies OpenDyslexic font to webpages for improved readability",
     "main": "background.js",
     "scripts": {
-        "build": "node src/build.js",
-        "clean": "rm -rf dist/ && rm -f dyslexic-fix.zip"
+        "build": "node app/build.js",
+        "clean": "rm -rf dist/"
     },
     "keywords": [
         "chrome-extension",

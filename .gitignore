@@ -1,5 +1,6 @@
 # Build directory (not needed on GitHub)
 dist/
+dyslexic-fix.zip
 
 # Node.js dependencies
 node_modules/
