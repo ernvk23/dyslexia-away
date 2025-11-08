@@ -3,7 +3,8 @@ const DEFAULTS = {
     letterSpacing: 0,
     wordSpacing: 0,
     lineHeight: 140,
-    fontSize: 100
+    fontSize: 100,
+    theme: 'system'
 };
 
 const RESTRICTED = ['chrome://', 'chrome-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
@@ -19,20 +20,25 @@ const els = {
     lineVal: document.getElementById('lineValue'),
     fontVal: document.getElementById('fontSizeValue'),
     reset: document.getElementById('resetBtn'),
-    exclude: document.getElementById('excludeSite')
+    exclude: document.getElementById('excludeSite'),
+    themeToggle: document.getElementById('themeToggleBtn')
 };
 
 let currentDomain = null;
 let updateTimeout;
 
 // Initialize
-chrome.storage.local.get(['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontSize', 'excludedDomains'], (result) => {
+chrome.storage.local.get(['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontSize', 'excludedDomains', 'theme'], (result) => {
     updateToggleUI(result.enabled || false);
 
     els.letterSlider.value = result.letterSpacing ?? DEFAULTS.letterSpacing;
     els.wordSlider.value = result.wordSpacing ?? DEFAULTS.wordSpacing;
     els.lineSlider.value = result.lineHeight ?? DEFAULTS.lineHeight;
     els.fontSlider.value = result.fontSize ?? DEFAULTS.fontSize;
+
+    // Set theme
+    const theme = result.theme ?? DEFAULTS.theme;
+    applyTheme(theme);
 
     updateDisplayValues();
     initExclusion(result.excludedDomains || [], result.enabled || false);
@@ -186,6 +192,20 @@ async function saveSettingsAndBroadcast() {
     await chrome.storage.local.set(settings);
 }
 
+// Theme toggle button
+els.themeToggle.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    const { theme: currentTheme } = await chrome.storage.local.get('theme');
+    const themes = ['system', 'light', 'dark'];
+    const currentIndex = themes.indexOf(currentTheme || DEFAULTS.theme);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    const nextTheme = themes[nextIndex];
+
+    applyTheme(nextTheme);
+    await chrome.storage.local.set({ theme: nextTheme });
+});
+
 // Reset button
 els.reset.addEventListener('click', async () => {
     els.letterSlider.value = DEFAULTS.letterSpacing;
@@ -193,8 +213,10 @@ els.reset.addEventListener('click', async () => {
     els.lineSlider.value = DEFAULTS.lineHeight;
     els.fontSlider.value = DEFAULTS.fontSize;
 
+    applyTheme(DEFAULTS.theme);
     updateDisplayValues();
     await saveSettingsAndBroadcast();
+    await chrome.storage.local.set({ theme: DEFAULTS.theme });
 
     if (currentDomain) {
         const { excludedDomains } = await chrome.storage.local.get('excludedDomains');
@@ -206,3 +228,12 @@ els.reset.addEventListener('click', async () => {
         updateSlidersState(false, enabled);
     }
 });
+
+// Theme application function
+function applyTheme(theme) {
+    if (theme === 'system') {
+        document.documentElement.removeAttribute('data-theme');
+    } else {
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+}

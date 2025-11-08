@@ -4,7 +4,8 @@ const DEFAULTS = {
     wordSpacing: 0,
     lineHeight: 140,
     fontSize: 100,
-    excludedDomains: []
+    excludedDomains: [],
+    theme: 'system'
 };
 
 const RESTRICTED = ['chrome://', 'chrome-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];

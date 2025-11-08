@@ -1,3 +1,60 @@
+/* Theme System - Default to dark theme */
+:root {
+    /* Dark theme (current design) */
+    --bg-primary: #181818;
+    --bg-secondary: #222222;
+    --border-color: #404040;
+    --text-primary: #b1b1b1;
+    --text-secondary: #ccc;
+    --accent-color: #b8860b;
+    --accent-hover: #9a6c08;
+    --accent-active: #7a5a0c;
+    --accent-glow: rgba(184, 134, 11, 0.1);
+    --setting-bg: #2a2a2a;
+    --setting-border: #3a3a3a;
+    --slider-bg: #2e2e2e;
+    --toggle-inactive: #5e5c64;
+    --checkbox-border: #5e5c64;
+}
+
+/* Light theme */
+[data-theme="light"] {
+    --bg-primary: #f8f9fa;
+    --bg-secondary: #ffffff;
+    --border-color: #e0e0e0;
+    --text-primary: #2c2c2c;
+    --text-secondary: #5a5a5a;
+    --accent-color: #ff8c00;
+    --accent-hover: #e67e00;
+    --accent-active: #cc7000;
+    --accent-glow: rgba(255, 140, 0, 0.1);
+    --setting-bg: #f5f5f5;
+    --setting-border: #e5e5e5;
+    --slider-bg: #e8e8e8;
+    --toggle-inactive: #b0b0b0;
+    --checkbox-border: #b0b0b0;
+}
+
+/* System preference detection */
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme]) {
+        --bg-primary: #f8f9fa;
+        --bg-secondary: #ffffff;
+        --border-color: #e0e0e0;
+        --text-primary: #2c2c2c;
+        --text-secondary: #5a5a5a;
+        --accent-color: #ff8c00;
+        --accent-hover: #e67e00;
+        --accent-active: #cc7000;
+        --accent-glow: rgba(255, 140, 0, 0.1);
+        --setting-bg: #f5f5f5;
+        --setting-border: #e5e5e5;
+        --slider-bg: #e8e8e8;
+        --toggle-inactive: #b0b0b0;
+        --checkbox-border: #b0b0b0;
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -11,27 +68,33 @@ html {
 body {
     width: 16rem;
     font-family: 'OpenDyslexic', system-ui, -apple-system, sans-serif;
-    background: #181818;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .popup-container {
     padding: 1rem;
     margin: 0.2rem;
-    border: 1px solid #404040;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    background: #222222;
+    background: var(--bg-secondary);
     box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(184, 134, 11, 0.1);
+        0 0 0 1px var(--accent-glow);
 }
 
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.main-toggle-container {
+    display: flex;
+    justify-content: center;
     margin-bottom: 1rem;
-    /* margin-inline: 0.5rem; */
-    /* border-bottom: 1px solid #333; */
 }
 
 h2 {
@@ -39,7 +102,7 @@ h2 {
     font-size: 1rem;
     font-weight: bold;
     letter-spacing: -0.08em;
-    color: #b1b1b1;
+    color: var(--text-primary);
 }
 
 .toggle-button {
@@ -73,20 +136,22 @@ h2 {
 }
 
 .toggle-icon {
-    color: #5e5c64;
+    color: var(--toggle-inactive);
     transition: color 0.3s ease;
+    fill: currentColor;
 }
 
 .toggle-button.active .toggle-icon {
-    color: #b8860b;
+    color: var(--accent-color);
+    fill: currentColor;
 }
 
 .setting {
     margin-bottom: 0.5rem;
     padding: 0.5rem;
-    background: #2a2a2a;
+    background: var(--setting-bg);
     border-radius: 0.5rem;
-    border: 1px solid #3a3a3a;
+    border: 1px solid var(--setting-border);
 }
 
 label {
@@ -95,7 +160,7 @@ label {
     font-size: 0.75rem;
     word-spacing: -0.5em;
     letter-spacing: -0.05em;
-    color: #ccc;
+    color: var(--text-secondary);
 }
 
 .exclusion-setting label {
@@ -108,7 +173,7 @@ label {
     appearance: none;
     width: 1.1rem;
     height: 1.1rem;
-    border: 2px solid #5e5c64;
+    border: 2px solid var(--checkbox-border);
     border-radius: 0.25rem;
     cursor: pointer;
     margin-left: 0.5rem;
@@ -118,8 +183,8 @@ label {
 }
 
 .exclusion-setting input[type="checkbox"]:checked {
-    background-color: #b8860b;
-    border-color: #b8860b;
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
 }
 
 .exclusion-setting input[type="checkbox"]:checked::after {
@@ -133,7 +198,7 @@ label {
 }
 
 label span {
-    color: #daa520;
+    color: var(--accent-color);
     font-variant-numeric: tabular-nums;
     min-width: 2rem;
     text-align: right;
@@ -143,7 +208,7 @@ input[type="range"] {
     width: 100%;
     height: 0.25rem;
     border-radius: 0.125rem;
-    background: #2e2e2e;
+    background: var(--slider-bg);
     outline: none;
     -webkit-appearance: none;
     appearance: initial;
@@ -155,26 +220,26 @@ input[type="range"]::-webkit-slider-thumb {
     width: 0.875rem;
     height: 0.875rem;
     border-radius: 50%;
-    background: #b8860b;
+    background: var(--accent-color);
     cursor: pointer;
     box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3);
     transition: all 0.15s;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-    background: #9a6c08;
+    background: var(--accent-hover);
     transform: scale(1.1);
 }
 
 input[type="range"]::-webkit-slider-thumb:active {
-    background: #7a5a0c;
+    background: var(--accent-active);
 }
 
 input[type="range"]::-moz-range-thumb {
     width: 0.875rem;
     height: 0.875rem;
     border-radius: 50%;
-    background: #b8860b;
+    background: var(--accent-color);
     cursor: pointer;
     border: none;
     box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3);
@@ -182,21 +247,21 @@ input[type="range"]::-moz-range-thumb {
 }
 
 input[type="range"]::-moz-range-thumb:hover {
-    background: #9a6c08;
+    background: var(--accent-hover);
     transform: scale(1.1);
 }
 
 input[type="range"]::-moz-range-thumb:active {
-    background: #7a5a0c;
+    background: var(--accent-active);
 }
 
 .reset-btn {
     width: 100%;
     padding: 0.25rem;
-    border: 1px solid #444;
+    border: 1px solid var(--border-color);
     border-radius: 0.5rem;
-    background: #2a2a2a;
-    color: #ccc;
+    background: var(--setting-bg);
+    color: var(--text-secondary);
     cursor: pointer;
     font-size: 0.75rem;
     word-spacing: -0.5em;
@@ -207,12 +272,54 @@ input[type="range"]::-moz-range-thumb:active {
 }
 
 .reset-btn:hover {
-    background: #2e2e2e;
-    color: #f0f0f0;
-    border-color: #555;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--accent-color);
 }
 
 .reset-btn:active {
     transform: scale(0.98);
-    background: #252525;
+    background: var(--setting-bg);
+}
+
+/* Theme toggle button styles */
+.theme-toggle-button {
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 0.25rem;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+    width: 2rem;
+    height: 2rem;
+}
+
+.theme-toggle-button:hover {
+    transform: scale(1.1);
+}
+
+/* Theme icon visibility and transitions */
+.theme-icon {
+    display: none;
+    color: var(--toggle-inactive);
+    transition: color 0.3s ease, transform 0.2s ease;
+    position: absolute;
+}
+
+.theme-toggle-button:hover .theme-icon {
+    color: var(--accent-color);
+}
+
+/* Show only the active theme icon */
+[data-theme="system"] .theme-icon.system,
+[data-theme="light"] .theme-icon.light,
+[data-theme="dark"] .theme-icon.dark,
+:root:not([data-theme]) .theme-icon.system {
+    display: block;
 }

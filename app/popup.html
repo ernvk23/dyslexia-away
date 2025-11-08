@@ -10,6 +10,34 @@
     <div class="popup-container">
         <div class="header">
             <h2>DyslexicFix</h2>
+            <button class="theme-toggle-button" id="themeToggleBtn" type="button" aria-label="Toggle theme"
+                tabindex="0">
+                <!-- System theme icon (auto/contrast split circle) -->
+                <svg class="theme-icon system" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none" />
+                    <path d="M12 3 L12 21 A9 9 0 0 0 12 3" fill="currentColor" />
+                </svg>
+
+                <!-- Light theme icon (sun) -->
+                <svg class="theme-icon light" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="4" fill="currentColor" />
+                    <path
+                        d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+
+                <!-- Dark theme icon (moon) -->
+                <svg class="theme-icon dark" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="main-toggle-container">
             <button class="toggle-button" id="toggleBtn" type="button" aria-label="Toggle OpenDyslexic font"
                 tabindex="0">
                 <svg class="toggle-icon" width="4rem" height="4rem" viewBox="0 0 24 24" fill="none"
