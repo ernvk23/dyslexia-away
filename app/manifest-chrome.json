@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "DyslexiaAway Beta",
-    "version": "0.3",
-    "description": "Applies OpenDyslexic font and custom settings to improve readability for those who struggle with common fonts.",
+    "version": "0.9.0",
+    "description": "A small browser extension that applies the OpenDyslexic font to webpages. For some of us, that small change makes reading a lot easier.",
     "permissions": [
         "storage",
         "activeTab",
@@ -10,17 +10,16 @@
         "scripting"
     ],
     "host_permissions": [
-        "http://*/*",
-        "https://*/*"
+        "<all_urls>"
     ],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "background-wrapper.js"
     },
     "action": {
         "default_icon": {
-            "16": "assets/icons/icon16.png",
-            "48": "assets/icons/icon48.png",
-            "128": "assets/icons/icon128.png"
+            "16": "icons/icon16.png",
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png"
         },
         "default_title": "DyslexiaAway",
         "default_popup": "popup.html"
@@ -28,10 +27,10 @@
     "content_scripts": [
         {
             "matches": [
-                "http://*/*",
-                "https://*/*"
+                "<all_urls>"
             ],
             "js": [
+                "browser-polyfill.min.js",
                 "content.js"
             ],
             "css": [
@@ -45,7 +44,7 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "assets/fonts/*"
+                "fonts/*"
             ],
             "matches": [
                 "<all_urls>"
@@ -53,11 +52,8 @@
         }
     ],
     "icons": {
-        "16": "assets/icons/icon16.png",
-        "48": "assets/icons/icon48.png",
-        "128": "assets/icons/icon128.png"
-    },
-    "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'"
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
     }
 }

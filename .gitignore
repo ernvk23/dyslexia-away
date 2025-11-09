@@ -12,3 +12,5 @@ Thumbs.db
 # IDE files
 .vscode/
 .idea/
+
+web-ext-artifacts

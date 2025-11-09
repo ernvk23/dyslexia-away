@@ -7,24 +7,28 @@ For some of us, that small change makes reading a lot easier. ✨
 
 ## Features
 
-* **Instant Toggle:** Turn it on or off with one click
-* **Theme Switching:** Choose between light, dark, or system themes
-* **Custom Settings:** Adjust spacing, line height, and font size
-* **Site Exclusion:** Skip pages where it could cause issues
+* **Instant toggle:** Turn it on or off with one click
+* **Theme switching:** Choose between light, dark, or system themes
+* **Custom settings:** Adjust spacing, line height, and font size
+* **Site exclusion:** Skip pages where it could cause issues
+* **Cross-browser compatible:** Works on Chrome, Firefox, and Chromium-based browsers
 
 ## Sample
 
-<img src="./app/assets/sample.png" alt="Sample" width="200">
+<img src="./app/sample.png" alt="Sample" width="200">
 
-## Installation (Chromium Browsers)
+## Installation
 
-1. **Download:** Get the latest `dyslexia-away-*.zip` from the [Releases page](https://github.com/ernvk23/dyslexia-away/releases)
-2. **Install:** Go to `chrome://extensions` and drag & drop the ZIP file onto the page
-3. **Confirm:** Click "Add extension" when prompted
-
-You'll see the icon in your toolbar. Click it to toggle or adjust the settings.
-
+### Firefox / Chrome / Chromium Browsers
+1. Download the appropriate ZIP file from [Latest Release](https://github.com/ernvk23/dyslexia-away/releases/latest)
+   - `dyslexia-away-firefox.zip` for Firefox
+   - `dyslexia-away-chrome.zip` for Chrome/Chromium
+2. **Firefox:** Go to `about:debugging`, click "This Firefox", then "Load Temporary Add-on" and select the ZIP file
+3. **Chrome/Chromium:** Go to `chrome://extensions`, enable "Developer mode", drag and drop the ZIP file
 > **Alternative:** If drag & drop doesn't work, extract the ZIP file and use "Load unpacked" in Developer mode.
+
+## Usage
+Under extensions, click it to toggle and adjust settings.
 
 ## Motivation
 
@@ -38,11 +42,16 @@ For me, it made things click in a way they hadn't before.
 > [!TIP]
 > *Sometimes it's not you - it's just the font*
 
+## Technical Details
+
+- **Manifest Version:** 3 (Chrome & Firefox)
+- **Font Loading:** Local font files bundled with extension
+- **Storage:** Chrome sync storage for settings persistence
+- **Compatibility:** Chrome 88+, Firefox 109+
 
 ## License
 
 Licensed under the [MIT License](./LICENSE).
-
 
 ## Font Credits
 

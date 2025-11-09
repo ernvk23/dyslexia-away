@@ -1,5 +1,5 @@
 /*
-  Optimized OpenDyslexic Styles for Browser Extension
+  Optimal CSS rules with performance optimizations
 */
 
 html.opendyslexic-active p,
@@ -22,21 +22,17 @@ html.opendyslexic-active caption,
 html.opendyslexic-active legend,
 html.opendyslexic-active summary,
 html.opendyslexic-active address,
-html.opendyslexic-active pre,
-html.opendyslexic-active code,
-html.opendyslexic-active kbd,
-html.opendyslexic-active samp,
 html.opendyslexic-active q,
 html.opendyslexic-active cite,
-html.opendyslexic-active span:not([class*="fa"]):not([class*="icon"]):not([class*="material"]):not([class*="bi"]):not([class*="glyph"]):not([class*="symbol"]):not([data-icon]):not([role="img"]):not(.emoji),
-html.opendyslexic-active div:not([class*="fa"]):not([class*="icon"]):not([class*="material"]):not([class*="bi"]):not([class*="glyph"]):not([class*="symbol"]):not([data-icon]):not([role="img"]):not(.emoji),
-html.opendyslexic-active a:not([class*="fa"]):not([class*="icon"]):not([class*="glyph"]):not([data-icon]),
-html.opendyslexic-active label:not([class*="fa"]):not([class*="icon"]):not([class*="glyph"]),
-html.opendyslexic-active button:not([class*="fa"]):not([class*="icon"]):not([class*="glyph"]),
-html.opendyslexic-active em:not([class*="fa"]):not([class*="icon"]):not([class*="material"]):not([data-icon]),
-html.opendyslexic-active strong:not([class*="fa"]):not([class*="icon"]):not([class*="material"]):not([data-icon]),
-html.opendyslexic-active b:not([class*="fa"]):not([class*="icon"]):not([class*="material"]):not([data-icon]),
-html.opendyslexic-active i:not([class*="fa"]):not([class*="icon"]):not([class*="material"]):not([data-icon]),
+html.opendyslexic-active span:not([class~="fa"]):not([class*="fa-"]):not([class*="icon"]):not([class*="material"]):not([class*="bi-"]):not([class*="glyph"]):not([class*="symbol"]):not([data-icon]):not([role="img"]):not(.emoji),
+html.opendyslexic-active div:not([class~="fa"]):not([class*="fa-"]):not([class*="icon"]):not([class*="material"]):not([class*="bi-"]):not([class*="glyph"]):not([class*="symbol"]):not([data-icon]):not([role="img"]):not(.emoji),
+html.opendyslexic-active a:not([class~="fa"]):not([class*="fa-"]):not([class*="icon"]):not([class*="glyph"]):not([data-icon]),
+html.opendyslexic-active label:not([class~="fa"]):not([class*="fa-"]):not([class*="icon"]):not([class*="glyph"]),
+html.opendyslexic-active button:not([class~="fa"]):not([class*="fa-"]):not([class*="icon"]):not([class*="glyph"]),
+html.opendyslexic-active em:not([class~="fa"]):not([class*="fa-"]):not([class*="icon"]):not([class*="material"]):not([data-icon]),
+html.opendyslexic-active strong:not([class~="fa"]):not([class*="fa-"]):not([class*="icon"]):not([class*="material"]):not([data-icon]),
+html.opendyslexic-active b:not([class~="fa"]):not([class*="fa-"]):not([class*="icon"]):not([class*="material"]):not([data-icon]),
+html.opendyslexic-active i:not([class~="fa"]):not([class*="fa-"]):not([class*="icon"]):not([class*="material"]):not([data-icon]),
 html.opendyslexic-active u:not([class*="icon"]):not([data-icon]),
 html.opendyslexic-active s:not([class*="icon"]):not([data-icon]),
 html.opendyslexic-active mark:not([class*="icon"]):not([data-icon]),
@@ -47,7 +43,6 @@ html.opendyslexic-active sub:not([class*="icon"]):not([data-icon]),
 html.opendyslexic-active sup:not([class*="icon"]):not([data-icon]),
 html.opendyslexic-active abbr:not([class*="icon"]):not([data-icon]),
 html.opendyslexic-active time:not([class*="icon"]):not([data-icon]),
-/* Font is still applied to form elements for consistency, but spacing is not. */
 html.opendyslexic-active input[type="text"],
 html.opendyslexic-active input[type="email"],
 html.opendyslexic-active input[type="search"],
@@ -66,12 +61,6 @@ html.opendyslexic-active option {
     font-family: 'OpenDyslexic', sans-serif !important;
 }
 
-
-/* ==========================================================================
-   2. Layered Spacing for Primary Reading Content
-   ========================================================================== */
-
-/* Layer 1: Apply letter/word spacing and line-height to all reading content. */
 html.opendyslexic-active p,
 html.opendyslexic-active li,
 html.opendyslexic-active td,
@@ -94,7 +83,6 @@ html.opendyslexic-active h6 {
     line-height: var(--od-line-height) !important;
 }
 
-/* Layer 2: Apply font-size override ONLY to main content blocks. */
 html.opendyslexic-active p,
 html.opendyslexic-active li,
 html.opendyslexic-active td,
@@ -106,5 +94,14 @@ html.opendyslexic-active dt,
 html.opendyslexic-active figcaption,
 html.opendyslexic-active caption,
 html.opendyslexic-active address {
+    font-size: var(--od-font-size) !important;
+}
+
+
+html.opendyslexic-active pre,
+html.opendyslexic-active code,
+html.opendyslexic-active kbd,
+html.opendyslexic-active samp {
+    font-family: 'OpenDyslexic', monospace !important;
     font-size: var(--od-font-size) !important;
 }

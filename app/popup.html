@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="popup.css">
 </head>
 
@@ -67,7 +68,7 @@
 
         <div class="setting">
             <label>Font Size <span id="fontSizeValue"></span></label>
-            <input type="range" id="fontSize" min="85" max="150" value="100" step="1">
+            <input type="range" id="fontSize" min="25" max="400" value="100" step="1">
         </div>
 
         <div class="setting exclusion-setting">
@@ -80,7 +81,9 @@
         <button class="reset-btn" id="resetBtn" type="button">Reset to Defaults</button>
     </div>
 
-    <script src="popup.js"></script>
+
+    <script type="application/javascript" src="browser-polyfill.min.js"></script>
+    <script type="application/javascript" src="popup.js"></script>
 </body>
 
 </html>

@@ -4,11 +4,13 @@ const DEFAULTS = {
     wordSpacing: 0,
     lineHeight: 140,
     fontSize: 100,
+    excludedDomains: [],
     theme: 'system'
 };
 
-const RESTRICTED = ['chrome://', 'chrome-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
+const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
 
+const sliders = ['letterSpacing', 'wordSpacing', 'lineHeight', 'fontSize'];
 const els = {
     toggle: document.getElementById('toggleBtn'),
     letterSlider: document.getElementById('letterSpacing'),
@@ -26,40 +28,34 @@ const els = {
 
 let currentDomain = null;
 let sliderTimeout = null;
+let wheelTimeout = null;
+let backgroundUpdateTimeout = null;
 
-// Initialize
-chrome.storage.local.get(['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontSize', 'excludedDomains', 'theme'], (result) => {
-    updateToggleUI(result.enabled || false);
+browser.storage.local.get(Object.keys(DEFAULTS)).then(result => {
+    const settings = { ...DEFAULTS, ...result };
 
-    els.letterSlider.value = result.letterSpacing ?? DEFAULTS.letterSpacing;
-    els.wordSlider.value = result.wordSpacing ?? DEFAULTS.wordSpacing;
-    els.lineSlider.value = result.lineHeight ?? DEFAULTS.lineHeight;
-    els.fontSlider.value = result.fontSize ?? DEFAULTS.fontSize;
+    updateToggleUI(settings.enabled);
+    els.letterSlider.value = settings.letterSpacing;
+    els.wordSlider.value = settings.wordSpacing;
+    els.lineSlider.value = settings.lineHeight;
+    els.fontSlider.value = settings.fontSize;
 
-    // Set theme
-    const theme = result.theme ?? DEFAULTS.theme;
-    applyTheme(theme);
-
+    applyTheme(settings.theme);
     updateDisplayValues();
-    initExclusion(result.excludedDomains || [], result.enabled || false);
+    initExclusion(settings.excludedDomains, settings.enabled);
 });
 
 async function initExclusion(excludedDomains, enabled) {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
 
     if (tab?.url && !RESTRICTED.some(p => tab.url.startsWith(p))) {
-        try {
-            const url = new URL(tab.url);
-            currentDomain = url.hostname;
-            const isExcluded = excludedDomains.includes(currentDomain);
+        const url = new URL(tab.url);
+        currentDomain = url.hostname;
+        const isExcluded = excludedDomains.includes(currentDomain);
 
-            els.exclude.checked = isExcluded;
-            els.exclude.disabled = false;
-            updateSlidersState(isExcluded, enabled);
-        } catch (e) {
-            els.exclude.disabled = true;
-            updateSlidersState(true, enabled);
-        }
+        els.exclude.checked = isExcluded;
+        els.exclude.disabled = false;
+        updateSlidersState(isExcluded, enabled);
     } else {
         els.exclude.disabled = true;
         updateSlidersState(true, enabled);
@@ -76,24 +72,13 @@ function updateDisplayValues() {
 
 function formatEm(value) {
     const result = value / 1000;
-
-    if (result === 0) {
-        return '0';
-    }
-
+    if (result === 0) return '0';
     const fixedResult = result.toFixed(2);
-
-    // Prevent displaying -0.00 em
-    if (fixedResult === '-0.00') {
-        return '0.00 em';
-    }
-
-    return fixedResult + ' em';
+    return fixedResult === '-0.00' ? '0.00 em' : fixedResult + ' em';
 }
 
 function updateToggleUI(enabled) {
     els.toggle.classList.toggle('active', enabled);
-    // Apply the same active class to all slider inputs
     [els.letterSlider, els.wordSlider, els.lineSlider, els.fontSlider].forEach(slider => {
         slider.classList.toggle('active', enabled);
     });
@@ -104,29 +89,25 @@ function updateSlidersState(isExcluded, isEnabled) {
     [els.letterSlider, els.wordSlider, els.lineSlider, els.fontSlider].forEach(s => s.disabled = disabled);
 }
 
-// Toggle button
 els.toggle.addEventListener('click', async (e) => {
     e.preventDefault();
-
-    const { enabled } = await chrome.storage.local.get('enabled');
+    const { enabled } = await browser.storage.local.get('enabled');
     const newState = !enabled;
 
     updateToggleUI(newState);
-    await chrome.storage.local.set({ enabled: newState });
+    updateCurrentTabStyles({ enabled: newState });
+    browser.storage.local.set({ enabled: newState });
+    scheduleBackgroundUpdate();
 
-    // Update sliders
-    const { excludedDomains } = await chrome.storage.local.get('excludedDomains');
-    const isExcluded = currentDomain && excludedDomains.includes(currentDomain);
+    const { excludedDomains } = await browser.storage.local.get('excludedDomains');
+    const isExcluded = currentDomain && (excludedDomains || []).includes(currentDomain);
     updateSlidersState(isExcluded, newState);
-
-    // The background script now handles updating all tabs via storage listener
 });
 
-// Exclusion checkbox
 els.exclude.addEventListener('change', async () => {
     if (!currentDomain) return;
 
-    const { excludedDomains, enabled } = await chrome.storage.local.get(['excludedDomains', 'enabled']);
+    const { excludedDomains, enabled } = await browser.storage.local.get(['excludedDomains', 'enabled']);
     let domains = excludedDomains || [];
 
     if (els.exclude.checked) {
@@ -135,37 +116,28 @@ els.exclude.addEventListener('change', async () => {
         domains = domains.filter(d => d !== currentDomain);
     }
 
-    await chrome.storage.local.set({ excludedDomains: domains });
+    updateCurrentTabStyles({ excludedDomains: domains });
+    browser.storage.local.set({ excludedDomains: domains });
+    scheduleBackgroundUpdate();
     updateSlidersState(els.exclude.checked, enabled);
 });
 
-// Sliders with debounced input for performance
 [els.letterSlider, els.wordSlider, els.lineSlider, els.fontSlider].forEach(slider => {
     slider.addEventListener('input', () => {
-        // Update display values immediately for instant feedback
         updateDisplayValues();
 
-        // Debounce the style updates to prevent excessive re-rendering
-        if (sliderTimeout) {
-            clearTimeout(sliderTimeout);
-        }
-
-        sliderTimeout = setTimeout(() => {
-            // Update current tab with 10ms delay for smooth performance
-            updateCurrentTabStyles(getCurrentSettings());
-        }, 10);
-    });
+        if (sliderTimeout) clearTimeout(sliderTimeout);
+        sliderTimeout = setTimeout(() => updateCurrentTabStyles(getCurrentSettings()), 10);
+    }, { passive: false });
 
     slider.addEventListener('change', () => {
-        // Clear any pending timeout when slider is released
         if (sliderTimeout) {
             clearTimeout(sliderTimeout);
             sliderTimeout = null;
         }
-
-        // When slider is released, save to storage and broadcast to all tabs
+        updateCurrentTabStyles(getCurrentSettings());
         saveSettingsAndBroadcast();
-    });
+    }, { passive: false });
 
     slider.addEventListener('wheel', (e) => {
         e.preventDefault();
@@ -174,18 +146,16 @@ els.exclude.addEventListener('change', async () => {
         let val = parseInt(slider.value) + (delta * step);
         val = Math.max(parseInt(slider.min), Math.min(parseInt(slider.max), val));
         slider.value = val;
+
         updateDisplayValues();
 
-        // Clear any pending timeout
-        if (sliderTimeout) {
-            clearTimeout(sliderTimeout);
-        }
-
-        // Apply styles immediately for wheel events (less frequent than dragging)
-        updateCurrentTabStyles(getCurrentSettings());
-        // Save to storage on wheel release
-        saveSettingsAndBroadcast();
-    });
+        if (wheelTimeout) clearTimeout(wheelTimeout);
+        wheelTimeout = setTimeout(() => {
+            updateCurrentTabStyles(getCurrentSettings());
+            saveSettingsAndBroadcast();
+            wheelTimeout = null;
+        }, 100);
+    }, { passive: false });
 });
 
 function getCurrentSettings() {
@@ -198,41 +168,61 @@ function getCurrentSettings() {
 }
 
 async function updateCurrentTabStyles(settings) {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
     if (tab?.id) {
-        // Send message to content script to update styles immediately without storage
-        // Use try/catch for better error handling
-        try {
-            await chrome.tabs.sendMessage(tab.id, {
+        // Try to send message to content script
+        const response = await browser.tabs.sendMessage(tab.id, {
+            action: 'UPDATE_STYLES',
+            settings: settings
+        }).catch(() => null);
+
+        // If content script isn't loaded, inject it and send message
+        if (!response) {
+            await injectContentScript(tab.id);
+            // Send the message after injection to ensure current settings are applied
+            await browser.tabs.sendMessage(tab.id, {
                 action: 'UPDATE_STYLES',
                 settings: settings
-            });
-        } catch (error) {
-            // Content script not injected or tab not ready - this is normal
+            }).catch(() => { });
         }
     }
 }
 
-async function saveSettingsAndBroadcast() {
-    const settings = getCurrentSettings();
-    await chrome.storage.local.set(settings);
+async function injectContentScript(tabId) {
+    try {
+        await browser.scripting.insertCSS({
+            target: { tabId: tabId, allFrames: true },
+            files: ['fonts.css', 'style.css']
+        });
+        await browser.scripting.executeScript({
+            target: { tabId: tabId, allFrames: true },
+            files: ['content.js']
+        });
+    } catch (error) { }
 }
 
-// Theme toggle button
+function saveSettingsAndBroadcast() {
+    browser.storage.local.set(getCurrentSettings());
+    scheduleBackgroundUpdate();
+}
+
+function scheduleBackgroundUpdate() {
+    if (backgroundUpdateTimeout) clearTimeout(backgroundUpdateTimeout);
+    backgroundUpdateTimeout = setTimeout(() => {
+        browser.runtime.sendMessage({ action: 'UPDATE_BACKGROUND_TABS' });
+    }, 1000);
+}
+
 els.themeToggle.addEventListener('click', async (e) => {
     e.preventDefault();
-
-    const { theme: currentTheme } = await chrome.storage.local.get('theme');
+    const { theme: currentTheme } = await browser.storage.local.get('theme');
     const themes = ['system', 'light', 'dark'];
     const currentIndex = themes.indexOf(currentTheme || DEFAULTS.theme);
-    const nextIndex = (currentIndex + 1) % themes.length;
-    const nextTheme = themes[nextIndex];
-
+    const nextTheme = themes[(currentIndex + 1) % themes.length];
     applyTheme(nextTheme);
-    await chrome.storage.local.set({ theme: nextTheme });
+    browser.storage.local.set({ theme: nextTheme });
 });
 
-// Reset button
 els.reset.addEventListener('click', async () => {
     els.letterSlider.value = DEFAULTS.letterSpacing;
     els.wordSlider.value = DEFAULTS.wordSpacing;
@@ -241,21 +231,22 @@ els.reset.addEventListener('click', async () => {
 
     applyTheme(DEFAULTS.theme);
     updateDisplayValues();
-    await saveSettingsAndBroadcast();
-    await chrome.storage.local.set({ theme: DEFAULTS.theme });
+
+    const { enabled, excludedDomains } = await browser.storage.local.get(['enabled', 'excludedDomains']);
+    updateCurrentTabStyles(getCurrentSettings());
 
     if (currentDomain) {
-        const { excludedDomains } = await chrome.storage.local.get('excludedDomains');
         const domains = (excludedDomains || []).filter(d => d !== currentDomain);
-        await chrome.storage.local.set({ excludedDomains: domains });
         els.exclude.checked = false;
-
-        const { enabled } = await chrome.storage.local.get('enabled');
         updateSlidersState(false, enabled);
+        updateCurrentTabStyles({ excludedDomains: domains });
+        browser.storage.local.set({ excludedDomains: domains });
     }
+
+    browser.storage.local.set({ ...getCurrentSettings(), theme: DEFAULTS.theme });
+    scheduleBackgroundUpdate();
 });
 
-// Theme application function
 function applyTheme(theme) {
     if (theme === 'system') {
         document.documentElement.removeAttribute('data-theme');

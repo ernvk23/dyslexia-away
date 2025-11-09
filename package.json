@@ -1,18 +1,22 @@
 {
     "name": "dyslexia-away",
-    "version": "0.3",
-    "description": "A browser extension that applies OpenDyslexic font to webpages for improved readability",
+    "version": "0.9.0",
+    "description": "A small browser extension that applies the OpenDyslexic font to webpages. For some of us, that small change makes reading a lot easier.",
     "main": "background.js",
     "scripts": {
-        "build": "node app/build.js",
+        "build": "npm run build:chrome && npm run build:firefox",
+        "build:chrome": "node app/build.js chrome",
+        "build:firefox": "node app/build.js firefox",
         "clean": "rm -rf dist/"
     },
     "keywords": [
-        "chrome-extension",
+        "browser-extension",
         "dyslexia",
         "accessibility",
         "font",
-        "opendyslexic"
+        "opendyslexic",
+        "chrome",
+        "firefox"
     ],
     "author": "ernvk23",
     "license": "MIT",

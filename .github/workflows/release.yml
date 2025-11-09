@@ -29,23 +29,31 @@ jobs:
             - name: Create or Update Release
               uses: softprops/action-gh-release@v1
               with:
-                  files: dist/dyslexia-away.zip
+                  files: |
+                      dist/dyslexia-away-chrome.zip
+                      dist/dyslexia-away-firefox.zip
                   name: ${{ github.ref_name }}
                   tag_name: ${{ github.ref_name }}
                   body: |
-                      DyslexiaAway browser extension
+                      # DyslexiaAway
 
-                      ## Installation
-                      1. Download the `dyslexia-away.zip` file
-                      2. Go to `chrome://extensions`
-                      3. Enable "Developer mode"
-                      4. Drag and drop the ZIP file onto the page
-                      5. Click "Add extension" when prompted
+                      A small browser extension that applies the **OpenDyslexic** font to webpages. For some of us, that small change makes reading a lot easier. ✨
 
-                      ## Features
-                      - Applies OpenDyslexic font to webpages
-                      - Improves readability for dyslexic users
-                      - Customizable font settings
+                      ---
+
+                      ### Installation
+
+                      **Firefox / Chrome / Chromium Browsers**
+                      1. Download the appropriate ZIP file:
+                      - `dyslexia-away-firefox.zip` for Firefox
+                      - `dyslexia-away-chrome.zip` for Chrome/Chromium
+
+                      2. **Firefox:** Go to `about:debugging`, click "This Firefox", then "Load Temporary Add-on" and select the ZIP file
+                      3. **Chrome/Chromium:** Go to `chrome://extensions`, enable "Developer mode", drag and drop the ZIP file
+
+                      ---
+
+                      📖 **More information:** See the [README](https://github.com/ernvk23/dyslexia-away/blob/main/README.md) for detailed usage instructions and features.
                   draft: false
                   prerelease: false
                   generate_release_notes: true

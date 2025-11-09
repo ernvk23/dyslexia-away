@@ -4,6 +4,7 @@
     --bg-primary: #181818;
     --bg-secondary: #222222;
     --border-color: #404040;
+    --header-border: rgba(255, 255, 255, 0.1);
     --text-primary: #b1b1b1;
     --text-secondary: #ccc;
     --accent-color: #0ea5e9;
@@ -23,6 +24,7 @@
     --bg-primary: #f0f2f5;
     --bg-secondary: #f8f9fa;
     --border-color: #d1d5db;
+    --header-border: #c5c6c7;
     --text-primary: #1f2937;
     --text-secondary: #4b5563;
     --accent-glow: rgba(14, 165, 233, 0.15);
@@ -40,6 +42,7 @@
         --bg-primary: #f0f2f5;
         --bg-secondary: #f8f9fa;
         --border-color: #d1d5db;
+        --header-border: #c5c6c7;
         --text-primary: #1f2937;
         --text-secondary: #4b5563;
         --accent-glow: rgba(14, 165, 233, 0.15);
@@ -87,7 +90,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--header-border);
     padding-bottom: 0.2rem;
 }
 
@@ -100,7 +103,6 @@ body {
 h2 {
     font-size: 0.8rem;
     font-weight: bold;
-    letter-spacing: -0.08em;
     color: var(--text-primary);
 }
 
@@ -157,11 +159,13 @@ h2 {
 label {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-size: 0.7rem;
-    word-spacing: -0.5em;
-    letter-spacing: -0.05em;
     color: var(--text-secondary);
+    white-space: nowrap;
+    gap: 0.5rem;
 }
+
 
 .exclusion-setting label {
     margin-bottom: 0;
@@ -202,6 +206,7 @@ label span {
     font-variant-numeric: tabular-nums;
     min-width: 2rem;
     text-align: right;
+    flex-shrink: 0;
 }
 
 input[type="range"] {
@@ -287,8 +292,6 @@ input[type="range"]::-moz-range-thumb:active {
     color: var(--text-secondary);
     cursor: pointer;
     font-size: 0.7rem;
-    word-spacing: -0.5em;
-    letter-spacing: -0.05em;
     margin-top: 0.5rem;
     transition: all 0.15s;
     font-family: 'OpenDyslexic', system-ui, -apple-system, sans-serif;

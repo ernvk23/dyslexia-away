@@ -1,5 +1,8 @@
 (() => {
-    let state = {
+    // Browser API detection
+    const api = typeof browser !== 'undefined' ? browser : chrome;
+
+    const state = {
         enabled: false,
         excluded: false,
         letterSpacing: 0,
@@ -8,154 +11,143 @@
         fontSize: 100
     };
 
-    // Prevent duplicate initialization
-    if (!window.extensionInitialized) {
-        window.extensionInitialized = true;
-        init();
-    }
+    let animationFrameId = null;
+    let fontLoaded = false;
+
+    init();
 
     function init() {
-        chrome.storage.local.get(['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontSize', 'excludedDomains'], (result) => {
-            state = {
-                enabled: result.enabled || false,
-                letterSpacing: result.letterSpacing ?? 0,
-                wordSpacing: result.wordSpacing ?? 0,
-                lineHeight: result.lineHeight ?? 140,
-                fontSize: result.fontSize ?? 100,
-                excluded: (result.excludedDomains || []).includes(window.location.hostname)
-            };
+        api.storage.local.get(
+            ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontSize', 'excludedDomains']
+        ).then(result => {
+            state.enabled = result.enabled || false;
+            state.letterSpacing = result.letterSpacing ?? 0;
+            state.wordSpacing = result.wordSpacing ?? 0;
+            state.lineHeight = result.lineHeight ?? 140;
+            state.fontSize = result.fontSize ?? 100;
+            state.excluded = (result.excludedDomains || []).includes(location.hostname);
 
-            requestAnimationFrame(() => {
-                applyStyles();
-            });
+            applyStyles();
         });
     }
 
-    // Listen for reload events from popup (for pre-existing tabs)
-    window.addEventListener('extensionReload', (e) => {
-        if (e.detail) {
-            state.letterSpacing = e.detail.letterSpacing ?? state.letterSpacing;
-            state.wordSpacing = e.detail.wordSpacing ?? state.wordSpacing;
-            state.lineHeight = e.detail.lineHeight ?? state.lineHeight;
-            state.fontSize = e.detail.fontSize ?? state.fontSize;
-            state.excluded = (e.detail.excludedDomains || []).includes(window.location.hostname);
-            state.enabled = e.detail.enabled ?? state.enabled;
+    function scheduleUpdate(callback) {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
         }
-        requestAnimationFrame(() => {
-            applyStyles();
+        animationFrameId = requestAnimationFrame(() => {
+            callback();
+            animationFrameId = null;
         });
-    });
+    }
 
-    // Force re-initialization function for popup to call
-    window.forceReinitializeExtension = () => {
-        init();
-    };
-
-    // Listen for direct messages from background script to re-initialize
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-        if (request.action === 'REINITIALIZE') {
-            init();
-        } else if (request.action === 'UPDATE_STYLES' && request.settings) {
-            // Immediate update from popup (slider drag) - no storage dependency
-            state.letterSpacing = request.settings.letterSpacing ?? state.letterSpacing;
-            state.wordSpacing = request.settings.wordSpacing ?? state.wordSpacing;
-            state.lineHeight = request.settings.lineHeight ?? state.lineHeight;
-            state.fontSize = request.settings.fontSize ?? state.fontSize;
-
-            // Apply immediately - CSS variable updates are fast
-            if (state.enabled && !state.excluded) {
-                updateCSSVariables();
-            }
-        }
-    });
+    function shouldApplyStyles() {
+        return state.enabled && !state.excluded;
+    }
 
     async function applyStyles() {
-        const shouldApply = state.enabled && !state.excluded;
+        const shouldApply = shouldApplyStyles();
 
         if (shouldApply) {
-            // Wait for the OpenDyslexic font to load before applying styles.
-            // document.fonts.load requires a size (e.g., 1em) as part of the CSS font shorthand.
-            try {
-                await document.fonts.load('1em OpenDyslexic');
-            } catch (e) {
-                console.error('Failed to load OpenDyslexic font:', e);
-                // Continue applying styles even if font loading fails, using fallback
+            if (!fontLoaded) {
+                await document.fonts.load('1em OpenDyslexic').catch(() => { });
+                fontLoaded = true;
             }
-
-            // Use requestAnimationFrame for optimal rendering timing
-            requestAnimationFrame(() => {
+            scheduleUpdate(() => {
                 updateCSSVariables();
                 document.documentElement.classList.add('opendyslexic-active');
             });
         } else {
-            removeStyles();
+            // Reset fontLoaded when styles are removed so font can be reloaded when re-enabled
+            fontLoaded = false;
+            scheduleUpdate(removeStyles);
         }
     }
 
     function updateCSSVariables() {
-        const ls = (state.letterSpacing / 1000).toFixed(3) + 'em';
-        const ws = (state.wordSpacing / 1000).toFixed(3) + 'em';
-        const lh = (state.lineHeight / 100).toFixed(2);
-        const fs = (state.fontSize / 100).toFixed(2) + 'em';
+        const rootStyle = document.documentElement.style;
 
-        const root = document.documentElement.style;
-        root.setProperty('--od-letter-spacing', ls);
-        root.setProperty('--od-word-spacing', ws);
-        root.setProperty('--od-line-height', lh);
-        root.setProperty('--od-font-size', fs);
+        rootStyle.setProperty('--od-letter-spacing', `${(state.letterSpacing / 1000).toFixed(3)}em`);
+        rootStyle.setProperty('--od-word-spacing', `${(state.wordSpacing / 1000).toFixed(3)}em`);
+        rootStyle.setProperty('--od-line-height', (state.lineHeight / 100).toFixed(2));
+        rootStyle.setProperty('--od-font-size', `${(state.fontSize / 100).toFixed(2)}rem`);
     }
 
     function removeStyles() {
-        document.documentElement.classList.remove('opendyslexic-active');
-        // Remove CSS variables when disabled
-        const root = document.documentElement.style;
-        root.removeProperty('--od-letter-spacing');
-        root.removeProperty('--od-word-spacing');
-        root.removeProperty('--od-line-height');
-        root.removeProperty('--od-font-size');
+        const root = document.documentElement;
+        const rootStyle = root.style;
+
+        root.classList.remove('opendyslexic-active');
+        rootStyle.removeProperty('--od-letter-spacing');
+        rootStyle.removeProperty('--od-word-spacing');
+        rootStyle.removeProperty('--od-line-height');
+        rootStyle.removeProperty('--od-font-size');
     }
 
-    // Listen to storage changes
-    chrome.storage.onChanged.addListener((changes, namespace) => {
+    function updateState(newState) {
+        let changed = false;
+
+        ['letterSpacing', 'wordSpacing', 'lineHeight', 'fontSize'].forEach(key => {
+            if (newState[key] !== undefined && state[key] !== newState[key]) {
+                state[key] = newState[key];
+                changed = true;
+            }
+        });
+
+        if (newState.excludedDomains !== undefined) {
+            const newExcluded = newState.excludedDomains.includes(location.hostname);
+            if (state.excluded !== newExcluded) {
+                state.excluded = newExcluded;
+                changed = true;
+            }
+        }
+
+        if (newState.enabled !== undefined && state.enabled !== newState.enabled) {
+            state.enabled = newState.enabled;
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    api.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        if (request.action === 'REINITIALIZE') {
+            init();
+            sendResponse({ success: true });
+        } else if (request.action === 'UPDATE_STYLES' && request.settings) {
+            if (updateState(request.settings) && shouldApplyStyles()) {
+                scheduleUpdate(updateCSSVariables);
+            }
+            sendResponse({ success: true });
+        }
+    });
+
+    api.storage.onChanged.addListener((changes, namespace) => {
         if (namespace !== 'local') return;
 
-        let needsUpdate = false;
+        const updates = {};
         let needsFullReapply = false;
 
         if (changes.enabled) {
-            state.enabled = changes.enabled.newValue;
+            updates.enabled = changes.enabled.newValue;
             needsFullReapply = true;
         }
 
         if (changes.excludedDomains) {
-            state.excluded = (changes.excludedDomains.newValue || []).includes(window.location.hostname);
+            updates.excludedDomains = changes.excludedDomains.newValue || [];
             needsFullReapply = true;
         }
 
-        if (changes.letterSpacing) {
-            state.letterSpacing = changes.letterSpacing.newValue;
-            needsUpdate = true;
-        }
-        if (changes.wordSpacing) {
-            state.wordSpacing = changes.wordSpacing.newValue;
-            needsUpdate = true;
-        }
-        if (changes.lineHeight) {
-            state.lineHeight = changes.lineHeight.newValue;
-            needsUpdate = true;
-        }
-        if (changes.fontSize) {
-            state.fontSize = changes.fontSize.newValue;
-            needsUpdate = true;
-        }
+        ['letterSpacing', 'wordSpacing', 'lineHeight', 'fontSize'].forEach(key => {
+            if (changes[key]) updates[key] = changes[key].newValue;
+        });
+
+        const stateChanged = updateState(updates);
 
         if (needsFullReapply) {
-            requestAnimationFrame(() => {
-                applyStyles();
-            });
-        } else if (needsUpdate && state.enabled && !state.excluded) {
-            // Just update the CSS variables, don't reapply everything
-            updateCSSVariables();
+            applyStyles();
+        } else if (stateChanged && shouldApplyStyles()) {
+            scheduleUpdate(updateCSSVariables);
         }
     });
 })();

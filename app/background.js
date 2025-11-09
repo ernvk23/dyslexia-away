@@ -8,83 +8,93 @@ const DEFAULTS = {
     theme: 'system'
 };
 
-const RESTRICTED = ['chrome://', 'chrome-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
+const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'about:', 'file://'];
 
-// Initialize on install
-chrome.runtime.onInstalled.addListener(async () => {
-    const result = await chrome.storage.local.get(Object.keys(DEFAULTS));
-    const settings = { ...DEFAULTS, ...result };
-    await chrome.storage.local.set(settings);
-    updateBadge(settings.enabled);
+let state = { ...DEFAULTS };
 
-    // Inject into all existing tabs on install
-    if (settings.enabled) {
-        await updateAllTabs();
-    }
-});
-
-// Update badge on startup
-chrome.runtime.onStartup.addListener(() => {
-    chrome.storage.local.get('enabled', (result) => {
-        updateBadge(result.enabled);
-    });
-});
-
-// Listen for storage changes and update badge
-chrome.storage.onChanged.addListener((changes, namespace) => {
-    if (namespace === 'local' && changes.enabled) {
-        updateBadge(changes.enabled.newValue);
-        // Trigger update/injection in all tabs when extension is toggled
-        updateAllTabs();
-    }
-});
-
-function updateBadge(enabled) {
-    chrome.action.setBadgeText({ text: enabled ? 'on' : '' });
-    chrome.action.setBadgeBackgroundColor({ color: '#0ea5e9' });
+async function initState() {
+    const result = await browser.storage.local.get(Object.keys(DEFAULTS));
+    state = { ...DEFAULTS, ...result };
 }
 
-// Function to inject content script or trigger re-apply in all tabs
+browser.runtime.onInstalled.addListener(async () => {
+    await initState();
+
+    const missingDefaults = {};
+    for (const [key, value] of Object.entries(DEFAULTS)) {
+        if (state[key] === undefined) missingDefaults[key] = value;
+    }
+
+    if (Object.keys(missingDefaults).length > 0) {
+        Object.assign(state, missingDefaults);
+        await browser.storage.local.set(missingDefaults);
+    }
+
+    updateBadge(state.enabled);
+    if (state.enabled) updateAllTabs();
+});
+
+browser.runtime.onStartup.addListener(async () => {
+    await initState();
+    updateBadge(state.enabled);
+});
+
+browser.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace !== 'local') return;
+
+    for (const [key, { newValue }] of Object.entries(changes)) {
+        if (key in state) state[key] = newValue;
+    }
+
+    if (changes.enabled) updateBadge(state.enabled);
+    if (changes.enabled || changes.excludedDomains) updateBackgroundTabs();
+});
+
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'UPDATE_BACKGROUND_TABS') {
+        updateBackgroundTabs();
+    } else if (request.action === 'GET_STATE') {
+        sendResponse({ state });
+    }
+});
+
 async function updateAllTabs() {
-    const tabs = await chrome.tabs.query({});
-    const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const tabs = await browser.tabs.query({});
+    tabs.forEach(injectOrReinitialize);
+}
 
-    const tabsToUpdate = [];
-    if (activeTab) {
-        tabsToUpdate.push(activeTab);
-    }
+async function updateBackgroundTabs() {
+    const [tabs, [activeTab]] = await Promise.all([
+        browser.tabs.query({}),
+        browser.tabs.query({ active: true, currentWindow: true })
+    ]);
 
-    // Add all other tabs, ensuring we don't duplicate the active tab
-    for (const tab of tabs) {
+    tabs.forEach(tab => {
         if (!activeTab || tab.id !== activeTab.id) {
-            tabsToUpdate.push(tab);
+            injectOrReinitialize(tab);
         }
+    });
+}
+
+async function injectOrReinitialize(tab) {
+    if (!tab.url || RESTRICTED.some(prefix => tab.url.startsWith(prefix))) return;
+
+    const response = await browser.tabs.sendMessage(tab.id, { action: 'REINITIALIZE' }).catch(() => null);
+
+    if (!response) {
+        browser.scripting.insertCSS({
+            target: { tabId: tab.id, allFrames: true },
+            files: ['fonts.css', 'style.css']
+        }).then(() =>
+            browser.scripting.executeScript({
+                target: { tabId: tab.id, allFrames: true },
+                files: ['content.js']
+            })
+        ).catch(() => { });
     }
+}
 
-    for (const tab of tabsToUpdate) {
-        if (!tab.url || RESTRICTED.some(p => tab.url.startsWith(p))) continue;
-
-        // 1. Try to send a message to the content script to re-initialize (if already injected)
-        chrome.tabs.sendMessage(tab.id, { action: 'REINITIALIZE' }, async () => {
-            // If chrome.runtime.lastError is set, the content script is not listening (i.e., not injected)
-            if (chrome.runtime.lastError) {
-                // 2. If message fails, inject the content script
-                try {
-                    // Inject CSS first to define @font-face rules
-                    await chrome.scripting.insertCSS({
-                        target: { tabId: tab.id, allFrames: true },
-                        files: ['fonts.css', 'style.css']
-                    });
-
-                    // Then inject the content script
-                    await chrome.scripting.executeScript({
-                        target: { tabId: tab.id, allFrames: true },
-                        files: ['content.js']
-                    });
-                } catch (err) {
-                    // Can't inject (restricted page or pre-install tab)
-                }
-            }
-        });
-    }
+function updateBadge(enabled) {
+    browser.action.setBadgeText({ text: enabled ? 'on' : '' });
+    browser.action.setBadgeBackgroundColor({ color: '#0ea5e9' });
 }
