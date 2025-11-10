@@ -19,7 +19,7 @@ For some of us, that small change makes reading a lot easier. ✨
 
 ## Installation
 
-### Firefox / Chrome / Chromium Browsers
+### Firefox & Chrome/Chromium Browsers
 1. Download the appropriate ZIP file from [Latest Release](https://github.com/ernvk23/dyslexia-away/releases/latest)
    - `dyslexia-away-firefox.zip` for Firefox
    - `dyslexia-away-chrome.zip` for Chrome/Chromium
