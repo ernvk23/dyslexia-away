@@ -13,6 +13,7 @@
 
     let animationFrameId = null;
     let fontLoaded = false;
+    let observer = null;
 
     init();
 
@@ -57,10 +58,12 @@
                 updateCSSVariables();
                 document.documentElement.classList.add('opendyslexic-active');
             });
+            startObserver();  // Start monitoring DOM changes for SPAs
         } else {
             // Reset fontLoaded when styles are removed so font can be reloaded when re-enabled
             fontLoaded = false;
             scheduleUpdate(removeStyles);
+            stopObserver();  // Stop monitoring when disabled
         }
     }
 
@@ -82,6 +85,47 @@
         rootStyle.removeProperty('--od-word-spacing');
         rootStyle.removeProperty('--od-line-height');
         rootStyle.removeProperty('--od-font-size');
+    }
+
+    // Monitor DOM changes for SPA navigation (GitHub, etc.)
+    function startObserver() {
+        if (observer) return;
+
+        // Wait for document.body to be available
+        if (!document.body) {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', startObserver, { once: true });
+            }
+            return;
+        }
+
+        observer = new MutationObserver((mutations) => {
+            // Check if significant DOM changes occurred (like SPA navigation)
+            const hasSignificantChanges = mutations.some(mutation =>
+                mutation.addedNodes.length > 0 ||
+                mutation.removedNodes.length > 0
+            );
+
+            if (hasSignificantChanges && shouldApplyStyles()) {
+                // Re-apply styles after DOM changes
+                scheduleUpdate(() => {
+                    document.documentElement.classList.add('opendyslexic-active');
+                    updateCSSVariables();
+                });
+            }
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    function stopObserver() {
+        if (observer) {
+            observer.disconnect();
+            observer = null;
+        }
     }
 
     function updateState(newState) {
