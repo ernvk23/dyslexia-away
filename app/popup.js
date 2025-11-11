@@ -80,14 +80,19 @@ function formatEm(value) {
 
 function updateToggleUI(enabled) {
     els.toggle.classList.toggle('active', enabled);
-    [els.letterSlider, els.wordSlider, els.lineSlider, els.fontSlider].forEach(slider => {
-        slider.classList.toggle('active', enabled);
-    });
+
+    // Get current exclusion state and update sliders accordingly
+    const isExcluded = currentDomain && (els.exclude.checked || false);
+    updateSlidersState(isExcluded, enabled);
 }
 
 function updateSlidersState(isExcluded, isEnabled) {
     const disabled = !isEnabled || isExcluded;
-    [els.letterSlider, els.wordSlider, els.lineSlider, els.fontSlider].forEach(s => s.disabled = disabled);
+
+    [els.letterSlider, els.wordSlider, els.lineSlider, els.fontSlider].forEach(s => {
+        s.disabled = disabled;
+        s.classList.toggle('active', !disabled);
+    });
 }
 
 els.toggle.addEventListener('click', async (e) => {
@@ -99,10 +104,6 @@ els.toggle.addEventListener('click', async (e) => {
     updateCurrentTabStyles({ enabled: newState });
     browser.storage.local.set({ enabled: newState });
     scheduleBackgroundUpdate();
-
-    const { excludedDomains } = await browser.storage.local.get('excludedDomains');
-    const isExcluded = currentDomain && (excludedDomains || []).includes(currentDomain);
-    updateSlidersState(isExcluded, newState);
 });
 
 els.exclude.addEventListener('change', async () => {
