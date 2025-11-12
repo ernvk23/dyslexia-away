@@ -53,6 +53,7 @@ For me, it made things click in a way they hadn't before.
 
 Licensed under the [MIT License](./LICENSE).
 
-## Font Credits
+## Credits
 
-[OpenDyslexic](https://opendyslexic.org/) - an open typeface made to help with reading.
+- [OpenDyslexic](https://opendyslexic.org/) - an open typeface made to help with reading
+- [SVGRepo](https://www.svgrepo.com/) - extension icon (CC0 License)
