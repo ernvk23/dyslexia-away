@@ -15,7 +15,7 @@ For some of us, that small change makes reading a lot easier. ✨
 
 ## Sample
 
-<img src="./app/sample.png" alt="Sample" width="200">
+<img src="./app/sample.png" alt="Sample" width="200" style="border-radius: 0.4rem;">
 
 ## Installation
 
