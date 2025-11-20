@@ -86,7 +86,6 @@ function updateDisplayValues() {
 
 function formatEm(value) {
     const result = value / 1000;
-    if (result === 0) return '0';
     const fixedResult = result.toFixed(2);
     return fixedResult === '-0.00' ? '0.00 em' : fixedResult + ' em';
 }
