@@ -1,62 +1,11 @@
-/* OpenDyslexic Extension - Optimized for performance and minimal UI breakage */
-
-/* Part 1: Apply font and spacing to explicit common elements */
-html.opendyslexic-active p,
-html.opendyslexic-active li,
-html.opendyslexic-active blockquote,
-html.opendyslexic-active article,
-html.opendyslexic-active section,
-html.opendyslexic-active main,
-html.opendyslexic-active h1,
-html.opendyslexic-active h2,
-html.opendyslexic-active h3,
-html.opendyslexic-active h4,
-html.opendyslexic-active h5,
-html.opendyslexic-active h6,
-html.opendyslexic-active td,
-html.opendyslexic-active th,
-html.opendyslexic-active dt,
-html.opendyslexic-active dd,
-html.opendyslexic-active figcaption,
-html.opendyslexic-active caption,
-html.opendyslexic-active legend,
-html.opendyslexic-active summary,
-html.opendyslexic-active address,
-html.opendyslexic-active label,
-html.opendyslexic-active q,
-html.opendyslexic-active cite,
-html.opendyslexic-active sub,
-html.opendyslexic-active sup,
-html.opendyslexic-active abbr,
-html.opendyslexic-active time,
-html.opendyslexic-active input[type="text"],
-html.opendyslexic-active input[type="email"],
-html.opendyslexic-active input[type="search"],
-html.opendyslexic-active input[type="tel"],
-html.opendyslexic-active input[type="url"],
-html.opendyslexic-active input[type="password"],
-html.opendyslexic-active input[type="number"],
-html.opendyslexic-active input[type="date"],
-html.opendyslexic-active input[type="datetime-local"],
-html.opendyslexic-active input[type="time"],
-html.opendyslexic-active input[type="week"],
-html.opendyslexic-active input[type="month"],
-html.opendyslexic-active textarea,
-html.opendyslexic-active select,
-html.opendyslexic-active option {
+/* Global font application - optimized selector order for performance */
+html.opendyslexic-active *:not(svg):not(path):not([aria-hidden="true"]):not([role="img"]):not([data-icon]):not(pre):not(code):not(kbd):not(samp):not([class*="fa-"]):not([class~="fa"]):not([class*="material-icons"]):not([class*="material-symbols"]):not([class*="icon"]):not([class*="bi-"]):not([class*="glyph"]):not([class*="symbol"]) {
     font-family: 'OpenDyslexic', sans-serif !important;
     letter-spacing: var(--od-letter-spacing) !important;
     word-spacing: var(--od-word-spacing) !important;
 }
 
-/* Part 2: Catch-all for any remaining elements not covered above */
-html.opendyslexic-active *:not(html):not(head):not(body):not(script):not(style):not(link):not(meta):not(title):not(path):not(svg):not(br):not(hr):not(pre):not(code):not(kbd):not(samp):not([class~="fa"]):not([class*="fa-"]):not([class*="icon"]):not([class*="material-symbols"]):not([class*="material-icons"]):not([class*="bi-"]):not([class*="glyph"]):not([class*="symbol"]):not([data-icon]):not([role="img"]):not([aria-hidden="true"]) {
-    font-family: 'OpenDyslexic', sans-serif !important;
-    letter-spacing: var(--od-letter-spacing) !important;
-    word-spacing: var(--od-word-spacing) !important;
-}
-
-/* Part 3: Line-height only on containers with extended reading content */
+/* Line height for reading content */
 html.opendyslexic-active p,
 html.opendyslexic-active blockquote,
 html.opendyslexic-active article,
@@ -66,11 +15,13 @@ html.opendyslexic-active div[role="article"] {
     line-height: var(--od-line-height) !important;
 }
 
-/* Part 4: Protect code blocks from font and spacing changes */
+/* Code and technical element protection */
 html.opendyslexic-active:not(#_) pre,
 html.opendyslexic-active:not(#_) code,
 html.opendyslexic-active:not(#_) kbd,
 html.opendyslexic-active:not(#_) samp,
+html.opendyslexic-active:not(#_) script,
+html.opendyslexic-active:not(#_) style,
 html.opendyslexic-active:not(#_) pre *,
 html.opendyslexic-active:not(#_) code *,
 html.opendyslexic-active:not(#_) kbd *,
@@ -80,7 +31,7 @@ html.opendyslexic-active:not(#_) samp * {
     word-spacing: initial !important;
 }
 
-/* Part 5: Prevent font-weight compounding on nested emphasis elements */
+/* Prevent font-weight compounding */
 html.opendyslexic-active strong,
 html.opendyslexic-active b,
 html.opendyslexic-active em,
