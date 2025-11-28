@@ -208,6 +208,10 @@ function createZipPackage(browserDistDir, zipFileName) {
         const stats = fs.statSync(zipPath);
         console.log(`✓ ${zipFileName} (${stats.size} bytes)`);
 
+        // Clean up the browser dist directory after creating zip
+        fs.rmSync(browserDistDir, { recursive: true, force: true });
+        console.log(`✓ Cleaned up ${browserDistDir}`);
+
     } catch (error) {
         console.error('❌ Failed to create zip:', error);
         console.log('Note: Make sure "zip" command is available');
