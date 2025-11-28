@@ -43,7 +43,6 @@ const els = {
 
 let currentDomain = null;
 let sliderTimeout = null;
-let wheelTimeout = null;
 let backgroundUpdateTimeout = null;
 let storageSaveTimeout = null;
 
@@ -141,7 +140,10 @@ els.exclude.addEventListener('change', async () => {
         updateDisplayValues();
 
         if (sliderTimeout) clearTimeout(sliderTimeout);
-        sliderTimeout = setTimeout(() => updateCurrentTabStyles(getCurrentSettings()), 15);
+        sliderTimeout = setTimeout(() => {
+            updateCurrentTabStyles(getCurrentSettings());
+            sliderTimeout = null;
+        }, 10);
     }, { passive: true });
 
     slider.addEventListener('change', () => {
@@ -170,11 +172,11 @@ els.exclude.addEventListener('change', async () => {
         updateDisplayValues();
 
         // Update current tab styles with 10ms debounce
-        if (wheelTimeout) clearTimeout(wheelTimeout);
-        wheelTimeout = setTimeout(() => {
+        if (sliderTimeout) clearTimeout(sliderTimeout);
+        sliderTimeout = setTimeout(() => {
             updateCurrentTabStyles(getCurrentSettings());
-            wheelTimeout = null;
-        }, 15);
+            sliderTimeout = null;
+        }, 10);
 
         // Schedule storage update only when wheel stops for 500ms
         if (storageSaveTimeout) clearTimeout(storageSaveTimeout);
