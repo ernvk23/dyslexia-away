@@ -31,7 +31,7 @@ html.opendyslexic-active:not(#_) samp * {
     word-spacing: initial !important;
 }
 
-/* Prevent font-weight compounding */
+/* Prevent font-weight compounding - use regular weight for all emphasis elements */
 html.opendyslexic-active strong,
 html.opendyslexic-active b,
 html.opendyslexic-active em,
@@ -39,5 +39,11 @@ html.opendyslexic-active small,
 html.opendyslexic-active mark,
 html.opendyslexic-active cite,
 html.opendyslexic-active q {
-    font-weight: inherit !important;
+    font-weight: 400 !important;
+    /* Force regular weight to prevent compounding */
+}
+
+/* Preserve italic styling for emphasis */
+html.opendyslexic-active em {
+    font-style: italic !important;
 }
