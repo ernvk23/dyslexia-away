@@ -35,22 +35,22 @@ jobs:
                   name: ${{ github.ref_name }}
                   tag_name: ${{ github.ref_name }}
                   body: |
-                    # DyslexiaAway
+                      # DyslexiaAway
 
-                    A simple browser extension that applies the **OpenDyslexic** font to webpages. For some of us, that small change makes reading a lot easier. ✨
+                      A simple browser extension that applies the **OpenDyslexic** font to webpages. For some of us, that small change makes reading a lot easier. ✨
 
-                    ---
+                      ---
 
-                    ### Installation
+                      ### Installation
 
-                    Get the extension directly from the official browser stores:
+                      Get the extension directly from the official browser stores:
 
-                    [![Firefox Add-ons](https://img.shields.io/badge/Firefox_Add--ons-FF7139?logo=firefox&logoColor=white)](https://addons.mozilla.org/es-ES/firefox/addon/dyslexiaaway-beta/)
-                    [![Chrome Web Store](https://img.shields.io/badge/Chrome_Web_Store-4285F4?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/dyslexiaaway-beta/cdlibplbalgnomagghdgogdofiphhjce)
+                      [![Firefox Add-ons](https://img.shields.io/badge/Firefox_Add--ons-FF7139?logo=firefox&logoColor=white)](https://addons.mozilla.org/en-US/firefox/addon/dyslexiaaway/)
+                      [![Chrome Web Store](https://img.shields.io/badge/Chrome_Web_Store-4285F4?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/dyslexiaaway-beta/cdlibplbalgnomagghdgogdofiphhjce)
 
-                    ---
+                      ---
 
-                    📖 **More information:** See the [README](https://github.com/ernvk23/dyslexia-away/blob/main/README.md) for detailed usage instructions and features.
+                      📖 **More information:** See the [README](https://github.com/ernvk23/dyslexia-away/blob/main/README.md) for detailed usage instructions and features.
                   draft: false
                   prerelease: false
                   generate_release_notes: true

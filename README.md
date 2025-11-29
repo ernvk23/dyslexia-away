@@ -22,7 +22,7 @@ For some of us, that small change makes reading a lot easier. ✨
 ### Browser Stores (Recommended)
 Get the extension directly from the official browser stores:
 
-[![Firefox Add-ons](https://img.shields.io/badge/Firefox_Add--ons-FF7139?logo=firefox&logoColor=white)](https://addons.mozilla.org/es-ES/firefox/addon/dyslexiaaway-beta/)
+[![Firefox Add-ons](https://img.shields.io/badge/Firefox_Add--ons-FF7139?logo=firefox&logoColor=white)](https://addons.mozilla.org/en-US/firefox/addon/dyslexiaaway/)
 [![Chrome Web Store](https://img.shields.io/badge/Chrome_Web_Store-4285F4?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/dyslexiaaway-beta/cdlibplbalgnomagghdgogdofiphhjce)
 
 ### Manual Installation (Alternative)
