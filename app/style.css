@@ -42,8 +42,3 @@ html.opendyslexic-active q {
     font-weight: 400 !important;
     /* Force regular weight to prevent compounding */
 }
-
-/* Preserve italic styling for emphasis */
-html.opendyslexic-active em {
-    font-style: italic !important;
-}
