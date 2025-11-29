@@ -1,6 +1,6 @@
 /* Global font application - optimized selector order for performance */
 html.opendyslexic-active *:not(svg):not(path):not([aria-hidden="true"]):not([role="img"]):not([data-icon]):not(pre):not(code):not(kbd):not(samp):not([class~="fa"]):not([class*="fa-"]):not([class*="icon"]):not([class*="symbol"]):not([class*="bi-"]):not([class*="glyph"]) {
-    font-family: 'OpenDyslexic', sans-serif !important;
+    font-family: 'OpenDyslexic' !important;
     letter-spacing: var(--od-letter-spacing) !important;
     word-spacing: var(--od-word-spacing) !important;
 }
