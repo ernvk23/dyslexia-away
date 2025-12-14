@@ -167,8 +167,8 @@
             init();
             sendResponse({ success: true });
         } else if (request.action === 'UPDATE_STYLES' && request.settings) {
-            if (updateState(request.settings) && shouldApplyStyles()) {
-                scheduleUpdate(updateCSSVariables);
+            if (updateState(request.settings)) {
+                applyStyles();
             }
             sendResponse({ success: true });
         }
