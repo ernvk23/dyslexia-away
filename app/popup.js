@@ -286,25 +286,39 @@ els.themeToggle.addEventListener('click', async (e) => {
 });
 
 els.reset.addEventListener('click', async () => {
+    // Trigger storage read early (async)
+    const enabledPromise = browser.storage.local.get('enabled');
+
+    // Reset UI to defaults - batch all synchronous DOM updates
     els.letterSlider.value = DEFAULTS.letterSpacing;
     els.wordSlider.value = DEFAULTS.wordSpacing;
     els.lineSlider.value = DEFAULTS.lineHeight;
-
-    applyTheme(DEFAULTS.theme);
     updateDisplayValues();
+    applyTheme(DEFAULTS.theme);
+    els.exclude.checked = false;
 
-    const { enabled, excludedDomains } = await browser.storage.local.get(['enabled', 'excludedDomains']);
-    updateCurrentTabStyles(getCurrentSettings());
+    // Prepare settings for content script (exclude theme) - global reset
+    const contentSettings = {
+        ...getCurrentSettings(),
+        excludedDomains: []
+    };
 
+    // Await enabled value when needed
+    const { enabled } = await enabledPromise;
     if (currentDomain) {
-        const domains = (excludedDomains || []).filter(d => d !== currentDomain);
-        els.exclude.checked = false;
+        // Update sliders state and content script (heavy async, fire and forget)
         updateSlidersState(false, enabled);
-        updateCurrentTabStyles({ excludedDomains: domains });
-        browser.storage.local.set({ excludedDomains: domains });
+        updateCurrentTabStyles(contentSettings);
     }
 
-    browser.storage.local.set({ ...getCurrentSettings(), theme: DEFAULTS.theme });
+    // Storage settings (include theme)
+    const storageSettings = {
+        ...contentSettings,
+        theme: DEFAULTS.theme
+    };
+
+    // Parallelize storage write and background update
+    browser.storage.local.set(storageSettings);
     scheduleBackgroundUpdate();
 });
 
