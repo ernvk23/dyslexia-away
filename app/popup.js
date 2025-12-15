@@ -65,7 +65,10 @@ async function initExclusion(excludedDomains, enabled) {
     if (tab?.url && !RESTRICTED.some(p => tab.url.startsWith(p))) {
         const url = new URL(tab.url);
         currentDomain = url.hostname;
-        const isExcluded = excludedDomains.includes(currentDomain);
+
+        // Determine if any hostname in this tab is excluded
+        const hostnames = await getAllHostnamesInTab();
+        const isExcluded = hostnames.some(hostname => excludedDomains.includes(hostname));
 
         els.exclude.checked = isExcluded;
         els.exclude.disabled = false;
@@ -81,6 +84,24 @@ function updateDisplayValues() {
     els.wordVal.textContent = formatEm(els.wordSlider.value);
     const lineHeightValue = (els.lineSlider.value / 100).toFixed(2);
     els.lineVal.textContent = lineHeightValue === '-0.00' ? '0.00' : lineHeightValue;
+}
+
+async function getAllHostnamesInTab() {
+    const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
+    if (!tab?.id) return [];
+
+    try {
+        const results = await browser.scripting.executeScript({
+            target: { tabId: tab.id, allFrames: true },
+            func: () => window.location.hostname
+        });
+        const hostnames = results.map(r => r.result).filter(Boolean);
+        const unique = [...new Set(hostnames)];
+        return unique;
+    } catch (e) {
+        console.error('Failed to query frames:', e);
+        return [];
+    }
 }
 
 function formatEm(value) {
@@ -123,10 +144,22 @@ els.exclude.addEventListener('change', async () => {
     const { excludedDomains, enabled } = await browser.storage.local.get(['excludedDomains', 'enabled']);
     let domains = excludedDomains || [];
 
+    const hostnames = await getAllHostnamesInTab();
+    if (hostnames.length === 0) {
+        // fallback to top-level domain
+        hostnames.push(currentDomain);
+    }
+
     if (els.exclude.checked) {
-        if (!domains.includes(currentDomain)) domains.push(currentDomain);
+        hostnames.forEach(hostname => {
+            if (!domains.includes(hostname)) {
+                domains.push(hostname);
+            }
+        });
     } else {
-        domains = domains.filter(d => d !== currentDomain);
+        hostnames.forEach(hostname => {
+            domains = domains.filter(d => d !== hostname);
+        });
     }
 
     updateCurrentTabStyles({ excludedDomains: domains });
