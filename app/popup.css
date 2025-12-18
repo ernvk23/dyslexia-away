@@ -125,20 +125,15 @@ h2 {
     -webkit-user-select: none;
 }
 
-.toggle-button:hover {
-    transform: scale(1.1);
+/* Active state for all devices */
+.toggle-button:active {
+    transform: scale(0.95);
 }
 
 .toggle-button.active {
     box-shadow:
         0 0 4px rgba(14, 165, 233, 0.4),
         0 0 8px rgba(14, 165, 233, 0.2);
-}
-
-.toggle-button.active:hover {
-    box-shadow:
-        0 0 6px rgba(14, 165, 233, 0.5),
-        0 0 10px rgba(14, 165, 233, 0.3);
 }
 
 .toggle-icon {
@@ -251,11 +246,6 @@ input[type="range"].active::-webkit-slider-thumb {
     background: var(--accent-color);
 }
 
-input[type="range"]::-webkit-slider-thumb:hover {
-    background: var(--accent-hover);
-    transform: scale(1.1);
-}
-
 input[type="range"]::-webkit-slider-thumb:active {
     background: var(--accent-active);
 }
@@ -280,11 +270,6 @@ input[type="range"].active::-moz-range-thumb {
     background: var(--accent-color);
 }
 
-input[type="range"]::-moz-range-thumb:hover {
-    background: var(--accent-hover);
-    transform: scale(1.1);
-}
-
 input[type="range"]::-moz-range-thumb:active {
     background: var(--accent-active);
 }
@@ -303,12 +288,6 @@ input[type="range"]::-moz-range-thumb:active {
     transition: all 0.5s ease;
     font-family: 'OpenDyslexic', system-ui, -apple-system, sans-serif;
 
-}
-
-.reset-btn:hover {
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-    border-color: var(--accent-color);
 }
 
 .reset-btn:active {
@@ -334,10 +313,6 @@ input[type="range"]::-moz-range-thumb:active {
     height: 2rem;
 }
 
-.theme-toggle-button:hover {
-    transform: scale(1.1);
-}
-
 /* Theme icon visibility and transitions */
 .theme-icon {
     display: none;
@@ -346,14 +321,90 @@ input[type="range"]::-moz-range-thumb:active {
     position: absolute;
 }
 
-.theme-toggle-button:hover .theme-icon {
-    color: var(--accent-color);
-}
-
 /* Show only the active theme icon */
 [data-theme="system"] .theme-icon.system,
 [data-theme="light"] .theme-icon.light,
 [data-theme="dark"] .theme-icon.dark,
 :root:not([data-theme]) .theme-icon.system {
     display: block;
+}
+
+/* Desktop-only hover effects */
+@media (hover: hover) {
+    .toggle-button:hover {
+        transform: scale(1.1);
+    }
+
+    .toggle-button.active:hover {
+        box-shadow:
+            0 0 6px rgba(14, 165, 233, 0.5),
+            0 0 10px rgba(14, 165, 233, 0.3);
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+        background: var(--accent-hover);
+        transform: scale(1.1);
+    }
+
+    input[type="range"]::-moz-range-thumb:hover {
+        background: var(--accent-hover);
+        transform: scale(1.1);
+    }
+
+    .reset-btn:hover {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        border-color: var(--accent-color);
+    }
+
+    .theme-toggle-button:hover {
+        transform: scale(1.1);
+    }
+
+    .theme-toggle-button:hover .theme-icon {
+        color: var(--accent-color);
+    }
+}
+
+/* Mobile styles: small touch screens without hover (phones/tablets, not laptops) */
+@media (max-width: 768px) and (any-hover: none) and (pointer: coarse) {
+    html {
+        font-size: 1.6rem !important;
+    }
+
+    body {
+        width: 100%;
+        height: 100%;
+        min-width: 220px;
+        padding: 0.5rem;
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+    }
+
+    .popup-container {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .main-toggle-container {
+        margin-block: 1.25rem;
+    }
+
+    .toggle-button {
+        touch-action: manipulation;
+    }
+
+    .toggle-icon {
+        width: 4.5rem;
+        height: 4.5rem;
+    }
+
+    .setting {
+        padding-block: 0.3rem;
+    }
+
+    .reset-btn {
+        margin-top: 2rem;
+        padding-block: 0.3rem;
+    }
 }
