@@ -105,14 +105,14 @@ body {
 }
 
 .main-toggle-container {
-    margin-block: 0.75rem;
+    margin-block: 0.5rem;
     display: flex;
     justify-content: center;
     flex-shrink: 0;
 }
 
 h2 {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: bold;
     transition: color 0.5s ease;
     user-select: none;
@@ -157,8 +157,8 @@ h2 {
     color: var(--toggle-inactive);
     transition: color 0.3s ease;
     fill: currentColor;
-    height: 4.5rem;
-    width: 4.5rem;
+    height: 4rem;
+    width: 4rem;
 }
 
 .toggle-button.active .toggle-icon {
@@ -167,14 +167,14 @@ h2 {
 }
 
 .setting {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     padding-inline: 0.5rem;
-    padding-block: 0.2rem;
+    padding-block: 0.1rem;
     background: var(--setting-bg);
     border-radius: 0.5rem;
     border: 1px solid var(--setting-border);
     transition: background-color 0.5s ease, border-color 0.5s ease;
-    flex-basis: 3.5rem;
+    flex-basis: 3rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -183,7 +183,7 @@ h2 {
 
 .setting.exclusion-setting,
 .setting.reset-btn {
-    padding-block: 0.25rem;
+    padding-block: 0.2rem;
     flex-basis: auto;
 }
 
@@ -306,7 +306,7 @@ input[type="range"]::-moz-range-thumb:active {
     color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.5s ease;
-    margin-top: 2rem;
+    margin-top: 1.25rem;
     margin-bottom: 0.5rem;
 }
 
@@ -386,7 +386,7 @@ input[type="range"]::-moz-range-thumb:active {
 }
 
 /* Default mobile styles for all touch devices */
-@media (any-hover: none) and (pointer: coarse) {
+@media ((any-hover: none) or (hover: none)) and (pointer: coarse) {
 
     html {
         display: flex;
@@ -450,7 +450,7 @@ input[type="range"]::-moz-range-thumb:active {
     }
 }
 
-@media (min-width: 600px) and (any-hover: none) and (pointer: coarse) {
+@media (min-width: 600px) and ((any-hover: none) or (hover: none)) and (pointer: coarse) {
     body {
         max-width: 22rem;
         height: auto;
