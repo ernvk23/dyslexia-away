@@ -195,6 +195,11 @@ els.exclude.addEventListener('change', async () => {
     }, { passive: true }); // Can be passive since we don't call preventDefault()
 
     slider.addEventListener('wheel', (e) => {
+        // Don't process wheel events if slider is disabled
+        if (slider.disabled) {
+            return;
+        }
+
         e.preventDefault();
         const step = parseInt(slider.step) || 1;
         const delta = -Math.sign(e.deltaY);
