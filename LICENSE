@@ -1,3 +1,34 @@
+# Dyslexia Away - License Summary
+
+This project is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
+
+## Quick Permission Summary
+
+| Permission | Status | Notes |
+|------------|--------|-------|
+| ✅ **Use commercially** | Allowed | You can use this software for any purpose |
+| ✅ **Modify** | Allowed | You can modify the source code |
+| ✅ **Distribute** | Allowed | You can distribute original or modified versions |
+| ✅ **Sublicense** | **With conditions** | Must be under GPL v3.0 or later |
+| ✅ **Private use** | Allowed | No restrictions on private use |
+| ❌ **Sell without source** | **Not allowed** | Cannot sell proprietary versions |
+| ✅ **Patent use** | Allowed | Patent grants are included |
+| ✅ **Place warranty** | Allowed | You can charge for warranty/support |
+
+## Key Requirements (Copyleft)
+- **Source code must be shared** when distributing the software
+- **Derivative works must use GPL v3.0** (same license)
+- **License and copyright notices must be preserved**
+- **Changes must be documented**
+
+## Simple Explanation
+You are free to use, modify, and share this software, but any distributed versions (including modified ones) must also be open source under the same GPL v3.0 license. This ensures the software remains free for everyone.
+
+## Full License Text
+For the complete legal terms, see the full GNU GPL v3.0 license below.
+
+---
+
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 

@@ -52,11 +52,11 @@ For me, it made things click in a way they hadn't before.
 - **Manifest Version:** 3 (Chrome & Firefox)
 - **Font Loading:** Local font files bundled with extension
 - **Storage:** Browser local storage for settings persistence
-- **Compatibility:** Chrome 88+, Firefox 109+
+- **Compatibility:** Chrome 88+, Firefox 140+
 
 ## License
 
-Licensed under the [MIT License](./LICENSE).
+Licensed under the [GNU General Public License v3.0 (GPL-3.0)](./LICENSE).
 
 The OpenDyslexic fonts are licensed under the [SIL Open Font License (OFL)](./app/fonts/OFL.txt).
 
