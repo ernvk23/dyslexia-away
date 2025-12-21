@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DyslexiaAway - Read with Ease</title>
+    <meta name="description"
+        content="A simple browser extension that applies the OpenDyslexic font to webpages, making reading easier for everyone.">
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas id="canvas-bg" loading="lazy"></canvas>
+
+    <header>
+        <nav aria-label="Main navigation">
+            <a href="#hero" class="logo">DyslexiaAway</a>
+            <button class="burger-menu" id="burgerMenuBtn" type="button" aria-label="Open menu" aria-expanded="false"
+                aria-controls="navLinks">
+                <svg class="nav-svg" fill="none" viewBox="-10 -10 120 120">
+                    <path class="nav-svg-line" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"
+                        d="m 20 40 h 60 a 1 1 0 0 1 0 20 h -60 a 1 1 0 0 1 0 -40 h 30 v 70">
+                    </path>
+                </svg>
+            </button>
+            <div class="nav-links" id="navLinks">
+                <a href="#about" aria-label="About the extension">About</a>
+                <a href="#hero" aria-label="Get the extension">Get</a>
+                <button class="theme-toggle-button" id="themeToggleBtn" type="button" aria-label="Toggle theme"
+                    title="Toggle light/dark theme">
+                    <!-- Light theme icon (sun) -->
+                    <svg class="theme-icon light" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true">
+                        <circle cx="12" cy="12" r="4" fill="currentColor" />
+                        <path
+                            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+
+                    <!-- Dark theme icon (moon) -->
+                    <svg class="theme-icon dark" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1>Read the web, your way.</h1>
+                    <p>A minimal browser extension that applies a dyslexic‑friendly font to websites. In case reading
+                        has ever felt hard, this might help. <em>Free forever:)</em></p>
+                    <div class="cta-group">
+                        <a href="https://chromewebstore.google.com/detail/dyslexiaaway-beta/cdlibplbalgnomagghdgogdofiphhjce"
+                            target="_blank" rel="noopener noreferrer" class="btn-store chrome"
+                            aria-label="Get for Chrome">Get for Chrome</a>
+                        <a href="https://addons.mozilla.org/en-US/firefox/addon/dyslexiaaway/" target="_blank"
+                            rel="noopener noreferrer" class="btn-store firefox" aria-label="Get for Firefox">Get for
+                            Firefox</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <img src="./img/sample.png" alt="DyslexiaAway extension" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="about-content">
+                <h2>What it does</h2>
+                <div class="features-grid">
+                    <article class="feature-card">
+                        <h3>Applies OpenDyslexic font</h3>
+                        <p>Changes website fonts to OpenDyslexic.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>Adjustable spacing</h3>
+                        <p>Increase letter and line spacing.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>Site exclusion</h3>
+                        <p>Skip pages where the font change could cause issues.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>Light & dark themes</h3>
+                        <p>Matches your system theme or choose manually.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>Cross‑browser compatible</h3>
+                        <p>Works on Chrome, Firefox, and Chromium‑based browsers.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>No data collection</h3>
+                        <p>Everything happens locally. No tracking.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>Open source</h3>
+                        <p>
+                            <a href="https://github.com/ernvk23/dyslexia-away" target="_blank" rel="noopener noreferrer"
+                                class="github-link" aria-label="GitHub repository">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                    <path
+                                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                </svg>
+                                See source code
+                            </a>
+                        </p>
+                    </article>
+                </div>
+                <div class="sample-image">
+                    <img src="./img/sample-full.jpeg" alt="DyslexiaAway extension in action" loading="lazy">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 DyslexiaAway by Edgar R.N. Open-source under GPL-3.0.</p>
+            <div class="footer-links">
+                <a href="https://github.com/ernvk23/dyslexia-away" rel="noopener noreferrer">GitHub</a>
+                <a href="https://opendyslexic.org/" rel="noopener noreferrer">OpenDyslexic</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

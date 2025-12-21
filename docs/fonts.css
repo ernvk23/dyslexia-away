@@ -1,0 +1,35 @@
+/* Regular weight (100-599) */
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('fonts/OpenDyslexicAlta-Regular.otf') format('opentype');
+    font-weight: 100 599;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Bold weight (600-900) */
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('fonts/OpenDyslexicAlta-Bold.otf') format('opentype');
+    font-weight: 600 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Italic regular (100-599) */
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('fonts/OpenDyslexicAlta-Italic.otf') format('opentype');
+    font-weight: 100 599;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Italic bold (600-900) */
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('fonts/OpenDyslexicAlta-BoldItalic.otf') format('opentype');
+    font-weight: 600 900;
+    font-style: italic;
+    font-display: swap;
+}
