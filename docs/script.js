@@ -1,9 +1,5 @@
 const canvas = document.getElementById('canvas-bg');
-if (!canvas) {
-    console.error('Canvas element not found!');
-} else {
-    console.log('Canvas found:', canvas);
-}
+
 const ctx = canvas.getContext('2d');
 if (!ctx) {
     console.error('Could not get 2D context');
@@ -14,12 +10,18 @@ let width, height, particles;
 const speed = 0.8;
 
 // Dynamic particle settings based on screen width
+// Optimized for performance on older devices while maintaining visual appeal
 function getParticleSettings() {
     const screenWidth = window.innerWidth;
     if (screenWidth < 768) {
-        return { count: 50, distance: 150 };  // Mobile: fewer particles, shorter connections
+        // Mobile: conservative settings for older phones
+        return { count: 45, distance: 140 };
+    } else if (screenWidth < 1024) {
+        // Tablet: moderate settings
+        return { count: 80, distance: 220 };
     }
-    return { count: 100, distance: 200 };     // Desktop: default settings
+    // Desktop: good visuals while maintaining 60fps on older machines
+    return { count: 110, distance: 280 };
 }
 
 console.log('Canvas script loaded');
@@ -60,7 +62,6 @@ class Particle {
 function resize() {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
-    console.log('Canvas resized to', width, 'x', height);
     initParticles();
 }
 
@@ -132,7 +133,6 @@ animate();
     function applyTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('site-theme', theme);
-        console.log('Theme set to:', theme);
     }
 
     // Toggle between light and dark
