@@ -1,13 +1,109 @@
+// Simple i18n for website - mimics browser.i18n.getMessage()
+(function () {
+    // Simple translations object - will be loaded from JSON
+    let translations = {};
+
+    // Detect language
+    function detectLanguage() {
+        const browserLang = navigator.language || navigator.userLanguage;
+        const langCode = browserLang.split('-')[0].toLowerCase();
+        return langCode === 'es' ? 'es' : 'en';
+    }
+
+    // Load translations - similar to extension but with fetch
+    async function loadTranslations(lang) {
+        try {
+            const response = await fetch(`./locales/${lang}/messages.json`);
+            if (response.ok) {
+                translations = await response.json();
+                return true;
+            }
+        } catch (e) {
+            // Fall through to English
+        }
+
+        // Fallback to English if needed
+        if (lang !== 'en') {
+            return loadTranslations('en');
+        }
+        return false;
+    }
+
+    // Mimic browser.i18n.getMessage()
+    function getMessage(key) {
+        return translations[key] || '';
+    }
+
+    // Translate page - exactly like popup.js but with HTML support
+    function translatePage() {
+        // Translate text content using data-i18n attributes
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const msg = getMessage(el.getAttribute('data-i18n'));
+            if (msg) {
+                // Check if message contains HTML tags (like <em>)
+                if (msg.includes('<') && msg.includes('>')) {
+                    el.innerHTML = msg;
+                } else {
+                    el.textContent = msg;
+                }
+            }
+        });
+
+        // Translate aria-labels using data-i18n-aria attributes
+        document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+            const msg = getMessage(el.getAttribute('data-i18n-aria'));
+            if (msg) el.setAttribute('aria-label', msg);
+        });
+
+        // Update html lang attribute
+        document.documentElement.lang = detectLanguage();
+
+        // Update title if it has data-i18n
+        const titleEl = document.querySelector('title[data-i18n]');
+        if (titleEl) {
+            const msg = getMessage(titleEl.getAttribute('data-i18n'));
+            if (msg) document.title = msg;
+        }
+
+        // Update meta description if it has data-i18n
+        const metaDesc = document.querySelector('meta[name="description"][data-i18n]');
+        if (metaDesc) {
+            const msg = getMessage(metaDesc.getAttribute('data-i18n'));
+            if (msg) metaDesc.setAttribute('content', msg);
+        }
+    }
+
+    // Initialize i18n
+    async function initI18n() {
+        const lang = detectLanguage();
+        await loadTranslations(lang);
+        translatePage();
+    }
+
+    // Run translation as microtask to not block UI initialization - exactly like popup.js
+    Promise.resolve().then(initI18n);
+})();
+
 const canvas = document.getElementById('canvas-bg');
 
 const ctx = canvas.getContext('2d');
-if (!ctx) {
-    console.error('Could not get 2D context');
-}
 
 let width, height, particles;
 
 const speed = 0.8;
+
+// Cached CSS variables to avoid frequent DOM reads
+let cachedParticleColor = '';
+let cachedConnectionColor = '';
+const CSS_UPDATE_INTERVAL = 1000; // Update CSS variables every 1 second
+
+// Function to update cached CSS variables
+function updateCssCache() {
+    cachedParticleColor = getComputedStyle(document.documentElement)
+        .getPropertyValue('--particle-color').trim();
+    cachedConnectionColor = getComputedStyle(document.documentElement)
+        .getPropertyValue('--particle-connection-color').trim();
+}
 
 // Dynamic particle settings based on screen width
 // Optimized for performance on older devices while maintaining visual appeal
@@ -24,7 +120,10 @@ function getParticleSettings() {
     return { count: 110, distance: 280 };
 }
 
-console.log('Canvas script loaded');
+
+// Initialize cache and set up periodic updates
+updateCssCache();
+setInterval(updateCssCache, CSS_UPDATE_INTERVAL);
 
 class Particle {
     constructor() {
@@ -52,9 +151,8 @@ class Particle {
     draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        // Get particle color from CSS variable
-        ctx.fillStyle = getComputedStyle(document.documentElement)
-            .getPropertyValue('--particle-color').trim();
+        // Use cached particle color instead of querying DOM every frame
+        ctx.fillStyle = cachedParticleColor;
         ctx.fill();
     }
 }
@@ -76,6 +174,7 @@ function initParticles() {
 function animate() {
     ctx.clearRect(0, 0, width, height);
     const settings = getParticleSettings();
+    const distanceSq = settings.distance * settings.distance; // Pre-calculate squared distance
 
     for (let i = 0; i < particles.length; i++) {
         const p1 = particles[i];
@@ -86,17 +185,17 @@ function animate() {
             const p2 = particles[j];
             const dx = p1.x - p2.x;
             const dy = p1.y - p2.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
+            const distSq = dx * dx + dy * dy;
 
-            if (dist < settings.distance) {
+            if (distSq < distanceSq) {
+                // Only calculate sqrt when we actually need it for opacity
+                const dist = Math.sqrt(distSq);
                 ctx.beginPath();
-                // Get connection color from CSS variable
-                const connectionColor = getComputedStyle(document.documentElement)
-                    .getPropertyValue('--particle-connection-color').trim();
+
                 // Apply distance-based opacity with reduced base opacity (0.15 instead of 0.25)
                 const opacity = 0.15 * (1 - dist / settings.distance);
-                // Simple approach: assume color is rgba and replace alpha
-                const colorWithOpacity = connectionColor.replace(/[\d.]+\)$/, `${opacity})`);
+
+                const colorWithOpacity = cachedConnectionColor.replace(/[\d.]+\)$/, `${opacity})`);
                 ctx.strokeStyle = colorWithOpacity;
                 ctx.lineWidth = 1.2; // Increased from 0.8 to 1.2
                 ctx.moveTo(p1.x, p1.y);
@@ -243,5 +342,14 @@ animate();
         if (navLinks.classList.contains('active')) {
             closeMenu();
         }
+    });
+})();
+
+// Image loading detection
+(function () {
+    const images = document.querySelectorAll('.fade-img');
+    images.forEach(img => {
+        if (img.complete) img.classList.add('loaded');
+        else img.addEventListener('load', () => img.classList.add('loaded'));
     });
 })();

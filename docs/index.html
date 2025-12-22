@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DyslexiaAway - Read with Ease</title>
-    <meta name="description"
+    <title data-i18n="siteTitle">DyslexiaAway - Read with Ease</title>
+    <meta name="description" data-i18n="siteDescription"
         content="A simple browser extension that applies the OpenDyslexic font to webpages, making reading easier for everyone.">
     <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="preload" href="./img/sample.png" as="image" type="image/png" fetchpriority="high">
+    <link rel="icon" type="image/png" href="./img/favicon.png">
 </head>
 
 <body>
@@ -26,8 +28,8 @@
                 </svg>
             </button>
             <div class="nav-links" id="navLinks">
-                <a href="#about" aria-label="About the extension">About</a>
-                <a href="#hero" aria-label="Get the extension">Get</a>
+                <a href="#about" aria-label="About the extension" data-i18n="navAbout">About</a>
+                <a href="#hero" aria-label="Get the extension" data-i18n="navGet">Get</a>
                 <button class="theme-toggle-button" id="themeToggleBtn" type="button" aria-label="Toggle theme"
                     title="Toggle light/dark theme">
                     <!-- Light theme icon (sun) -->
@@ -49,59 +51,91 @@
             </div>
         </nav>
     </header>
+    <script>
+        // Immediately hide mobile nav to prevent flashing
+        (function () {
+            if (window.innerWidth <= 768) {
+                var navLinks = document.getElementById('navLinks');
+                if (navLinks) navLinks.style.visibility = 'hidden';
+            }
+        })();
+    </script>
 
     <main>
         <section id="hero">
             <div class="hero-container">
                 <div class="hero-content">
-                    <h1>Read the web, your way.</h1>
-                    <p>A minimal browser extension that applies a dyslexic‑friendly font to websites. In case reading
+                    <h1 data-i18n="heroTitle">Read the web, your way.</h1>
+                    <p data-i18n="heroDescription">A minimal browser extension that applies a dyslexic‑friendly font to
+                        websites. In case reading
                         has ever felt hard, this might help. <em>Free forever:)</em></p>
                     <div class="cta-group">
                         <a href="https://chromewebstore.google.com/detail/dyslexiaaway-beta/cdlibplbalgnomagghdgogdofiphhjce"
                             target="_blank" rel="noopener noreferrer" class="btn-store chrome"
-                            aria-label="Get for Chrome">Get for Chrome</a>
+                            aria-label="Get for Chrome" data-i18n="getChrome">Get for Chrome</a>
                         <a href="https://addons.mozilla.org/en-US/firefox/addon/dyslexiaaway/" target="_blank"
-                            rel="noopener noreferrer" class="btn-store firefox" aria-label="Get for Firefox">Get for
+                            rel="noopener noreferrer" class="btn-store firefox" aria-label="Get for Firefox"
+                            data-i18n="getFirefox">Get for
                             Firefox</a>
                     </div>
                 </div>
                 <div class="hero-visual">
-                    <img src="./img/sample.png" alt="DyslexiaAway extension" loading="lazy">
+                    <img src="./img/sample.png" alt="DyslexiaAway extension" height="380" width="210"
+                        fetchpriority="high" class="fade-img">
                 </div>
+            </div>
+            <div class="scroll-indicator" aria-hidden="true">
+
+
+                <svg viewBox="0 0 24 24" class="scroll-chevron" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M19 9L14 14.1599C13.7429 14.4323 13.4329 14.6493 13.089 14.7976C12.7451 14.9459 12.3745 15.0225 12 15.0225C11.6255 15.0225 11.2549 14.9459 10.9109 14.7976C10.567 14.6493 10.2571 14.4323 10 14.1599L5 9"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        </path>
+                    </g>
+                </svg>
             </div>
         </section>
 
         <section id="about">
             <div class="about-content">
-                <h2>What it does</h2>
+                <h2 data-i18n="aboutTitle">What it does</h2>
                 <div class="features-grid">
                     <article class="feature-card">
-                        <h3>Applies OpenDyslexic font</h3>
-                        <p>Changes website fonts to OpenDyslexic.</p>
+                        <h3 data-i18n="feature1Title">Applies OpenDyslexic font</h3>
+                        <p data-i18n="feature1Desc">Changes website fonts to OpenDyslexic.</p>
                     </article>
                     <article class="feature-card">
-                        <h3>Adjustable spacing</h3>
-                        <p>Increase letter and line spacing.</p>
+                        <h3 data-i18n="feature2Title">Adjustable spacing</h3>
+                        <p data-i18n="feature2Desc">Increase letter and line spacing.</p>
                     </article>
                     <article class="feature-card">
-                        <h3>Site exclusion</h3>
-                        <p>Skip pages where the font change could cause issues.</p>
+                        <h3 data-i18n="feature3Title">Site exclusion</h3>
+                        <p data-i18n="feature3Desc">Skip pages where the font change could cause issues.</p>
                     </article>
                     <article class="feature-card">
-                        <h3>Light & dark themes</h3>
-                        <p>Matches your system theme or choose manually.</p>
+                        <h3 data-i18n="feature4Title">Light & dark themes</h3>
+                        <p data-i18n="feature4Desc">Matches your system theme or choose manually.</p>
                     </article>
                     <article class="feature-card">
-                        <h3>Cross‑browser compatible</h3>
-                        <p>Works on Chrome, Firefox, and Chromium‑based browsers.</p>
+                        <h3 data-i18n="feature5Title">Cross‑browser compatible</h3>
+                        <p data-i18n="feature5Desc">Works on Chrome/Firefox compatible browsers (including Firefox for
+                            Android).</p>
                     </article>
                     <article class="feature-card">
-                        <h3>No data collection</h3>
-                        <p>Everything happens locally. No tracking.</p>
+                        <h3 data-i18n="feature6Title">Multi‑language interface</h3>
+                        <p data-i18n="feature6Desc">Available in English, Spanish, French, German, Italian, Portuguese,
+                            and Russian.</p>
                     </article>
                     <article class="feature-card">
-                        <h3>Open source</h3>
+                        <h3 data-i18n="feature7Title">No data collection</h3>
+                        <p data-i18n="feature7Desc">Everything happens locally. No tracking.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3 data-i18n="feature8Title">Open source</h3>
                         <p>
                             <a href="https://github.com/ernvk23/dyslexia-away" target="_blank" rel="noopener noreferrer"
                                 class="github-link" aria-label="GitHub repository">
@@ -109,13 +143,14 @@
                                     <path
                                         d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                                 </svg>
-                                See source code
+                                <span data-i18n="feature8Desc">See source code</span>
                             </a>
                         </p>
                     </article>
                 </div>
                 <div class="sample-image">
-                    <img src="./img/sample-full.jpeg" alt="DyslexiaAway extension in action" loading="lazy">
+                    <img src="./img/sample-full.jpeg" alt="DyslexiaAway extension in action" height="580" width="930"
+                        loading="lazy" class="fade-img">
                 </div>
             </div>
         </section>
@@ -123,7 +158,8 @@
 
     <footer>
         <div class="footer-content">
-            <p>&copy; 2025 DyslexiaAway by Edgar R.N. Open-source under GPL-3.0.</p>
+            <p data-i18n="footerCopyright">&copy; 2025 DyslexiaAway by <a href="mailto:ernvk23@gmail.com"
+                    title="Email Edgar R.N" class="author-link">Edgar R.N</a>. Open-source under GPL-3.0.</p>
             <div class="footer-links">
                 <a href="https://github.com/ernvk23/dyslexia-away" rel="noopener noreferrer">GitHub</a>
                 <a href="https://opendyslexic.org/" rel="noopener noreferrer">OpenDyslexic</a>

@@ -7,6 +7,8 @@
     /* Adjusted hover */
     --primary-active: #025d8f;
     /* Adjusted active */
+    --primary-color-subtle: rgb(93, 123, 154);
+    /* Subtle link color - between text and primary */
     --text-color: #1f2937;
     --text-light: #4b5563;
     --bg-color: #fefcf5;
@@ -21,11 +23,11 @@
     --shadow-dark: rgba(0, 0, 0, 0.3);
     --shadow-subtle: rgba(0, 0, 0, 0.1);
 
-    /* Particle colors - derived from primary */
-    --particle-color: rgba(13, 143, 216, 0.25);
-    /* Updated to new primary with slightly higher opacity */
-    --particle-connection-color: rgba(13, 143, 216, 0.12);
-
+    /* Particle colors - using darker blue for light theme */
+    --particle-color: rgba(4, 56, 104, 0.3);
+    /* Darker blue (#0d64b4) with good opacity for light theme */
+    --particle-connection-color: rgba(4, 56, 104, 0.2);
+    /* Darker blue connections for light theme */
     /* UI colors */
     --border-color: #d1d5db;
     --card-bg: rgba(248, 248, 248, 0.7);
@@ -45,9 +47,12 @@
     --border-color: #404040;
     --card-bg: rgba(42, 42, 42, 0.7);
     --card-border: #3a3a3a;
-    --particle-color: rgba(173, 216, 230, 0.3);
-    /* Slightly stronger in dark theme */
-    --particle-connection-color: rgba(173, 216, 230, 0.18);
+    --particle-color: rgba(150, 200, 230, 0.3);
+    /* Subtle light blue (#96c8e6) with lower opacity for dark theme */
+    --particle-connection-color: rgba(150, 200, 230, 0.2);
+    /* Subtle light blue connections for dark theme */
+    --primary-color-subtle: #8fa9c7;
+    /* Subtle link color for dark theme */
 
     /* Component backgrounds - dark theme */
     --nav-initial: rgba(42, 42, 42, 0.4);
@@ -62,8 +67,8 @@
         --border-color: #404040;
         --card-bg: rgba(42, 42, 42, 0.7);
         --card-border: #3a3a3a;
-        --particle-color: rgba(173, 216, 230, 0.3);
-        --particle-connection-color: rgba(173, 216, 230, 0.18);
+        --particle-color: rgba(150, 200, 230, 0.3);
+        --particle-connection-color: rgba(150, 200, 230, 0.2);
         --nav-initial: rgba(42, 42, 42, 0.4);
     }
 }
@@ -78,15 +83,15 @@
 html {
     overflow-x: hidden;
     scroll-behavior: smooth;
-    line-height: 1.6;
-    letter-spacing: -0.02em;
+    line-height: 1.5;
+    letter-spacing: -0.0em;
     word-spacing: -0.01em;
 }
 
 h1,
 h2,
 h3 {
-    letter-spacing: -0.04em;
+    letter-spacing: -0.03em;
     word-spacing: -0.02em;
 }
 
@@ -148,8 +153,7 @@ nav {
     align-items: center;
     width: 100%;
     height: 100%;
-    border-bottom-left-radius: 0.75rem;
-    border-bottom-right-radius: 0.75rem;
+    border-radius: 0.75rem;
     transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
     padding-inline: 2rem;
     background: var(--nav-initial);
@@ -215,8 +219,8 @@ nav.scrolled {
     display: none;
     color: currentColor;
     transition: color 0.5s ease, transform 0.5s ease;
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 2rem;
+    height: 2rem;
 }
 
 [data-theme="light"] .theme-icon.light,
@@ -312,10 +316,41 @@ section {
 }
 
 .hero-visual img {
-    max-width: 70%;
+    max-width: 100%;
+    height: auto;
     border-radius: 0.75rem;
-    box-shadow: 0 10px 30px var(--shadow-subtle);
+    box-shadow: 0 5px 10px var(--shadow-subtle);
 }
+
+/* Scroll indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    opacity: 0.8;
+}
+
+.scroll-chevron {
+    width: 3rem;
+    height: 3rem;
+    color: var(--text-color);
+    animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(0.5rem);
+    }
+}
+
 
 /* Typography */
 h1 {
@@ -421,8 +456,19 @@ h1 {
 
 .sample-image img {
     max-width: 100%;
+    height: auto;
     border-radius: 0.75rem;
-    box-shadow: 0 10px 30px var(--shadow-subtle);
+    box-shadow: 0 5px 10px var(--shadow-subtle);
+}
+
+/* Image fade-in animation */
+.fade-img {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+.fade-img.loaded {
+    opacity: 1;
 }
 
 /* Footer */
@@ -433,9 +479,6 @@ footer {
     border-top: 1px solid var(--border-color);
     position: relative;
     z-index: 1;
-    background: var(--nav-initial);
-    border-top-left-radius: 0.75rem;
-    border-top-right-radius: 0.75rem;
 }
 
 .footer-content {
@@ -443,14 +486,22 @@ footer {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 1rem;
+    text-align: center;
 }
 
 .footer-links a {
-    color: var(--text-light);
+    color: var(--primary-color-subtle);
     text-decoration: none;
-    margin-left: 1.5rem;
+    margin-left: 1rem;
     transition: var(--transition);
+}
+
+.author-link {
+    color: var(--primary-color-subtle);
+    text-decoration: none;
+    transition: var(--transition);
+    font-style: italic;
 }
 
 /* Interactive states */
@@ -477,14 +528,16 @@ footer {
         color: var(--primary-hover);
     }
 
-    .footer-links a:hover {
+    .footer-links a:hover,
+    .author-link:hover {
         color: var(--primary-color);
     }
 }
 
 .nav-links a:active,
 .feature-card .github-link:active,
-.footer-links a:active {
+.footer-links a:active,
+.author-link:active {
     color: var(--primary-active);
 }
 
@@ -517,10 +570,6 @@ footer {
         gap: 2rem;
     }
 
-    .hero-visual img {
-        max-width: 80%;
-    }
-
     main {
         padding-inline: 1rem;
     }
@@ -528,6 +577,9 @@ footer {
     nav {
         padding-inline: 1rem;
         padding-right: 0.5rem;
+        border-radius: 0;
+        border-bottom-left-radius: 0.75rem;
+        border-bottom-right-radius: 0.75rem;
     }
 
 
@@ -553,7 +605,7 @@ footer {
         padding-left: 1rem;
         gap: 1rem;
         transform: translateX(100%);
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, visibility 0.3s ease;
         z-index: 100;
         box-shadow: -5px 0 20px var(--shadow-subtle);
         border-top-left-radius: 1.25rem;
@@ -566,6 +618,7 @@ footer {
 
     .nav-links.active {
         transform: translateX(0);
+        visibility: visible !important;
     }
 
     .nav-links a {
@@ -583,8 +636,8 @@ footer {
     .nav-links .theme-toggle-button {
         margin-left: auto;
         margin-top: auto;
-        margin-bottom: 1rem;
-        margin-right: 1rem;
+        margin-bottom: 1.5rem;
+        margin-right: 1.5rem;
     }
 
     section {
@@ -609,8 +662,11 @@ footer {
         margin: 0 0.75rem;
     }
 
-
     .btn-store {
         padding: 0.5rem 1rem;
+    }
+
+    .scroll-indicator {
+        display: none;
     }
 }
