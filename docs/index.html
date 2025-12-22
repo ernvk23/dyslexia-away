@@ -9,6 +9,26 @@
         content="A simple browser extension that applies the OpenDyslexic font to webpages, making reading easier for everyone.">
     <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="preload" href="foac_script.js" as="script" fetchpriority="high">
+    <script src="foac_script.js"></script>
+    <style>
+        /* Prevent flashing of untranslated text - hide only for Spanish */
+        html[data-lang="es"] [data-i18n] {
+            opacity: 0;
+        }
+
+        /* Ensure elements are visible after translation */
+        body.i18n-ready [data-i18n] {
+            opacity: 1;
+        }
+
+        /* Prevent flashing of mobile nav on mobile - embedded for immediate effect */
+        @media (max-width: 768px) {
+            #navLinks {
+                visibility: hidden;
+            }
+        }
+    </style>
     <link rel="preload" href="./img/sample.png" as="image" type="image/png" fetchpriority="high">
     <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon.png">
     <link rel="icon" type="image/png" sizes="128x128" href="./img/favicon-128.png">
@@ -53,15 +73,6 @@
             </div>
         </nav>
     </header>
-    <script>
-        // Immediately hide mobile nav to prevent flashing
-        (function () {
-            if (window.innerWidth <= 768) {
-                var navLinks = document.getElementById('navLinks');
-                if (navLinks) navLinks.style.visibility = 'hidden';
-            }
-        })();
-    </script>
 
     <main>
         <section id="hero">

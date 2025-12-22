@@ -13,7 +13,7 @@
     --text-light: #4b5563;
     --bg-color: #fefcf5;
     --container-width: 1000px;
-    --transition: all 0.2s ease-in-out;
+    --transition: all 0.2s ease-out;
 
     /* Firefox button color */
     --firefox-color: #FF7139;
@@ -464,7 +464,7 @@ h1 {
 /* Image fade-in animation */
 .fade-img {
     opacity: 0;
-    transition: opacity 0.3s ease-in;
+    transition: var(--transition);
 }
 
 .fade-img.loaded {
