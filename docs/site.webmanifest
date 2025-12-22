@@ -1,0 +1,21 @@
+{
+    "name": "DyslexiaAway",
+    "short_name": "DyslexiaAway",
+    "description": "A simple browser extension that applies the OpenDyslexic font to webpages, making reading easier for everyone.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#007bff",
+    "icons": [
+        {
+            "src": "./img/favicon.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "./img/favicon-128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        }
+    ]
+}
