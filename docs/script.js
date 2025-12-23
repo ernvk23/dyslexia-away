@@ -22,12 +22,12 @@ function updateCssCache() {
 
 // Dynamic particle settings based on screen width
 // Optimized for performance on older devices while maintaining visual appeal
+let cachedScreenWidth = window.innerWidth;
 function getParticleSettings() {
-    const screenWidth = window.innerWidth;
-    if (screenWidth < 768) {
+    if (cachedScreenWidth < 768) {
         // Mobile: conservative settings for older phones
         return { count: 45, distance: 140 };
-    } else if (screenWidth < 1024) {
+    } else if (cachedScreenWidth < 1024) {
         // Tablet: moderate settings
         return { count: 80, distance: 220 };
     }
@@ -73,7 +73,8 @@ class Particle {
 }
 
 function resize() {
-    width = canvas.width = window.innerWidth;
+    cachedScreenWidth = window.innerWidth;
+    width = canvas.width = cachedScreenWidth;
     height = canvas.height = window.innerHeight;
     initParticles();
 }

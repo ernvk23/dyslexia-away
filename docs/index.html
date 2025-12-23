@@ -53,11 +53,47 @@
       "image": "https://ernvk23.github.io/dyslexia-away/img/sample-full.jpeg"
     }
     </script>
-    <link rel="stylesheet" href="fonts.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preload" href="foac_script.js" as="script" fetchpriority="high">
-    <script src="foac_script.js"></script>
+    <!-- Preload critical fonts to reduce chain length -->
+    <link rel="preload" href="fonts/OpenDyslexicAlta-Regular.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" href="fonts/OpenDyslexicAlta-Bold.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" href="fonts/OpenDyslexicAlta-Italic.otf" as="font" type="font/otf" crossorigin>
+    <!-- Preload script.js for earlier fetch -->
+    <link rel="preload" href="script.js" as="script">
+    <!-- Inline fonts.css to eliminate separate request -->
     <style>
+        /* Font-face declarations (inlined from fonts.css) */
+        @font-face {
+            font-family: 'OpenDyslexic';
+            src: url('fonts/OpenDyslexicAlta-Regular.otf') format('opentype');
+            font-weight: 100 599;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'OpenDyslexic';
+            src: url('fonts/OpenDyslexicAlta-Bold.otf') format('opentype');
+            font-weight: 600 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'OpenDyslexic';
+            src: url('fonts/OpenDyslexicAlta-Italic.otf') format('opentype');
+            font-weight: 100 599;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'OpenDyslexic';
+            src: url('fonts/OpenDyslexicAlta-BoldItalic.otf') format('opentype');
+            font-weight: 600 900;
+            font-style: italic;
+            font-display: swap;
+        }
+
         /* Prevent flashing of untranslated text - hide only for Spanish */
         html[data-lang="es"] [data-i18n] {
             opacity: 0;
@@ -75,6 +111,13 @@
             }
         }
     </style>
+    <!-- Preload CSS for non-blocking loading -->
+    <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="style.css">
+    </noscript>
+    <link rel="preload" href="foac_script.js" as="script" fetchpriority="high">
+    <script src="foac_script.js"></script>
     <link rel="preload" href="./img/sample.png" as="image" type="image/png" fetchpriority="high">
     <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon.png">
     <link rel="icon" type="image/png" sizes="128x128" href="./img/favicon-128.png">
@@ -96,8 +139,8 @@
                 </svg>
             </button>
             <div class="nav-links" id="navLinks">
-                <a href="#about" aria-label="About the extension" data-i18n="navAbout">About</a>
                 <a href="#hero" aria-label="Get the extension" data-i18n="navGet">Get</a>
+                <a href="#about" aria-label="About the extension" data-i18n="navAbout">About</a>
                 <button class="theme-toggle-button" id="themeToggleBtn" type="button" aria-label="Toggle theme"
                     title="Toggle light/dark theme">
                     <!-- Light theme icon (sun) -->
@@ -139,7 +182,7 @@
                     </div>
                 </div>
                 <div class="hero-visual">
-                    <img src="./img/sample.png" alt="DyslexiaAway extension" height="380" width="210" class="fade-img">
+                    <img src="./img/sample.png" alt="DyslexiaAway extension" height="380" width="210">
                 </div>
             </div>
             <div class="scroll-indicator" aria-hidden="true">
