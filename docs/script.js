@@ -5,7 +5,7 @@ const ctx = canvas.getContext('2d');
 
 let width, height, particles;
 
-const speed = 0.8;
+const speed = 0.5;
 
 // Cached CSS variables to avoid frequent DOM reads
 let cachedParticleColor = '';
@@ -22,7 +22,9 @@ function updateCssCache() {
 
 // Dynamic particle settings based on screen width
 // Optimized for performance on older devices while maintaining visual appeal
-let cachedScreenWidth = window.innerWidth;
+let cachedScreenWidth = 0;
+let cachedScreenHeight = 0;
+
 function getParticleSettings() {
     if (cachedScreenWidth < 768) {
         // Mobile: conservative settings for older phones
@@ -72,10 +74,15 @@ class Particle {
     }
 }
 
-function resize() {
+function updateScreenSize() {
     cachedScreenWidth = window.innerWidth;
+    cachedScreenHeight = window.innerHeight;
     width = canvas.width = cachedScreenWidth;
-    height = canvas.height = window.innerHeight;
+    height = canvas.height = cachedScreenHeight;
+}
+
+function resize() {
+    updateScreenSize();
     initParticles();
 }
 
@@ -111,7 +118,7 @@ function animate() {
                 // Apply distance-based opacity with reduced base opacity (0.15 instead of 0.25)
                 const opacity = 0.15 * (1 - dist / settings.distance);
 
-                const colorWithOpacity = cachedConnectionColor.replace(/[\d.]+\)$/, `${opacity})`);
+                const colorWithOpacity = cachedConnectionColor.replace(/[\d.]+(?=\)$)/, `${opacity}`);
                 ctx.strokeStyle = colorWithOpacity;
                 ctx.lineWidth = 1.2; // Increased from 0.8 to 1.2
                 ctx.moveTo(p1.x, p1.y);
@@ -123,9 +130,15 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
+// Defer initial size reading to first animation frame to avoid forced reflow during load
+function start() {
+    updateScreenSize();
+    initParticles();
+    animate();
+}
+
 window.addEventListener('resize', resize);
-resize();
-animate();
+requestAnimationFrame(start);
 
 // Theme switching functionality - simplified to light/dark only
 (function () {
@@ -144,8 +157,10 @@ animate();
         return prefersDark.matches ? 'dark' : 'light';
     }
 
-    // Apply theme to document
+    // Apply theme to document (only if changed)
     function applyTheme(theme) {
+        const current = document.documentElement.getAttribute('data-theme');
+        if (current === theme) return;
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('site-theme', theme);
     }
@@ -157,7 +172,7 @@ animate();
         applyTheme(nextTheme);
     }
 
-    // Initialize theme
+    // Initialize theme (skip if already set by inline script)
     const initialTheme = getCurrentTheme();
     applyTheme(initialTheme);
 
@@ -178,8 +193,8 @@ animate();
         }
     }
 
-    // Initial check
-    updateNavScroll();
+    // Defer initial check to avoid forced reflow during load
+    requestAnimationFrame(updateNavScroll);
 
     // Throttle scroll events for performance
     let ticking = false;

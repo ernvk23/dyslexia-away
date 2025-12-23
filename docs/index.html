@@ -53,15 +53,34 @@
       "image": "https://ernvk23.github.io/dyslexia-away/img/sample-full.jpeg"
     }
     </script>
-    <!-- Preload critical fonts to reduce chain length -->
-    <link rel="preload" href="fonts/OpenDyslexicAlta-Regular.otf" as="font" type="font/otf" crossorigin>
-    <link rel="preload" href="fonts/OpenDyslexicAlta-Bold.otf" as="font" type="font/otf" crossorigin>
-    <link rel="preload" href="fonts/OpenDyslexicAlta-Italic.otf" as="font" type="font/otf" crossorigin>
-    <!-- Preload script.js for earlier fetch -->
-    <link rel="preload" href="script.js" as="script">
-    <!-- Inline fonts.css to eliminate separate request -->
+
+    <!-- Language detection (must run before CSS) -->
+    <script>
+        (function () {
+            const browserLang = navigator.language || navigator.userLanguage;
+            const langCode = browserLang.split('-')[0].toLowerCase();
+            const lang = langCode === 'es' ? 'es' : 'en';
+            document.documentElement.setAttribute('data-lang', lang);
+        })();
+    </script>
+
+    <!-- Theme detection (prevents flash of wrong theme) -->
+    <script>
+        (function () {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const saved = localStorage.getItem('site-theme');
+            let theme = 'light';
+            if (saved === 'light' || saved === 'dark') {
+                theme = saved;
+            } else {
+                theme = prefersDark ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
+    <!-- Critical inline CSS: fonts, particle colors, anti‑FOUC -->
     <style>
-        /* Font-face declarations (inlined from fonts.css) */
         @font-face {
             font-family: 'OpenDyslexic';
             src: url('fonts/OpenDyslexicAlta-Regular.otf') format('opentype');
@@ -94,38 +113,71 @@
             font-display: swap;
         }
 
-        /* Prevent flashing of untranslated text - hide only for Spanish */
+        :root {
+            --particle-color: rgba(4, 56, 104, 0.3);
+            --particle-connection-color: rgba(4, 56, 104, 0.2);
+        }
+
+        [data-theme="dark"] {
+            --particle-color: rgba(150, 200, 230, 0.3);
+            --particle-connection-color: rgba(150, 200, 230, 0.2);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) {
+                --particle-color: rgba(150, 200, 230, 0.3);
+                --particle-connection-color: rgba(150, 200, 230, 0.2);
+            }
+        }
+
         html[data-lang="es"] [data-i18n] {
             opacity: 0;
         }
 
-        /* Ensure elements are visible after translation */
         body.i18n-ready [data-i18n] {
             opacity: 1;
         }
 
-        /* Prevent flashing of mobile nav on mobile - embedded for immediate effect */
         @media (max-width: 768px) {
             #navLinks {
                 visibility: hidden;
             }
         }
     </style>
-    <!-- Preload CSS for non-blocking loading -->
-    <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="style.css">
-    </noscript>
-    <link rel="preload" href="foac_script.js" as="script" fetchpriority="high">
-    <script src="foac_script.js"></script>
+
+    <!-- Preload critical assets -->
+    <link rel="preload" href="fonts/OpenDyslexicAlta-Regular.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" href="fonts/OpenDyslexicAlta-Bold.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" href="fonts/OpenDyslexicAlta-Italic.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" href="fonts/OpenDyslexicAlta-BoldItalic.otf" as="font" type="font/otf" crossorigin>
+
+    <!-- Main CSS: Critical for layout -->
+    <link rel="preload" href="style.css" as="style">
+
+    <!-- Translation script: Critical for Spanish users -->
+    <link rel="preload" href="foac_script.js" as="script">
+
+    <!-- Hero image: Above the fold -->
     <link rel="preload" href="./img/sample.png" as="image" type="image/png" fetchpriority="high">
+
+    <!-- Translation script (async) -->
+    <!-- Position before stylesheet = no stylesheet blocking -->
+    <script src="foac_script.js" async></script>
+
+    <!-- Main stylesheet : loads in parallel with script-->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Main interaction script (deferred)-->
+    <script src="script.js" defer></script>
+
+    <!-- Icons & manifest -->
     <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon.png">
     <link rel="icon" type="image/png" sizes="128x128" href="./img/favicon-128.png">
     <link rel="manifest" href="./site.webmanifest">
 </head>
 
 <body>
-    <canvas id="canvas-bg" loading="lazy"></canvas>
+    <canvas id="canvas-bg"></canvas>
 
     <header>
         <nav aria-label="Main navigation">
@@ -267,8 +319,6 @@
             </div>
         </div>
     </footer>
-
-    <script src="script.js"></script>
 </body>
 
 </html>

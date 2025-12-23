@@ -3,16 +3,8 @@
     // Simple translations object - will be loaded from JSON
     let translations = {};
 
-    // Detect language
-    function detectLanguage() {
-        const browserLang = navigator.language || navigator.userLanguage;
-        const langCode = browserLang.split('-')[0].toLowerCase();
-        return langCode === 'es' ? 'es' : 'en';
-    }
-
-    // Set data-lang attribute synchronously to allow CSS targeting before translation
-    const lang = detectLanguage();
-    document.documentElement.setAttribute('data-lang', lang);
+    // Get language from existing data-lang attribute (set by inline script)
+    const lang = document.documentElement.getAttribute('data-lang') || 'en';
 
     // Load translations - similar to extension but with fetch
     async function loadTranslations(lang) {
@@ -85,6 +77,14 @@
         translatePage();
     }
 
-    // Run translation as microtask to not block UI initialization
-    Promise.resolve().then(initI18n);
+    // Wait for DOM to be ready before translating
+    // This ensures all [data-i18n] elements exist
+    if (document.readyState === 'loading') {
+        // DOM not ready yet, wait for it
+        document.addEventListener('DOMContentLoaded', initI18n);
+    } else {
+        // DOM already loaded (script loaded late)
+        // Use microtask to avoid blocking
+        Promise.resolve().then(initI18n);
+    }
 })();
