@@ -1,0 +1,27 @@
+# Custom cache-control headers for GitHub Pages
+
+# Fonts and images: 1 day
+/*.otf
+  Cache-Control: public, max-age=86400
+/*.png
+  Cache-Control: public, max-age=86400
+/*.jpeg
+  Cache-Control: public, max-age=86400
+/*.jpg
+  Cache-Control: public, max-age=86400
+
+# Web manifest and text files: 1 hour
+/*.webmanifest
+  Cache-Control: public, max-age=3600
+/*.txt
+  Cache-Control: public, max-age=3600
+/*.xml
+  Cache-Control: public, max-age=3600
+
+# Short cache (5/10 minutes) to allow quick updates
+/*.html
+  Cache-Control: public, max-age=300
+/*.css
+  Cache-Control: public, max-age=300
+/*.js
+  Cache-Control: public, max-age=600
