@@ -159,6 +159,7 @@ nav {
     background: var(--nav-initial);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
+    min-width: fit-content;
 }
 
 nav.scrolled {
@@ -577,9 +578,7 @@ footer {
     nav {
         padding-inline: 1rem;
         padding-right: 0.5rem;
-        border-radius: 0;
-        border-bottom-left-radius: 0.75rem;
-        border-bottom-right-radius: 0.75rem;
+        width: calc(100% - 12px);
     }
 
 
@@ -594,7 +593,7 @@ footer {
     .nav-links {
         position: fixed;
         top: 0;
-        right: 0;
+        right: -6px;
         width: 100%;
         max-width: 250px;
         height: 100dvh;
@@ -607,7 +606,7 @@ footer {
         transform: translateX(100%);
         transition: transform 0.3s ease, visibility 0.3s ease;
         z-index: 100;
-        box-shadow: -5px 0 20px var(--shadow-subtle);
+        box-shadow: 0 0 8px var(--shadow-subtle);
         border-top-left-radius: 1.25rem;
         border-bottom-left-radius: 1.25rem;
         border-left: 2px solid rgba(255, 255, 255, 0.1);
