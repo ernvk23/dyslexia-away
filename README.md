@@ -57,9 +57,12 @@ For me, it made things click in a way they hadn't before.
 
 Licensed under the [GNU General Public License v3.0 (GPL-3.0)](./LICENSE).
 
-The OpenDyslexic fonts are licensed under the [SIL Open Font License (OFL)](./app/fonts/OFL.txt).
+The OpenDyslexic fonts are licensed under the [SIL Open Font License (OFL)](./app/fonts/OpenDyslexic-OFL.txt).
+
+The Balsamiq Sans fonts are licensed under the [SIL Open Font License (OFL)](./app/fonts/BalsamiqSans-OFL.txt).
 
 ## Credits
 
 - [OpenDyslexic](https://opendyslexic.org/) - an open typeface made to help with reading (SIL OFL)
+- [Balsamiq Sans](https://github.com/balsamiq/balsamiqsans) - a Comic Sans-based font (SIL OFL)
 - [SVGRepo](https://www.svgrepo.com/) - extension icon (CC0 License)
