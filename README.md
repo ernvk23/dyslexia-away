@@ -1,7 +1,6 @@
 # DyslexiaAway
 
-A simple browser extension that applies the **OpenDyslexic** font to webpages.
-For some of us, that small change makes reading a lot easier. ✨
+A simple browser extension that applies the **OpenDyslexic** font. For some of us, that small change makes reading a lot easier.
 
 ---
 
@@ -11,7 +10,7 @@ For some of us, that small change makes reading a lot easier. ✨
 * **Theme switching:** Choose between light, dark, or system themes
 * **Custom settings:** Adjust spacing and line height
 * **Site exclusion:** Skip pages where it could cause issues
-* **Cross-browser compatible:** Works on Chrome, Firefox, and Chromium-based browsers
+* **Cross-browser compatible:** Works on Chrome/Firefox compatible browsers (including Firefox for Android)
 
 ## Sample
 
