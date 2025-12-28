@@ -1,6 +1,6 @@
 # DyslexiaAway
 
-A simple browser extension that applies a **dyslexic-friendly** font to webpages.
+A simple browser extension that applies the **OpenDyslexic** font to webpages.
 For some of us, that small change makes reading a lot easier. ✨
 
 ---
@@ -11,7 +11,7 @@ For some of us, that small change makes reading a lot easier. ✨
 * **Theme switching:** Choose between light, dark, or system themes
 * **Custom settings:** Adjust spacing and line height
 * **Site exclusion:** Skip pages where it could cause issues
-* **Cross-browser compatible:** Works on Chrome/Firefox compatible browsers (including Firefox for Android)
+* **Cross-browser compatible:** Works on Chrome, Firefox, and Chromium-based browsers
 
 ## Sample
 
@@ -51,7 +51,6 @@ For me, it made things click in a way they hadn't before.
 
 - **Manifest Version:** 3 (Chrome & Firefox)
 - **Font Loading:** Local font files bundled with extension
-- **Fonts:** OpenDyslexic & Comic Relief (Cyrillic, Greek)
 - **Storage:** Browser local storage for settings persistence
 - **Compatibility:** Chrome 88+, Firefox 140+
 
@@ -59,12 +58,9 @@ For me, it made things click in a way they hadn't before.
 
 Licensed under the [GNU General Public License v3.0 (GPL-3.0)](./LICENSE).
 
-The OpenDyslexic fonts are licensed under the [SIL Open Font License (OFL)](./app/fonts/OpenDyslexic-OFL.txt).
-
-The Comic Relief fonts are licensed under the [SIL Open Font License (OFL)](./app/fonts/ComicRelief-OFL.txt).
+The OpenDyslexic fonts are licensed under the [SIL Open Font License (OFL)](./app/fonts/OFL.txt).
 
 ## Credits
 
 - [OpenDyslexic](https://opendyslexic.org/) - an open typeface made to help with reading (SIL OFL)
-- [Comic Relief](https://github.com/loudifier/Comic-Relief) - a libre metrically-equivalent replacement for Comic Sans MS (SIL OFL)
 - [SVGRepo](https://www.svgrepo.com/) - extension icon (CC0 License)
