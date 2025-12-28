@@ -1,7 +1,6 @@
 /* Regular weight (100-599) */
 @font-face {
     font-family: 'OpenDyslexic';
-    /* Multiple URL options with fallback for both Chrome and Firefox extension protocols */
     src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Regular.otf') format('opentype'),
         url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Regular.otf') format('opentype'),
         url('fonts/OpenDyslexicAlta-Regular.otf') format('opentype');
@@ -41,4 +40,50 @@
     font-weight: 600 900;
     font-style: italic;
     font-display: swap;
+}
+
+/* Using Comic Relief (TTF) for scripts not covered by OpenDyslexicAlta */
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ComicRelief-Regular.ttf') format('truetype'),
+        url('moz-extension://__MSG_@@extension_id__/fonts/ComicRelief-Regular.ttf') format('truetype'),
+        url('fonts/ComicRelief-Regular.ttf') format('truetype');
+    font-weight: 100 599;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0370-03FF, U+0400-052F, U+1F00-1FFF, U+2DE0-2DFF, U+A640-A69F;
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ComicRelief-Bold.ttf') format('truetype'),
+        url('moz-extension://__MSG_@@extension_id__/fonts/ComicRelief-Bold.ttf') format('truetype'),
+        url('fonts/ComicRelief-Bold.ttf') format('truetype');
+    font-weight: 600 900;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0370-03FF, U+0400-052F, U+1F00-1FFF, U+2DE0-2DFF, U+A640-A69F;
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ComicRelief-Regular.ttf') format('truetype'),
+        url('moz-extension://__MSG_@@extension_id__/fonts/ComicRelief-Regular.ttf') format('truetype'),
+        url('fonts/ComicRelief-Regular.ttf') format('truetype');
+    font-weight: 100 599;
+    font-style: italic;
+    font-display: swap;
+    unicode-range: U+0370-03FF, U+0400-052F, U+1F00-1FFF, U+2DE0-2DFF, U+A640-A69F;
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ComicRelief-Bold.ttf') format('truetype'),
+        url('moz-extension://__MSG_@@extension_id__/fonts/ComicRelief-Bold.ttf') format('truetype'),
+        url('fonts/ComicRelief-Bold.ttf') format('truetype');
+    font-weight: 600 900;
+    font-style: italic;
+    font-display: swap;
+    unicode-range: U+0370-03FF, U+0400-052F, U+1F00-1FFF, U+2DE0-2DFF, U+A640-A69F;
 }
