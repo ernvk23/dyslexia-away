@@ -1,12 +1,12 @@
 # DyslexiaAway
 
-A simple browser extension that applies the **OpenDyslexic** font. For some of us, that small change makes reading a lot easier.
+A simple browser extension that applies a dyslexic-friendly font. For some of us, that small change makes reading a lot easier.
 
 ---
 
 ## Features
 
-* **Instant toggle:** Turn it on or off with one click
+* **Dyslexic-friendly fonts:** OpenDyslexic & Balsamiq Sans (Cyrillic, Greek)
 * **Theme switching:** Choose between light, dark, or system themes
 * **Custom settings:** Adjust spacing and line height
 * **Site exclusion:** Skip pages where it could cause issues

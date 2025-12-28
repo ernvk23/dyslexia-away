@@ -1,6 +1,6 @@
 {
     "siteTitle": "DyslexiaAway - Read with Ease",
-    "siteDescription": "A simple browser extension that applies the OpenDyslexic font. For some of us, that small change makes reading a lot easier.",
+    "siteDescription": "A simple browser extension that applies a dyslexic-friendly font. For some of us, that small change makes reading a lot easier.",
     "navAbout": "About",
     "navGet": "Get",
     "heroTitle": "Read the web, your way.",
@@ -9,7 +9,7 @@
     "getFirefox": "Get for Firefox",
     "aboutTitle": "What it does",
     "feature1Title": "Applies dyslexic‑friendly fonts",
-    "feature1Desc": "Changes website fonts to OpenDyslexic (Latin) & BalsamicSans (Cyrillic, Greek).",
+    "feature1Desc": "Changes website fonts to OpenDyslexic & BalsamiqSans (Cyrillic, Greek).",
     "feature2Title": "Adjustable spacing",
     "feature2Desc": "Increase letter and line spacing.",
     "feature3Title": "Site exclusion",
