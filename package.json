@@ -1,6 +1,6 @@
 {
     "name": "dyslexia-away",
-    "version": "0.12.0",
+    "version": "0.14.0",
     "description": "A simple browser extension that applies the OpenDyslexic font. For some of us, that small change makes reading a lot easier.",
     "main": "background.js",
     "scripts": {
