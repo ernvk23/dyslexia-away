@@ -19,5 +19,17 @@
     },
     "resetDefaults": {
         "message": "Réinitialiser"
+    },
+    "fontModeLabel": {
+        "message": "Type de police"
+    },
+    "fontModeOpenDyslexic": {
+        "message": "OpenDyslexic (OD)"
+    },
+    "fontModeBalsamiq": {
+        "message": "BalsamiqSans (BS)"
+    },
+    "fontModeOpenBalsamiq": {
+        "message": "OD & BS (non-latin)"
     }
 }
