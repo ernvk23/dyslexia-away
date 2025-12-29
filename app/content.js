@@ -9,7 +9,8 @@
         excluded: false,
         letterSpacing: 0,
         wordSpacing: 0,
-        lineHeight: 140
+        lineHeight: 140,
+        fontMode: 'opendyslexic'
     };
 
     let animationFrameId = null;
@@ -25,12 +26,13 @@
         }
 
         api.storage.local.get(
-            ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'excludedDomains']
+            ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'excludedDomains', 'fontMode']
         ).then(result => {
             state.enabled = result.enabled || false;
             state.letterSpacing = result.letterSpacing ?? 0;
             state.wordSpacing = result.wordSpacing ?? 0;
             state.lineHeight = result.lineHeight ?? 140;
+            state.fontMode = result.fontMode || 'opendyslexic';
             state.excluded = (result.excludedDomains || []).includes(location.hostname);
 
             applyStyles();
@@ -68,7 +70,18 @@
 
     function updateCSSVariables() {
         const rootStyle = document.documentElement.style;
+        const fontMode = state.fontMode;
 
+        // Map all font mode values to their corresponding font family names
+        const fontMap = {
+            'opendyslexic': 'OpenDyslexic',
+            'balsamiq': 'BalsamiqSans',
+            'openbalsamiq': 'OpenBalsamiq'
+        };
+
+        const primaryFont = fontMap[fontMode] || 'OpenDyslexic';
+
+        rootStyle.setProperty('--od-primary-font-family', primaryFont);
         rootStyle.setProperty('--od-letter-spacing', `${(state.letterSpacing / 1000).toFixed(3)}em`);
         rootStyle.setProperty('--od-word-spacing', `${(state.wordSpacing / 1000).toFixed(3)}em`);
         rootStyle.setProperty('--od-line-height', (state.lineHeight / 100).toFixed(2));
@@ -79,6 +92,7 @@
         const rootStyle = root.style;
 
         root.classList.remove('opendyslexic-active');
+        rootStyle.removeProperty('--od-primary-font-family');
         rootStyle.removeProperty('--od-letter-spacing');
         rootStyle.removeProperty('--od-word-spacing');
         rootStyle.removeProperty('--od-line-height');
@@ -139,7 +153,7 @@
     function updateState(newState) {
         let changed = false;
 
-        ['letterSpacing', 'wordSpacing', 'lineHeight'].forEach(key => {
+        ['letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode'].forEach(key => {
             if (newState[key] !== undefined && state[key] !== newState[key]) {
                 state[key] = newState[key];
                 changed = true;
@@ -190,7 +204,7 @@
             needsFullReapply = true;
         }
 
-        ['letterSpacing', 'wordSpacing', 'lineHeight'].forEach(key => {
+        ['letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode'].forEach(key => {
             if (changes[key]) updates[key] = changes[key].newValue;
         });
 

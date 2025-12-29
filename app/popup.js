@@ -22,7 +22,8 @@ const DEFAULTS = {
     wordSpacing: 0,
     lineHeight: 140,
     excludedDomains: [],
-    theme: 'system'
+    theme: 'system',
+    fontMode: 'opendyslexic'
 };
 
 const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
@@ -38,7 +39,8 @@ const els = {
     lineVal: document.getElementById('lineValue'),
     reset: document.getElementById('resetBtn'),
     exclude: document.getElementById('excludeSite'),
-    themeToggle: document.getElementById('themeToggleBtn')
+    themeToggle: document.getElementById('themeToggleBtn'),
+    fontModeSelect: document.getElementById('fontModeSelect')
 };
 
 let currentDomain = null;
@@ -53,6 +55,7 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(result => {
     els.letterSlider.value = settings.letterSpacing;
     els.wordSlider.value = settings.wordSpacing;
     els.lineSlider.value = settings.lineHeight;
+    els.fontModeSelect.value = settings.fontMode;
 
     applyTheme(settings.theme);
     updateDisplayValues();
@@ -225,11 +228,24 @@ els.exclude.addEventListener('change', async () => {
     }, { passive: false });
 });
 
+els.fontModeSelect.addEventListener('change', () => {
+    const fontMode = els.fontModeSelect.value;
+    updateCurrentTabStyles({ fontMode: fontMode });
+
+    // Debounced storage update - only the last one wins
+    if (storageSaveTimeout) clearTimeout(storageSaveTimeout);
+    storageSaveTimeout = setTimeout(() => {
+        saveSettingsAndBroadcast();
+        storageSaveTimeout = null;
+    }, 500);
+});
+
 function getCurrentSettings() {
     return {
         letterSpacing: parseInt(els.letterSlider.value),
         wordSpacing: parseInt(els.wordSlider.value),
-        lineHeight: parseInt(els.lineSlider.value)
+        lineHeight: parseInt(els.lineSlider.value),
+        fontMode: els.fontModeSelect.value
     };
 }
 
@@ -298,6 +314,7 @@ els.reset.addEventListener('click', async () => {
     els.letterSlider.value = DEFAULTS.letterSpacing;
     els.wordSlider.value = DEFAULTS.wordSpacing;
     els.lineSlider.value = DEFAULTS.lineHeight;
+    els.fontModeSelect.value = DEFAULTS.fontMode;
     updateDisplayValues();
     applyTheme(DEFAULTS.theme);
     els.exclude.checked = false;

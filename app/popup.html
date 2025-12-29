@@ -51,6 +51,16 @@
         </div>
 
         <div class="settings-container">
+
+            <div class="setting font-mode-setting">
+                <label for="fontModeSelect" data-i18n="fontModeLabel">Font Type</label>
+                <select id="fontModeSelect">
+                    <option value="opendyslexic" data-i18n="fontModeOpenDyslexic">OpenDyslexic (OD)</option>
+                    <option value="balsamiq" data-i18n="fontModeBalsamiq">BalsamiqSans (BS)</option>
+                    <option value="openbalsamiq" data-i18n="fontModeOpenBalsamiq">OD & BS (non-latin)</option>
+                </select>
+            </div>
+
             <div class="setting">
                 <label><span data-i18n="letterSpacing">Letter Spacing</span> <span id="letterValue"></span></label>
                 <input type="range" id="letterSpacing" min="-100" max="200" value="0" step="1">
@@ -65,6 +75,7 @@
                 <label><span data-i18n="lineHeight">Line Height</span> <span id="lineValue"></span></label>
                 <input type="range" id="lineHeight" min="100" max="200" value="130" step="1">
             </div>
+
 
             <div class="setting exclusion-setting">
                 <label for="excludeSite">
