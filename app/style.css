@@ -1,4 +1,4 @@
-/* 1. SAFE ELEMENTS (Aggressive Application) */
+/* 1. SAFE ELEMENTS: Apply Font, Letter Spacing, and Word Spacing (Aggressive, no checks) */
 html.opendyslexic-active p,
 html.opendyslexic-active h1,
 html.opendyslexic-active h2,
@@ -34,10 +34,9 @@ html.opendyslexic-active input {
     font-family: var(--od-primary-font-family, 'OpenDyslexic') !important;
     letter-spacing: var(--od-letter-spacing) !important;
     word-spacing: var(--od-word-spacing) !important;
-    line-height: var(--od-line-height) !important;
 }
 
-/* 2. RISKY ELEMENTS (Fail Fast Order: Aria > FA > Material > Icon > Bi > Glyph > Role > Data) */
+/* 2. RISKY ELEMENTS: Apply Font & Spacing (Fail Fast: Aria > FA > Material > Icon > Bi > Glyph > Role > Data) */
 html.opendyslexic-active a:not([aria-hidden="true"]):not([class*="fa-"]):not([class*="material-"]):not([class*="icon"]):not([class*="bi-"]):not([class*="glyph"]):not([role="img"]):not([data-icon]),
 html.opendyslexic-active span:not([aria-hidden="true"]):not([class*="fa-"]):not([class*="material-"]):not([class*="icon"]):not([class*="bi-"]):not([class*="glyph"]):not([role="img"]):not([data-icon]),
 html.opendyslexic-active div:not([aria-hidden="true"]):not([class*="fa-"]):not([class*="material-"]):not([class*="icon"]):not([class*="bi-"]):not([class*="glyph"]):not([role="img"]):not([data-icon]),
@@ -48,7 +47,21 @@ html.opendyslexic-active i:not([aria-hidden="true"]):not([class*="fa-"]):not([cl
     word-spacing: var(--od-word-spacing) !important;
 }
 
-/* 3. CODE PROTECTION */
+/* 3. LINE HEIGHT: Apply only to text chunks (Avoids breaking Navbars, Inputs, and Headers) */
+html.opendyslexic-active p,
+html.opendyslexic-active li,
+html.opendyslexic-active dd,
+html.opendyslexic-active blockquote,
+html.opendyslexic-active article,
+html.opendyslexic-active section,
+html.opendyslexic-active main,
+html.opendyslexic-active td,
+html.opendyslexic-active th,
+html.opendyslexic-active figcaption {
+    line-height: var(--od-line-height) !important;
+}
+
+/* 4. CODE PROTECTION */
 html.opendyslexic-active:not(#_) pre,
 html.opendyslexic-active:not(#_) pre *,
 html.opendyslexic-active:not(#_) code,
@@ -64,7 +77,7 @@ html.opendyslexic-active:not(#_) svg * {
     word-spacing: initial !important;
 }
 
-/* 4. UTILITIES */
+/* 5. UTILITIES: Fix weights and placeholders */
 html.opendyslexic-active strong,
 html.opendyslexic-active b,
 html.opendyslexic-active em,
