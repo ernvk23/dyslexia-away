@@ -1,37 +1,70 @@
-/* Global font application - optimized selector order for performance */
-html.opendyslexic-active *:not(svg):not(path):not([aria-hidden="true"]):not([role="img"]):not([data-icon]):not(pre):not(code):not(kbd):not(samp):not([class~="fa"]):not([class*="fa-"]):not([class*="icon"]):not([class*="symbol"]):not([class*="bi-"]):not([class*="glyph"]) {
+/* 1. SAFE ELEMENTS (Aggressive Application) */
+html.opendyslexic-active p,
+html.opendyslexic-active h1,
+html.opendyslexic-active h2,
+html.opendyslexic-active h3,
+html.opendyslexic-active h4,
+html.opendyslexic-active h5,
+html.opendyslexic-active h6,
+html.opendyslexic-active li,
+html.opendyslexic-active dt,
+html.opendyslexic-active dd,
+html.opendyslexic-active th,
+html.opendyslexic-active td,
+html.opendyslexic-active label,
+html.opendyslexic-active legend,
+html.opendyslexic-active caption,
+html.opendyslexic-active blockquote,
+html.opendyslexic-active article,
+html.opendyslexic-active section,
+html.opendyslexic-active main,
+html.opendyslexic-active aside,
+html.opendyslexic-active nav,
+html.opendyslexic-active header,
+html.opendyslexic-active footer,
+html.opendyslexic-active address,
+html.opendyslexic-active time,
+html.opendyslexic-active summary,
+html.opendyslexic-active figcaption,
+html.opendyslexic-active option,
+html.opendyslexic-active optgroup,
+html.opendyslexic-active textarea,
+html.opendyslexic-active select,
+html.opendyslexic-active input {
+    font-family: var(--od-primary-font-family, 'OpenDyslexic') !important;
+    letter-spacing: var(--od-letter-spacing) !important;
+    word-spacing: var(--od-word-spacing) !important;
+    line-height: var(--od-line-height) !important;
+}
+
+/* 2. RISKY ELEMENTS (Fail Fast Order: Aria > FA > Material > Icon > Bi > Glyph > Role > Data) */
+html.opendyslexic-active a:not([aria-hidden="true"]):not([class*="fa-"]):not([class*="material-"]):not([class*="icon"]):not([class*="bi-"]):not([class*="glyph"]):not([role="img"]):not([data-icon]),
+html.opendyslexic-active span:not([aria-hidden="true"]):not([class*="fa-"]):not([class*="material-"]):not([class*="icon"]):not([class*="bi-"]):not([class*="glyph"]):not([role="img"]):not([data-icon]),
+html.opendyslexic-active div:not([aria-hidden="true"]):not([class*="fa-"]):not([class*="material-"]):not([class*="icon"]):not([class*="bi-"]):not([class*="glyph"]):not([role="img"]):not([data-icon]),
+html.opendyslexic-active button:not([aria-hidden="true"]):not([class*="fa-"]):not([class*="material-"]):not([class*="icon"]):not([class*="bi-"]):not([class*="glyph"]):not([role="img"]):not([data-icon]),
+html.opendyslexic-active i:not([aria-hidden="true"]):not([class*="fa-"]):not([class*="material-"]):not([class*="icon"]):not([class*="bi-"]):not([class*="glyph"]):not([role="img"]):not([data-icon]) {
     font-family: var(--od-primary-font-family, 'OpenDyslexic') !important;
     letter-spacing: var(--od-letter-spacing) !important;
     word-spacing: var(--od-word-spacing) !important;
 }
 
-/* Line height for reading content */
-html.opendyslexic-active p,
-html.opendyslexic-active blockquote,
-html.opendyslexic-active article,
-html.opendyslexic-active section,
-html.opendyslexic-active main,
-html.opendyslexic-active div[role="article"] {
-    line-height: var(--od-line-height) !important;
-}
-
-/* Code and technical element protection */
+/* 3. CODE PROTECTION */
 html.opendyslexic-active:not(#_) pre,
-html.opendyslexic-active:not(#_) code,
-html.opendyslexic-active:not(#_) kbd,
-html.opendyslexic-active:not(#_) samp,
-html.opendyslexic-active:not(#_) script,
-html.opendyslexic-active:not(#_) style,
 html.opendyslexic-active:not(#_) pre *,
+html.opendyslexic-active:not(#_) code,
 html.opendyslexic-active:not(#_) code *,
+html.opendyslexic-active:not(#_) kbd,
 html.opendyslexic-active:not(#_) kbd *,
-html.opendyslexic-active:not(#_) samp * {
+html.opendyslexic-active:not(#_) samp,
+html.opendyslexic-active:not(#_) samp *,
+html.opendyslexic-active:not(#_) svg,
+html.opendyslexic-active:not(#_) svg * {
     font-family: revert !important;
     letter-spacing: initial !important;
     word-spacing: initial !important;
 }
 
-/* Prevent font-weight compounding - use regular weight for all emphasis elements */
+/* 4. UTILITIES */
 html.opendyslexic-active strong,
 html.opendyslexic-active b,
 html.opendyslexic-active em,
@@ -40,5 +73,8 @@ html.opendyslexic-active mark,
 html.opendyslexic-active cite,
 html.opendyslexic-active q {
     font-weight: 400 !important;
-    /* Force regular weight to prevent compounding */
+}
+
+html.opendyslexic-active ::placeholder {
+    font-family: var(--od-primary-font-family, 'OpenDyslexic') !important;
 }
