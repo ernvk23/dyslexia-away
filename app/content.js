@@ -13,6 +13,14 @@
         fontMode: 'opendyslexic'
     };
 
+    const FONT_MAP = {
+        'opendyslexic': 'OpenDyslexic',
+        'balsamiq': 'BalsamiqSans',
+        'openbalsamiq': 'OpenBalsamiq'
+    };
+
+    const CSS_VAR_KEYS = ['letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode'];
+
     let animationFrameId = null;
     let observer = null;
     let debounceTimer = null;
@@ -70,16 +78,7 @@
 
     function updateCSSVariables() {
         const rootStyle = document.documentElement.style;
-        const fontMode = state.fontMode;
-
-        // Map all font mode values to their corresponding font family names
-        const fontMap = {
-            'opendyslexic': 'OpenDyslexic',
-            'balsamiq': 'BalsamiqSans',
-            'openbalsamiq': 'OpenBalsamiq'
-        };
-
-        const primaryFont = fontMap[fontMode] || 'OpenDyslexic';
+        const primaryFont = FONT_MAP[state.fontMode] || 'OpenDyslexic';
 
         rootStyle.setProperty('--od-primary-font-family', primaryFont);
         rootStyle.setProperty('--od-letter-spacing', `${(state.letterSpacing / 1000).toFixed(3)}em`);
@@ -153,12 +152,13 @@
     function updateState(newState) {
         let changed = false;
 
-        ['letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode'].forEach(key => {
+        // Update CSS variable settings
+        for (const key of CSS_VAR_KEYS) {
             if (newState[key] !== undefined && state[key] !== newState[key]) {
                 state[key] = newState[key];
                 changed = true;
             }
-        });
+        }
 
         if (newState.excludedDomains !== undefined) {
             const newExcluded = newState.excludedDomains.includes(location.hostname);
@@ -204,9 +204,9 @@
             needsFullReapply = true;
         }
 
-        ['letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode'].forEach(key => {
+        for (const key of CSS_VAR_KEYS) {
             if (changes[key]) updates[key] = changes[key].newValue;
-        });
+        }
 
         const stateChanged = updateState(updates);
 
