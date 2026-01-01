@@ -83,7 +83,6 @@ html.opendyslexic-active:not(#_) svg * {
     font-family: revert !important;
     letter-spacing: initial !important;
     word-spacing: initial !important;
-    font-style: initial !important;
 }
 
 /* 5. UTILITIES: Fix "Bold Italic" breakage only on inherently bold elements */
