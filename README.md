@@ -6,7 +6,7 @@ A simple browser extension that applies a dyslexic-friendly font. For some of us
 
 ## Features
 
-* **Dyslexic-friendly fonts:** OpenDyslexic & Balsamiq Sans (Cyrillic, Greek)
+* **Dyslexic-friendly fonts:** OpenDyslexic, Lexend, Andika, or Balsamiq Sans (with Cyrillic & Greek support)
 * **Theme switching:** Choose between light, dark, or system themes
 * **Custom settings:** Adjust spacing and line height
 * **Site exclusion:** Skip pages where it could cause issues
@@ -57,12 +57,10 @@ For me, it made things click in a way they hadn't before.
 
 Licensed under the [GNU General Public License v3.0 (GPL-3.0)](./LICENSE).
 
-The OpenDyslexic fonts are licensed under the [SIL Open Font License (OFL)](./app/fonts/OpenDyslexic-OFL.txt).
-
-The Balsamiq Sans fonts are licensed under the [SIL Open Font License (OFL)](./app/fonts/BalsamiqSans-OFL.txt).
-
 ## Credits
 
-- [OpenDyslexic](https://opendyslexic.org/) - an open typeface made to help with reading (SIL OFL)
-- [Balsamiq Sans](https://github.com/balsamiq/balsamiqsans) - a Comic Sans-based font (SIL OFL)
+- [OpenDyslexic](https://opendyslexic.org/) - an open typeface made to help with reading ([SIL OFL](./app/fonts/OpenDyslexic-OFL.txt))
+- [Lexend](https://www.lexend.com/) - a typeface designed to improve reading proficiency ([SIL OFL](./app/fonts/Lexend-OFL.txt))
+- [Andika](https://fonts.google.com/specimen/Andika) - a typeface designed for clarity and legibility ([SIL OFL](./app/fonts/Andika-OFL.txt))
+- [Balsamiq Sans](https://github.com/balsamiq/balsamiqsans) - a Comic Sans-based font ([SIL OFL](./app/fonts/BalsamiqSans-OFL.txt))
 - [SVGRepo](https://www.svgrepo.com/) - extension icon (CC0 License)
