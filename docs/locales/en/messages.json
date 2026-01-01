@@ -9,7 +9,7 @@
     "getFirefox": "Get for Firefox",
     "aboutTitle": "What it does",
     "feature1Title": "Applies dyslexic‑friendly fonts",
-    "feature1Desc": "Changes website fonts to OpenDyslexic & BalsamiqSans (Cyrillic, Greek).",
+    "feature1Desc": "Changes website fonts to OpenDyslexic, Lexend, Andika, or Balsamiq Sans (with Cyrillic & Greek support).",
     "feature2Title": "Adjustable spacing",
     "feature2Desc": "Increase letter and line spacing.",
     "feature3Title": "Site exclusion",

@@ -26,8 +26,17 @@
     "fontModeOpenDyslexic": {
         "message": "OpenDyslexic (OD)"
     },
+    "fontModeLexend": {
+        "message": "Lexend"
+    },
+    "fontModeAndika": {
+        "message": "Andika (A)"
+    },
     "fontModeBalsamiq": {
-        "message": "BalsamiqSans (BS)"
+        "message": "Balsamiq Sans (BS)"
+    },
+    "fontModeOpenAndika": {
+        "message": "OD & A (no latin)"
     },
     "fontModeOpenBalsamiq": {
         "message": "OD & BS (no latin)"
