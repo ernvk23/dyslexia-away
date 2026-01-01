@@ -85,9 +85,9 @@ html.opendyslexic-active:not(#_) svg * {
     word-spacing: initial !important;
 }
 
-/* 5. UTILITIES: Fix "Bold Italic" breakage only on inherently bold elements */
-html.opendyslexic-active strong,
-html.opendyslexic-active b {
+/* 5. UTILITIES: Fix "Bold Italic" breakage only on inherently bold elements for OpenDyslexic-type fonts */
+html.opendyslexic-active.opendyslexic-type-active strong,
+html.opendyslexic-active.opendyslexic-type-active b {
     font-style: normal !important;
 }
 

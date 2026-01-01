@@ -15,7 +15,10 @@
 
     const FONT_MAP = {
         'opendyslexic': 'OpenDyslexic',
+        'lexend': 'Lexend',
+        'andika': 'Andika',
         'balsamiq': 'BalsamiqSans',
+        'openandika': 'OpenAndika',
         'openbalsamiq': 'OpenBalsamiq'
     };
 
@@ -77,20 +80,25 @@
     }
 
     function updateCSSVariables() {
-        const rootStyle = document.documentElement.style;
+        const root = document.documentElement;
+        const rootStyle = root.style;
         const primaryFont = FONT_MAP[state.fontMode] || 'OpenDyslexic';
 
         rootStyle.setProperty('--od-primary-font-family', primaryFont);
         rootStyle.setProperty('--od-letter-spacing', `${(state.letterSpacing / 1000).toFixed(3)}em`);
         rootStyle.setProperty('--od-word-spacing', `${(state.wordSpacing / 1000).toFixed(3)}em`);
         rootStyle.setProperty('--od-line-height', (state.lineHeight / 100).toFixed(2));
+
+        // Add class for OpenDyslexic-type fonts (fonts starting with "Open")
+        const isOpenTypeFont = primaryFont.startsWith('Open');
+        root.classList.toggle('opendyslexic-type-active', isOpenTypeFont);
     }
 
     function removeStyles() {
         const root = document.documentElement;
         const rootStyle = root.style;
 
-        root.classList.remove('opendyslexic-active');
+        root.classList.remove('opendyslexic-active', 'opendyslexic-type-active');
         rootStyle.removeProperty('--od-primary-font-family');
         rootStyle.removeProperty('--od-letter-spacing');
         rootStyle.removeProperty('--od-word-spacing');
