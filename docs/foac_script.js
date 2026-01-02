@@ -34,7 +34,12 @@
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const msg = getMessage(el.getAttribute('data-i18n'));
             if (msg) {
-                el.textContent = msg;
+                // Check if message contains HTML tags (like <em>)
+                if (msg.includes('<') && msg.includes('>')) {
+                    el.innerHTML = msg;
+                } else {
+                    el.textContent = msg;
+                }
             }
         });
 
