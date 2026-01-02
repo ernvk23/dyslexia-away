@@ -86,36 +86,21 @@
     <!-- Critical inline CSS: fonts, particle colors, anti‑FOUC -->
     <style>
         @font-face {
-            font-family: 'OpenDyslexic';
-            src: url('fonts/OpenDyslexicAlta-Regular.otf') format('opentype');
+            font-family: 'BalsamiqSans';
+            src: url('fonts/BalsamiqSans-Regular.ttf') format('truetype');
             font-weight: 100 599;
             font-style: normal;
             font-display: swap;
         }
 
         @font-face {
-            font-family: 'OpenDyslexic';
-            src: url('fonts/OpenDyslexicAlta-Bold.otf') format('opentype');
+            font-family: 'BalsamiqSans';
+            src: url('fonts/BalsamiqSans-Bold.ttf') format('truetype');
             font-weight: 600 900;
             font-style: normal;
             font-display: swap;
         }
 
-        @font-face {
-            font-family: 'OpenDyslexic';
-            src: url('fonts/OpenDyslexicAlta-Italic.otf') format('opentype');
-            font-weight: 100 599;
-            font-style: italic;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'OpenDyslexic';
-            src: url('fonts/OpenDyslexicAlta-BoldItalic.otf') format('opentype');
-            font-weight: 600 900;
-            font-style: italic;
-            font-display: swap;
-        }
 
         :root {
             --particle-color: rgba(4, 56, 104, 0.3);
@@ -134,7 +119,8 @@
             }
         }
 
-        html[data-lang="es"] [data-i18n] {
+        html[data-lang="es"] [data-i18n],
+        html[data-lang="ru"] [data-i18n] {
             opacity: 0;
         }
 
@@ -150,10 +136,8 @@
     </style>
 
     <!-- Preload critical assets -->
-    <link rel="preload" href="fonts/OpenDyslexicAlta-Regular.otf" as="font" type="font/otf" crossorigin>
-    <link rel="preload" href="fonts/OpenDyslexicAlta-Bold.otf" as="font" type="font/otf" crossorigin>
-    <link rel="preload" href="fonts/OpenDyslexicAlta-Italic.otf" as="font" type="font/otf" crossorigin>
-    <link rel="preload" href="fonts/OpenDyslexicAlta-BoldItalic.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" href="fonts/BalsamiqSans-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="fonts/BalsamiqSans-Bold.ttf" as="font" type="font/ttf" crossorigin>
 
     <!-- Main CSS: Critical for layout -->
     <link rel="preload" href="style.css" as="style">
@@ -225,7 +209,7 @@
                 <div class="hero-content">
                     <h1 data-i18n="heroTitle">Read the web, your way.</h1>
                     <p data-i18n="heroDescription">A simple browser extension that applies a dyslexic‑friendly font. In
-                        case reading has ever felt hard, this might help. <em>Free forever:)</em></p>
+                        case reading has ever felt hard, this might help. Free forever:)</p>
                     <div class="cta-group">
                         <a href="https://chromewebstore.google.com/detail/dyslexiaaway-beta/cdlibplbalgnomagghdgogdofiphhjce"
                             target="_blank" rel="noopener noreferrer" class="btn-store chrome"

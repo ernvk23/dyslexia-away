@@ -84,19 +84,12 @@ html {
     overflow-x: hidden;
     scroll-behavior: smooth;
     line-height: 1.5;
-    letter-spacing: -0.0em;
-    word-spacing: -0.01em;
+    font-size: 1.1rem;
 }
 
-h1,
-h2,
-h3 {
-    letter-spacing: -0.03em;
-    word-spacing: -0.02em;
-}
 
 body {
-    font-family: 'OpenDyslexic', Roboto, sans-serif;
+    font-family: 'BalsamiqSans', Roboto, sans-serif;
     color: var(--text-color);
     transition: background-color 0.5s ease, color 0.5s ease;
     padding-top: 4rem;
@@ -558,6 +551,10 @@ footer {
 
 /* Responsive */
 @media (max-width: 768px) {
+    html {
+        font-size: 1rem;
+    }
+
     h1 {
         font-size: 2.5rem;
     }

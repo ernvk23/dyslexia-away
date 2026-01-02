@@ -29,19 +29,12 @@
     function getMessage(key) {
         return translations[key] || '';
     }
-
-    // Translate page - exactly like popup.js but with HTML support
     function translatePage() {
         // Translate text content using data-i18n attributes
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const msg = getMessage(el.getAttribute('data-i18n'));
             if (msg) {
-                // Check if message contains HTML tags (like <em>)
-                if (msg.includes('<') && msg.includes('>')) {
-                    el.innerHTML = msg;
-                } else {
-                    el.textContent = msg;
-                }
+                el.textContent = msg;
             }
         });
 
