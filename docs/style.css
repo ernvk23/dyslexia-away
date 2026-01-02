@@ -84,12 +84,11 @@ html {
     overflow-x: hidden;
     scroll-behavior: smooth;
     line-height: 1.5;
-    font-size: 1.1rem;
 }
 
 
 body {
-    font-family: 'BalsamiqSans', Roboto, sans-serif;
+    font-family: 'ComicRelief', Roboto, sans-serif;
     color: var(--text-color);
     transition: background-color 0.5s ease, color 0.5s ease;
     padding-top: 4rem;
@@ -171,7 +170,7 @@ nav.scrolled {
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--primary-color);
     text-decoration: none;
@@ -355,7 +354,7 @@ h1 {
 }
 
 .hero-content p {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     color: var(--text-light);
     margin-bottom: 2.5rem;
 }
@@ -551,10 +550,6 @@ footer {
 
 /* Responsive */
 @media (max-width: 768px) {
-    html {
-        font-size: 1rem;
-    }
-
     h1 {
         font-size: 2.5rem;
     }
@@ -580,7 +575,7 @@ footer {
 
 
     .logo {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .burger-menu {
