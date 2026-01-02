@@ -1,6 +1,6 @@
 {
     "name": "dyslexia-away",
-    "version": "0.15.2",
+    "version": "0.15.3",
     "description": "A simple browser extension that applies a dyslexic-friendly font. For some of us, that small change makes reading a lot easier.",
     "main": "background.js",
     "scripts": {
