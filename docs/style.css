@@ -88,7 +88,7 @@ html {
 
 
 body {
-    font-family: 'ComicRelief', Roboto, sans-serif;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
     color: var(--text-color);
     transition: background-color 0.5s ease, color 0.5s ease;
     padding-top: 4rem;

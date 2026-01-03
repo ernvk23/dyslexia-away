@@ -49,7 +49,7 @@
         "name": "Edgar R.N"
       },
       "license": "https://www.gnu.org/licenses/gpl-3.0.html",
-      "softwareVersion": "0.12.0",
+      "softwareVersion": "0.15.4",
       "image": "https://ernvk23.github.io/dyslexia-away/img/sample-full.jpeg"
     }
     </script>
@@ -85,23 +85,6 @@
 
     <!-- Critical inline CSS: particle colors, anti‑FOUC -->
     <style>
-        @font-face {
-            font-family: 'ComicRelief';
-            src: url('fonts/ComicRelief-Regular.ttf') format('truetype');
-            font-weight: 100 599;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'ComicRelief';
-            src: url('fonts/ComicRelief-Bold.ttf') format('truetype');
-            font-weight: 600 900;
-            font-style: normal;
-            font-display: swap;
-        }
-
-
         :root {
             --particle-color: rgba(4, 56, 104, 0.3);
             --particle-connection-color: rgba(4, 56, 104, 0.2);
@@ -134,10 +117,6 @@
             }
         }
     </style>
-
-    <!-- Preload critical assets -->
-    <link rel="preload" href="fonts/ComicRelief-Regular.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="preload" href="fonts/ComicRelief-Bold.ttf" as="font" type="font/ttf" crossorigin>
 
     <!-- Main CSS: Critical for layout -->
     <link rel="preload" href="style.css" as="style">
