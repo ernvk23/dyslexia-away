@@ -1,7 +1,7 @@
 # Custom cache-control headers for GitHub Pages
 
 # Fonts and images: 1 day
-/*.otf
+/*.woff2
   Cache-Control: public, max-age=86400
 /*.png
   Cache-Control: public, max-age=86400
