@@ -8,176 +8,189 @@
     <style>
         @font-face {
             font-family: 'OpenDyslexic';
-            src: url('app/fonts/OpenDyslexicAlta-Regular.otf') format('opentype');
+            src: url('fonts/OpenDyslexicAlta-Regular.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Lexend';
+            src: url('fonts/Lexend-VariableFont_wght.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Andika';
+            src: url('fonts/Andika-Regular.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Balsamiq Sans';
+            src: url('fonts/BalsamiqSans-Regular.woff2') format('woff2');
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             margin: 0;
-            padding: 15px;
-            background: rgb(237, 236, 236);
+            padding: 0;
+            background: #fafaf5;
             font-family: Arial, sans-serif;
-            min-height: 100vh;
+            width: 1920px;
+            height: 1020px;
             display: flex;
-            flex-direction: column;
-        }
-
-        .main-content {
-            flex: 1;
-            max-width: 1000px;
-            margin-inline: auto;
-            padding: 6rem;
-            width: 100%;
-            position: relative;
-
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
         .container {
             display: grid;
-            grid-template-columns: 1fr 80px 1fr;
-            gap: 0;
-            align-items: start;
-            margin-top: 5rem;
-            /* Space for the image between columns */
+            grid-template-columns: 1fr 1.5fr;
+            grid-template-rows: auto 1fr;
+            gap: 30px;
+            width: 1400px;
+            padding-inline: 6rem;
         }
 
-        .column {
-            background: white;
-            padding-inline: 40px;
-            padding-block: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            height: fit-content;
-            z-index: 1000;
-        }
-
-        .separator {
-            position: relative;
+        .extension-image {
+            grid-column: 1;
+            grid-row: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #6c757d;
+        }
+
+        .extension-image img {
+            max-width: 100%;
+            max-height: 320px;
+            width: auto;
+            height: auto;
+            filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.15));
+        }
+
+        .original-card {
+            grid-column: 1;
+            grid-row: 2;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .font-cards {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 16px;
+            align-content: center;
+            padding: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-header {
+            font-size: 12px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+        }
+
+        .sample-text {
             font-size: 18px;
-            font-weight: bold;
-            height: 100%;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
         }
 
-        .column-header {
-            text-align: center;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .standard-font {
+        .font-standard {
             font-family: Arial, sans-serif;
         }
 
-        .dyslexic-font {
+        .font-opendyslexic {
             font-family: 'OpenDyslexic', sans-serif;
             letter-spacing: -0.02em;
             word-spacing: -0.01em;
         }
 
-        h1 {
-            font-size: 22px;
-            color: #333;
-            margin: 0;
+        .font-lexend {
+            font-family: 'Lexend', sans-serif;
         }
 
-        h2 {
-            font-size: 16px;
-            color: #495057;
-            margin: 0 0 15px 0;
+        .font-andika {
+            font-family: 'Andika', sans-serif;
         }
 
-        p {
-            line-height: 1.5;
-            margin-bottom: 16px;
-            color: #495057;
-            font-size: 15px;
+        .font-balsamiq {
+            font-family: 'Balsamiq Sans', sans-serif;
         }
 
-        .demo-text {
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 12px;
-        }
-
-        .demo-text h3 {
-            margin-top: 0;
-            color: #333;
-            font-size: 18px;
-        }
-
-        .floating-image {
-            position: absolute;
-            top: 30%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            max-width: 150px;
-            width: 100%;
-            height: auto;
-            z-index: 2000;
-            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
-            border-radius: 8px;
+        .highlight {
+            color: #6366f1;
+            font-weight: 600;
         }
     </style>
 </head>
 
 <body>
-    <div class="main-content">
-        <div class="container">
-            <div class="column standard-font">
-                <div class="column-header">
-                    <h1>Standard Font</h1>
-                    <h2>Before DyslexiaAway</h2>
-                </div>
-
-                <p>Reading on the web can be challenging for people with dyslexia. Standard fonts often cause letters to
-                    appear to swap, rotate, or blur together.</p>
-
-                <div class="demo-text">
-                    <h3>Example Text:</h3>
-                    <p>The quick brown fox jumps over the lazy dog. This sentence contains every letter in the alphabet,
-                        making it perfect for testing fonts.</p>
-                    <p>Many people with dyslexia find that certain letters like 'b', 'd', 'p', and 'q' can be easily
-                        confused in standard fonts.</p>
-                </div>
-
-                <p>Without proper font support, reading becomes a struggle rather than an enjoyable activity. The
-                    constant
-                    effort to decipher text can lead to fatigue and frustration.</p>
-            </div>
-
-            <div class="separator">
-            </div>
-
-            <div class="column dyslexic-font">
-                <div class="column-header">
-                    <h1>OpenDyslexic Font</h1>
-                    <h2>After DyslexiaAway</h2>
-                </div>
-
-                <p>Reading on the web can be challenging for people with dyslexia. Standard fonts often cause letters to
-                    appear to swap, rotate, or blur together.</p>
-
-                <div class="demo-text">
-                    <h3>Example Text:</h3>
-                    <p>The quick brown fox jumps over the lazy dog. This sentence contains every letter in the alphabet,
-                        making it perfect for testing fonts.</p>
-                    <p>Many people with dyslexia find that certain letters like 'b', 'd', 'p', and 'q' can be easily
-                        confused in standard fonts.</p>
-                </div>
-
-                <p>Without proper font support, reading becomes a struggle rather than an enjoyable activity. The
-                    constant
-                    effort to decipher text can lead to fatigue and frustration.</p>
-            </div>
+    <div class="container">
+        <div class="extension-image">
+            <img src="sample.webp" alt="DyslexiaAway Extension">
         </div>
 
+        <div class="original-card">
+            <div class="card-header">Original</div>
+            <p class="sample-text font-standard">
+                The quick brown fox jumps over the lazy dog. Reading can be <span class="highlight">challenging</span>
+                with standard fonts.
+            </p>
+        </div>
+
+        <div class="font-cards">
+            <div class="card">
+                <div class="card-header">OpenDyslexic</div>
+                <p class="sample-text font-opendyslexic">
+                    The quick brown fox jumps over the lazy dog. Letters designed to be
+                    <span class="highlight">easily distinguished</span>.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Lexend</div>
+                <p class="sample-text font-lexend">
+                    The quick brown fox jumps over the lazy dog. <span class="highlight">Clean and highly
+                        readable</span> for extended reading.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Andika</div>
+                <p class="sample-text font-andika">
+                    The quick brown fox jumps over the lazy dog. Designed for <span class="highlight">literacy
+                        and readability</span>.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Balsamiq Sans</div>
+                <p class="sample-text font-balsamiq">
+                    The quick brown fox jumps over the lazy dog. <span class="highlight">Warm and approachable</span>
+                    hand-drawn style.
+                </p>
+            </div>
+        </div>
     </div>
-    <img src="sample.png" alt="DyslexiaAway Sample" class="floating-image">
 </body>
 
 </html>
