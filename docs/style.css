@@ -93,7 +93,7 @@ body {
     transition: background-color 0.5s ease, color 0.5s ease;
     padding-top: 4rem;
     max-width: var(--container-width);
-    margin: 0 auto;
+    margin: 0 auto !important;
 }
 
 /* Background layers */
@@ -293,7 +293,7 @@ section {
 .hero-container {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 2rem;
     width: 100%;
     justify-content: space-around;
 }
