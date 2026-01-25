@@ -14,7 +14,7 @@ A simple browser extension that applies a dyslexic-friendly font. For some of us
 
 ## Sample
 
-<img src="./app/sample-full.jpeg" alt="Sample" width="60%" style="border-radius: 0.4rem; margin: auto; display: block;">
+<img src="./app/sample-full.webp" alt="Sample" width="60%" style="border-radius: 0.4rem; margin: auto; display: block;">
 
 ## Installation
 
