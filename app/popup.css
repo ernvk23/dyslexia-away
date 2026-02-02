@@ -169,6 +169,7 @@ h2 {
 .setting {
     font-size: 0.7rem;
     padding-inline: 0.5rem;
+    padding-block: 0.15rem;
     background: var(--setting-bg);
     border-radius: 0.5rem;
     border: 1px solid var(--setting-border);

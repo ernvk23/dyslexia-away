@@ -3,7 +3,7 @@
         "message": "Thema umschalten"
     },
     "toggleFontAria": {
-        "message": "OpenDyslexic-Schriftart ein-/ausschalten"
+        "message": "Erweiterung aktivieren/deaktivieren"
     },
     "letterSpacing": {
         "message": "Buchstabenabstand"
@@ -22,23 +22,5 @@
     },
     "fontModeLabel": {
         "message": "Schriftart"
-    },
-    "fontModeOpenDyslexic": {
-        "message": "OpenDyslexic (OD)"
-    },
-    "fontModeLexend": {
-        "message": "Lexend"
-    },
-    "fontModeAndika": {
-        "message": "Andika (A)"
-    },
-    "fontModeBalsamiq": {
-        "message": "Balsamiq Sans (BS)"
-    },
-    "fontModeOpenAndika": {
-        "message": "OD & A (nicht-latein)"
-    },
-    "fontModeOpenBalsamiq": {
-        "message": "OD & BS (nicht-latein)"
     }
 }

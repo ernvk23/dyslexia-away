@@ -6,11 +6,14 @@ A simple browser extension that applies a dyslexic-friendly font. For some of us
 
 ## Features
 
-* **Dyslexic-friendly fonts:** OpenDyslexic, Lexend, Andika, or Balsamiq Sans (with Cyrillic & Greek support)
+* **Dyslexic-friendly fonts:** Andika, Lexend, OpenDyslexic, Shantell Sans, Balsamiq Sans, or Atkinson Hyperlegible
 * **Theme switching:** Choose between light, dark, or system themes
 * **Custom settings:** Adjust spacing and line height
 * **Site exclusion:** Skip pages where it could cause issues
 * **Cross-browser compatible:** Works on Chrome/Firefox compatible browsers (including Firefox for Android)
+
+> [!NOTE]
+> Some fonts may not support specific languages (e.g., Cyrillic/Greek).
 
 ## Sample
 
@@ -59,8 +62,10 @@ Licensed under the [GNU General Public License v3.0 (GPL-3.0)](./LICENSE).
 
 ## Credits
 
-- [OpenDyslexic](https://opendyslexic.org/) - an open typeface made to help with reading ([SIL OFL](./app/fonts/OpenDyslexic-OFL.txt))
-- [Lexend](https://www.lexend.com/) - a typeface designed to improve reading proficiency ([SIL OFL](./app/fonts/Lexend-OFL.txt))
 - [Andika](https://fonts.google.com/specimen/Andika) - a typeface designed for clarity and legibility ([SIL OFL](./app/fonts/Andika-OFL.txt))
+- [Lexend](https://www.lexend.com/) - a typeface designed to improve reading proficiency ([SIL OFL](./app/fonts/Lexend-OFL.txt))
+- [OpenDyslexic](https://opendyslexic.org/) - an open typeface made to help with reading ([SIL OFL](./app/fonts/OpenDyslexic-OFL.txt))
+- [Shantell Sans](https://github.com/arrowtype/shantell-sans) - a friendly typeface ([SIL OFL](./app/fonts/ShantellSans-OFL.txt))
 - [Balsamiq Sans](https://github.com/balsamiq/balsamiqsans) - a Comic Sans-based font ([SIL OFL](./app/fonts/BalsamiqSans-OFL.txt))
+- [Atkinson Hyperlegible](https://www.brailleinstitute.org/freefont) - a typeface designed to increase legibility for readers with low vision ([SIL OFL](./app/fonts/AtkinsonHyperlegible-OFL.txt))
 - [SVGRepo](https://www.svgrepo.com/) - extension icon (CC0 License)

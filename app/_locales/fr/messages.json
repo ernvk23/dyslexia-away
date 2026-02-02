@@ -3,7 +3,7 @@
         "message": "Changer le thème"
     },
     "toggleFontAria": {
-        "message": "Activer/désactiver la police OpenDyslexic"
+        "message": "Activer/désactiver l'extension"
     },
     "letterSpacing": {
         "message": "Espacement lettres"
@@ -22,23 +22,5 @@
     },
     "fontModeLabel": {
         "message": "Type de police"
-    },
-    "fontModeOpenDyslexic": {
-        "message": "OpenDyslexic (OD)"
-    },
-    "fontModeLexend": {
-        "message": "Lexend"
-    },
-    "fontModeAndika": {
-        "message": "Andika (A)"
-    },
-    "fontModeBalsamiq": {
-        "message": "Balsamiq Sans (BS)"
-    },
-    "fontModeOpenAndika": {
-        "message": "OD & A (non-latin)"
-    },
-    "fontModeOpenBalsamiq": {
-        "message": "OD & BS (non-latin)"
     }
 }

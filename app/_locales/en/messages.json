@@ -3,7 +3,7 @@
         "message": "Toggle theme"
     },
     "toggleFontAria": {
-        "message": "Toggle OpenDyslexic font"
+        "message": "Enable/disable extension"
     },
     "letterSpacing": {
         "message": "Letter Spacing"
@@ -22,23 +22,5 @@
     },
     "fontModeLabel": {
         "message": "Font Type"
-    },
-    "fontModeOpenDyslexic": {
-        "message": "OpenDyslexic (OD)"
-    },
-    "fontModeLexend": {
-        "message": "Lexend"
-    },
-    "fontModeAndika": {
-        "message": "Andika (A)"
-    },
-    "fontModeBalsamiq": {
-        "message": "Balsamiq Sans (BS)"
-    },
-    "fontModeOpenAndika": {
-        "message": "OD & A (non-latin)"
-    },
-    "fontModeOpenBalsamiq": {
-        "message": "OD & BS (non-latin)"
     }
 }

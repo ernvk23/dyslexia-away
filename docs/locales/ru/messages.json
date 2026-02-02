@@ -9,7 +9,7 @@
     "getFirefox": "Получить для Firefox",
     "aboutTitle": "Что он делает",
     "feature1Title": "Применяет дислексические шрифты",
-    "feature1Desc": "Изменяет шрифты веб-сайта на OpenDyslexic, Lexend, Andika или Balsamiq Sans (с поддержкой кириллицы и греческого).",
+    "feature1Desc": "Изменяет шрифты веб-сайта на Andika, Lexend, OpenDyslexic, Shantell Sans, Balsamiq Sans, или Atkinson Hyperlegible.",
     "feature2Title": "Настраиваемые интервалы",
     "feature2Desc": "Увеличивает межбуквенный и межстрочный интервалы.",
     "feature3Title": "Исключение сайтов",

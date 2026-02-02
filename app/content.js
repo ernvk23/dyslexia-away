@@ -14,12 +14,12 @@
     };
 
     const FONT_MAP = {
-        'opendyslexic': 'OpenDyslexic',
-        'lexend': 'Lexend',
         'andika': 'Andika',
+        'lexend': 'Lexend',
+        'opendyslexic': 'OpenDyslexic',
+        'shantell': 'ShantellSans',
         'balsamiq': 'BalsamiqSans',
-        'openandika': 'OpenAndika',
-        'openbalsamiq': 'OpenBalsamiq'
+        'atkinson': 'AtkinsonHyperlegible'
     };
 
     const CSS_VAR_KEYS = ['letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode'];

@@ -3,7 +3,7 @@
         "message": "Переключить тему"
     },
     "toggleFontAria": {
-        "message": "Включить/выключить шрифт OpenDyslexic"
+        "message": "Включить/выключить расширение"
     },
     "letterSpacing": {
         "message": "Интервал букв"
@@ -22,23 +22,5 @@
     },
     "fontModeLabel": {
         "message": "Тип шрифта"
-    },
-    "fontModeOpenDyslexic": {
-        "message": "OpenDyslexic (OD)"
-    },
-    "fontModeLexend": {
-        "message": "Lexend"
-    },
-    "fontModeAndika": {
-        "message": "Andika (A)"
-    },
-    "fontModeBalsamiq": {
-        "message": "Balsamiq Sans (BS)"
-    },
-    "fontModeOpenAndika": {
-        "message": "OD & A (не латин.)"
-    },
-    "fontModeOpenBalsamiq": {
-        "message": "OD & BS (не латин.)"
     }
 }

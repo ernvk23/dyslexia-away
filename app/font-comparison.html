@@ -7,8 +7,8 @@
     <title>DyslexiaAway - Font Comparison</title>
     <style>
         @font-face {
-            font-family: 'OpenDyslexic';
-            src: url('fonts/OpenDyslexicAlta-Regular.woff2') format('woff2');
+            font-family: 'Andika';
+            src: url('fonts/Andika-Regular.woff2') format('woff2');
         }
 
         @font-face {
@@ -17,13 +17,23 @@
         }
 
         @font-face {
-            font-family: 'Andika';
-            src: url('fonts/Andika-Regular.woff2') format('woff2');
+            font-family: 'OpenDyslexic';
+            src: url('fonts/OpenDyslexicAlta-Regular.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Shantell Sans';
+            src: url('fonts/ShantellSans-Regular.woff2') format('woff2');
         }
 
         @font-face {
             font-family: 'Balsamiq Sans';
             src: url('fonts/BalsamiqSans-Regular.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2');
         }
 
         * {
@@ -58,6 +68,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-top: 4rem;
         }
 
         .extension-image img {
@@ -78,6 +89,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            margin-block: 4rem;
         }
 
         .font-cards {
@@ -85,7 +97,7 @@
             grid-row: 1 / span 2;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
+            grid-template-rows: repeat(3, 1fr);
             gap: 16px;
             align-content: center;
             padding: 2rem;
@@ -118,22 +130,30 @@
             font-family: Arial, sans-serif;
         }
 
-        .font-opendyslexic {
-            font-family: 'OpenDyslexic', sans-serif;
-            letter-spacing: -0.02em;
-            word-spacing: -0.01em;
+        .font-andika {
+            font-family: 'Andika', sans-serif;
         }
 
         .font-lexend {
             font-family: 'Lexend', sans-serif;
         }
 
-        .font-andika {
-            font-family: 'Andika', sans-serif;
+        .font-opendyslexic {
+            font-family: 'OpenDyslexic', sans-serif;
+            letter-spacing: -0.02em;
+            word-spacing: -0.01em;
+        }
+
+        .font-shantell {
+            font-family: 'Shantell Sans', sans-serif;
         }
 
         .font-balsamiq {
             font-family: 'Balsamiq Sans', sans-serif;
+        }
+
+        .font-atkinson {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
         }
 
         .highlight {
@@ -159,10 +179,10 @@
 
         <div class="font-cards">
             <div class="card">
-                <div class="card-header">OpenDyslexic</div>
-                <p class="sample-text font-opendyslexic">
-                    The quick brown fox jumps over the lazy dog. Letters designed to be
-                    <span class="highlight">easily distinguished</span>.
+                <div class="card-header">Andika</div>
+                <p class="sample-text font-andika">
+                    The quick brown fox jumps over the lazy dog. Designed for <span class="highlight">literacy
+                        and readability</span>.
                 </p>
             </div>
 
@@ -175,10 +195,18 @@
             </div>
 
             <div class="card">
-                <div class="card-header">Andika</div>
-                <p class="sample-text font-andika">
-                    The quick brown fox jumps over the lazy dog. Designed for <span class="highlight">literacy
-                        and readability</span>.
+                <div class="card-header">OpenDyslexic</div>
+                <p class="sample-text font-opendyslexic">
+                    The quick brown fox jumps over the lazy dog. Letters designed to be
+                    <span class="highlight">easily distinguished</span>.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Shantell Sans</div>
+                <p class="sample-text font-shantell">
+                    The quick brown fox jumps over the lazy dog. <span class="highlight">Friendly and
+                        playful</span> typeface.
                 </p>
             </div>
 
@@ -189,6 +217,16 @@
                     hand-drawn style.
                 </p>
             </div>
+
+            <div class="card">
+                <div class="card-header">Atkinson Hyperlegible</div>
+                <p class="sample-text font-atkinson">
+                    The quick brown fox jumps over the lazy dog. Designed to <span class="highlight">increase
+                        legibility</span>
+                    for low vision readers.
+                </p>
+            </div>
+
         </div>
     </div>
 </body>
