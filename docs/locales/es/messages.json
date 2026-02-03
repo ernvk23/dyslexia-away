@@ -24,5 +24,6 @@
     "feature7Desc": "Todo ocurre localmente. Sin seguimiento.",
     "feature8Title": "Código abierto",
     "feature8Desc": "Ver código fuente",
+    "fontNote": "Algunas fuentes pueden no soportar idiomas específicos (ej., cirílico/griego).",
     "footerCopyright": "© 2025 DyslexiaAway por <a href=\"mailto:ernvk23@gmail.com\" title=\"Email Edgar R.N\" class=\"author-link\">Edgar R.N</a>. Código abierto bajo GPL-3.0."
 }
