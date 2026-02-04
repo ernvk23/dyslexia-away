@@ -4,15 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
     <title data-i18n="siteTitle">DyslexiaAway - Read with Ease</title>
     <meta name="description" data-i18n="siteDescription"
         content="A simple browser extension that applies a dyslexic-friendly font. For some of us, that small change makes reading a lot easier.">
     <meta name="keywords"
-        content="dyslexia, dyslexic, accessibility, font, opendyslexic, browser extension, chrome, firefox, android, reading, free, open-source, reading ease, assistive technology, dyslexia help">
+        content="dyslexia, dyslexic, accessibility, font, opendyslexic, andika, lexend, shantell sans, balsamiq sans, atkinson hyperlegible, browser extension, chrome, firefox, android, reading, free, open-source, reading ease, assistive technology, dyslexia help">
     <meta name="author" content="Edgar R.N">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://ernvk23.github.io/dyslexia-away/">
     <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml">
+
+    <!-- Language alternate links (hreflang) -->
+    <link rel="alternate" hreflang="en" href="https://ernvk23.github.io/dyslexia-away/">
+    <link rel="alternate" hreflang="es" href="https://ernvk23.github.io/dyslexia-away/?lang=es">
+    <link rel="alternate" hreflang="ru" href="https://ernvk23.github.io/dyslexia-away/?lang=ru">
+    <link rel="alternate" hreflang="x-default" href="https://ernvk23.github.io/dyslexia-away/">
+
+    <!-- Additional SEO meta tags -->
+    <meta name="theme-color" content="#0d8fd8">
+    <meta name="application-name" content="DyslexiaAway">
+    <meta name="apple-mobile-web-app-title" content="DyslexiaAway">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -21,6 +36,13 @@
     <meta property="og:description"
         content="A simple browser extension that applies a dyslexic-friendly font. For some of us, that small change makes reading a lot easier.">
     <meta property="og:image" content="https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg">
+    <meta property="og:image:width" content="930">
+    <meta property="og:image:height" content="580">
+    <meta property="og:image:alt" content="DyslexiaAway browser extension showing dyslexic-friendly font in action">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="es_ES">
+    <meta property="og:locale:alternate" content="ru_RU">
+    <meta property="og:site_name" content="DyslexiaAway">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
@@ -29,6 +51,10 @@
     <meta property="twitter:description"
         content="A simple browser extension that applies a dyslexic-friendly font. For some of us, that small change makes reading a lot easier.">
     <meta property="twitter:image" content="https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg">
+    <meta property="twitter:image:alt"
+        content="DyslexiaAway browser extension showing dyslexic-friendly font in action">
+    <meta property="twitter:site" content="@ernvk23">
+    <meta property="twitter:creator" content="@ernvk23">
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -36,21 +62,45 @@
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "DyslexiaAway",
+      "alternateName": "Dyslexia Away",
       "operatingSystem": "Browser",
       "applicationCategory": "BrowserExtension",
       "description": "A simple browser extension that applies a dyslexic-friendly font. For some of us, that small change makes reading a lot easier.",
       "offers": {
         "@type": "Offer",
         "price": "0",
-        "priceCurrency": "USD"
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
       },
       "author": {
         "@type": "Person",
-        "name": "Edgar R.N"
+        "name": "Edgar R.N",
+        "email": "ernvk23@gmail.com",
+        "sameAs": [
+          "https://github.com/ernvk23"
+        ]
       },
       "license": "https://www.gnu.org/licenses/gpl-3.0.html",
       "softwareVersion": "1.1.0",
-      "image": "https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg"
+      "image": "https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg",
+      "screenshot": "https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg",
+      "featureList": [
+        "Applies dyslexic-friendly fonts",
+        "Adjustable letter and line spacing",
+        "Site exclusion support",
+        "Light and dark themes",
+        "Cross-browser compatible",
+        "Multi-language interface",
+        "No data collection",
+        "Open source"
+      ],
+      "downloadUrl": [
+        "https://chromewebstore.google.com/detail/dyslexiaaway-beta/cdlibplbalgnomagghdgogdofiphhjce",
+        "https://addons.mozilla.org/en-US/firefox/addon/dyslexiaaway/"
+      ],
+      "browserRequirements": "Chrome 88+, Firefox 142+, or compatible browsers",
+      "inLanguage": ["en", "es", "ru", "fr", "de", "it", "pt"],
+      "keywords": "dyslexia, dyslexic, accessibility, font, opendyslexic, andika, lexend, shantell sans, balsamiq sans, atkinson hyperlegible, browser extension, chrome, firefox, android, reading, free, open-source"
     }
     </script>
 
@@ -140,6 +190,7 @@
     <!-- Icons & manifest -->
     <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon.png">
     <link rel="icon" type="image/png" sizes="128x128" href="./img/favicon-128.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/favicon-128.png">
     <link rel="manifest" href="./site.webmanifest">
 </head>
 
