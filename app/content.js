@@ -30,6 +30,17 @@
 
     init();
 
+    // Handle BFCache (Back/Forward Cache) restoration in Firefox
+    // This listener detects BFCache restores and re-initializes the script
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            // Stop observer to ensure clean state
+            stopObserver();
+            // Re-initialize by reading from storage to ensure correct state
+            init()
+        }
+    });
+
     function init() {
         // Skip initialization on restricted URLs
         if (RESTRICTED.some(prefix => location.href.startsWith(prefix))) {
@@ -64,7 +75,7 @@
         return state.enabled && !state.excluded;
     }
 
-    async function applyStyles() {
+    function applyStyles() {
         const shouldApply = shouldApplyStyles();
 
         if (shouldApply) {
