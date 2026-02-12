@@ -23,7 +23,7 @@ const DEFAULTS = {
     lineHeight: 140,
     excludedDomains: [],
     theme: 'system',
-    fontMode: 'opendyslexic'
+    fontMode: 'andika'
 };
 
 const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];

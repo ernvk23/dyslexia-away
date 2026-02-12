@@ -4,6 +4,7 @@ const DEFAULTS = {
     wordSpacing: 0,
     lineHeight: 140,
     excludedDomains: [],
+    fontMode: 'andika',
     theme: 'system'
 };
 
