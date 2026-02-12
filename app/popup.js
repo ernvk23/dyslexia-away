@@ -194,7 +194,7 @@ els.exclude.addEventListener('change', async () => {
         storageSaveTimeout = setTimeout(() => {
             saveSettingsAndBroadcast();
             storageSaveTimeout = null;
-        }, 500);
+        }, 100);
     }, { passive: true }); // Can be passive since we don't call preventDefault()
 
     slider.addEventListener('wheel', (e) => {
@@ -219,12 +219,12 @@ els.exclude.addEventListener('change', async () => {
             sliderTimeout = null;
         }, 10);
 
-        // Schedule storage update only when wheel stops for 500ms
+        // Schedule storage update only when wheel stops for 100ms
         if (storageSaveTimeout) clearTimeout(storageSaveTimeout);
         storageSaveTimeout = setTimeout(() => {
             saveSettingsAndBroadcast();
             storageSaveTimeout = null;
-        }, 500);
+        }, 100);
     }, { passive: false });
 });
 
@@ -237,7 +237,7 @@ els.fontModeSelect.addEventListener('change', () => {
     storageSaveTimeout = setTimeout(() => {
         saveSettingsAndBroadcast();
         storageSaveTimeout = null;
-    }, 500);
+    }, 100);
 });
 
 function getCurrentSettings() {
@@ -293,7 +293,7 @@ function scheduleBackgroundUpdate() {
     if (backgroundUpdateTimeout) clearTimeout(backgroundUpdateTimeout);
     backgroundUpdateTimeout = setTimeout(() => {
         browser.runtime.sendMessage({ action: 'UPDATE_BACKGROUND_TABS' });
-    }, 500);
+    }, 100);
 }
 
 els.themeToggle.addEventListener('click', async (e) => {
