@@ -38,7 +38,7 @@ html.opendyslexic-active optgroup,
 html.opendyslexic-active textarea,
 html.opendyslexic-active select,
 html.opendyslexic-active input {
-    font-family: var(--od-primary-font-family, 'OpenDyslexic') !important;
+    font-family: var(--od-primary-font-family, 'Andika') !important;
     letter-spacing: var(--od-letter-spacing) !important;
     word-spacing: var(--od-word-spacing) !important;
 }
