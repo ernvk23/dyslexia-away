@@ -32,9 +32,22 @@
     // Handle BFCache restoration in Firefox
     window.addEventListener('pageshow', (event) => {
         if (event.persisted) {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+            stopObserver();
             init();
         }
     });
+
+    // Handle GitHub/Turbo SPA navigation
+    const handleNavigation = () => {
+        stopObserver();
+        applyStyles();
+    };
+    document.addEventListener('turbo:load', handleNavigation);
+    document.addEventListener('turbo:render', handleNavigation);
 
     function init() {
         if (RESTRICTED.some(prefix => location.href.startsWith(prefix))) {
@@ -76,11 +89,14 @@
             scheduleUpdate(() => {
                 updateCSSVariables();
                 document.documentElement.classList.add('opendyslexic-active');
+                startObserver();
             });
-            startObserver();
+
         } else {
-            scheduleUpdate(removeStyles);
-            stopObserver();
+            scheduleUpdate(() => {
+                stopObserver();
+                removeStyles();
+            });
         }
     }
 
@@ -110,29 +126,31 @@
     }
 
     function startObserver() {
-        // If observer exists, disconnect it first to ensure we create a fresh one for current DOM
         if (observer) {
             observer.disconnect();
             observer = null;
         }
 
+        clearTimeout(debounceTimer);
+        debounceTimer = null;
+
         if (!document.body) {
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', startObserver, { once: true });
+            } else {
+                // Fallback: SPA edge case
+                scheduleUpdate(startObserver);
             }
             return;
         }
 
         observer = new MutationObserver((mutations) => {
-            // If CSS variables exist on :root, styles are applied (new content inherits automatically)
             if (document.documentElement.style.getPropertyValue('--od-primary-font-family')) {
                 return;
             }
 
-            // Don't re-apply if extension is disabled or domain is excluded
             if (!shouldApplyStyles()) return;
 
-            // Only re-apply on significant DOM changes (SPA navigation that may clear :root styles)
             const hasSignificantChanges = mutations.some(mutation =>
                 mutation.addedNodes.length > 0 ||
                 mutation.removedNodes.length > 0
@@ -143,10 +161,10 @@
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
                 scheduleUpdate(() => {
-                    document.documentElement.classList.add('opendyslexic-active');
                     updateCSSVariables();
+                    document.documentElement.classList.add('opendyslexic-active');
                 });
-            }, 20);
+            }, 10);
         });
 
         observer.observe(document.body, {
