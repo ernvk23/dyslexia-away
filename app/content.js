@@ -1,5 +1,4 @@
 (() => {
-    // Browser API detection
     const api = typeof browser !== 'undefined' ? browser : chrome;
 
     const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
@@ -10,7 +9,7 @@
         letterSpacing: 0,
         wordSpacing: 0,
         lineHeight: 140,
-        fontMode: 'opendyslexic'
+        fontMode: 'andika'
     };
 
     const FONT_MAP = {
@@ -30,19 +29,14 @@
 
     init();
 
-    // Handle BFCache (Back/Forward Cache) restoration in Firefox
-    // This listener detects BFCache restores and re-initializes the script
+    // Handle BFCache restoration in Firefox
     window.addEventListener('pageshow', (event) => {
         if (event.persisted) {
-            // Stop observer to ensure clean state
-            stopObserver();
-            // Re-initialize by reading from storage to ensure correct state
-            init()
+            init();
         }
     });
 
     function init() {
-        // Skip initialization on restricted URLs
         if (RESTRICTED.some(prefix => location.href.startsWith(prefix))) {
             return;
         }
@@ -50,11 +44,11 @@
         api.storage.local.get(
             ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'excludedDomains', 'fontMode']
         ).then(result => {
-            state.enabled = result.enabled || false;
+            state.enabled = result.enabled ?? false;
             state.letterSpacing = result.letterSpacing ?? 0;
             state.wordSpacing = result.wordSpacing ?? 0;
             state.lineHeight = result.lineHeight ?? 140;
-            state.fontMode = result.fontMode || 'opendyslexic';
+            state.fontMode = result.fontMode ?? 'andika';
             state.excluded = (result.excludedDomains || []).includes(location.hostname);
 
             applyStyles();
@@ -83,24 +77,23 @@
                 updateCSSVariables();
                 document.documentElement.classList.add('opendyslexic-active');
             });
-            startObserver();  // Start monitoring DOM changes for SPAs
+            startObserver();
         } else {
             scheduleUpdate(removeStyles);
-            stopObserver();  // Stop monitoring when disabled
+            stopObserver();
         }
     }
 
     function updateCSSVariables() {
         const root = document.documentElement;
         const rootStyle = root.style;
-        const primaryFont = FONT_MAP[state.fontMode] || 'OpenDyslexic';
+        const primaryFont = FONT_MAP[state.fontMode] || 'Andika';
 
         rootStyle.setProperty('--od-primary-font-family', primaryFont);
         rootStyle.setProperty('--od-letter-spacing', `${(state.letterSpacing / 1000).toFixed(3)}em`);
         rootStyle.setProperty('--od-word-spacing', `${(state.wordSpacing / 1000).toFixed(3)}em`);
         rootStyle.setProperty('--od-line-height', (state.lineHeight / 100).toFixed(2));
 
-        // Add class for OpenDyslexic-type fonts (fonts starting with "Open")
         const isOpenTypeFont = primaryFont.startsWith('Open');
         root.classList.toggle('opendyslexic-type-active', isOpenTypeFont);
     }
@@ -116,11 +109,13 @@
         rootStyle.removeProperty('--od-line-height');
     }
 
-    // Monitor DOM changes for SPA navigation (GitHub, etc.)
     function startObserver() {
-        if (observer) return;
+        // If observer exists, disconnect it first to ensure we create a fresh one for current DOM
+        if (observer) {
+            observer.disconnect();
+            observer = null;
+        }
 
-        // Wait for document.body to be available
         if (!document.body) {
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', startObserver, { once: true });
@@ -129,28 +124,29 @@
         }
 
         observer = new MutationObserver((mutations) => {
-            // Early exit if already applied - CRITICAL for performance
-            if (document.documentElement.classList.contains('opendyslexic-active')) {
+            // If CSS variables exist on :root, styles are applied (new content inherits automatically)
+            if (document.documentElement.style.getPropertyValue('--od-primary-font-family')) {
                 return;
             }
 
-            // Check if significant DOM changes occurred (like SPA navigation)
+            // Don't re-apply if extension is disabled or domain is excluded
+            if (!shouldApplyStyles()) return;
+
+            // Only re-apply on significant DOM changes (SPA navigation that may clear :root styles)
             const hasSignificantChanges = mutations.some(mutation =>
                 mutation.addedNodes.length > 0 ||
                 mutation.removedNodes.length > 0
             );
 
-            if (hasSignificantChanges && shouldApplyStyles()) {
-                // Debounce to prevent excessive re-applications during rapid DOM changes
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(() => {
-                    // Re-apply styles after DOM changes
-                    scheduleUpdate(() => {
-                        document.documentElement.classList.add('opendyslexic-active');
-                        updateCSSVariables();
-                    });
-                }, 20);
-            }
+            if (!hasSignificantChanges) return;
+
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                scheduleUpdate(() => {
+                    document.documentElement.classList.add('opendyslexic-active');
+                    updateCSSVariables();
+                });
+            }, 20);
         });
 
         observer.observe(document.body, {
@@ -171,7 +167,6 @@
     function updateState(newState) {
         let changed = false;
 
-        // Update CSS variable settings
         for (const key of CSS_VAR_KEYS) {
             if (newState[key] !== undefined && state[key] !== newState[key]) {
                 state[key] = newState[key];
