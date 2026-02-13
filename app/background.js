@@ -24,10 +24,10 @@ async function initStateWithDefaultsOnly() {
 
 browser.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install') {
-        // Only set defaults on fresh installation
+        // Fresh install: set defaults
         await initStateWithDefaultsOnly();
     } else {
-        // For updates, load existing state
+        // Update: preserve existing settings
         await initState();
     }
 
@@ -36,7 +36,6 @@ browser.runtime.onInstalled.addListener(async (details) => {
 });
 
 browser.runtime.onStartup.addListener(async () => {
-    // On startup, load existing state (don't reset to defaults)
     await initState();
     updateBadge(state.enabled);
 });
@@ -55,8 +54,6 @@ browser.storage.onChanged.addListener((changes, namespace) => {
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'UPDATE_BACKGROUND_TABS') {
         updateBackgroundTabs();
-    } else if (request.action === 'GET_STATE') {
-        sendResponse({ state });
     }
 });
 
@@ -66,6 +63,7 @@ async function updateAllTabs() {
 }
 
 async function updateBackgroundTabs() {
+    // Parallel queries for efficiency - don't update active tab (already updated by popup)
     const [tabs, [activeTab]] = await Promise.all([
         browser.tabs.query({}),
         browser.tabs.query({ active: true, currentWindow: true })
@@ -81,8 +79,10 @@ async function updateBackgroundTabs() {
 async function injectOrReinitialize(tab) {
     if (!tab.url || RESTRICTED.some(prefix => tab.url.startsWith(prefix))) return;
 
+    // Try to reinitialize existing content script first (faster than re-injection)
     const response = await browser.tabs.sendMessage(tab.id, { action: 'REINITIALIZE' }).catch(() => null);
 
+    // If content script not loaded, inject it
     if (!response) {
         browser.scripting.insertCSS({
             target: { tabId: tab.id, allFrames: true },

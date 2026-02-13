@@ -1,19 +1,16 @@
-// i18n Translation - Works in both Chrome and Firefox
+// i18n translation runs as microtask to avoid blocking UI initialization
 function translatePage() {
-    // Translate text content using data-i18n attributes
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const msg = browser.i18n.getMessage(el.getAttribute('data-i18n'));
         if (msg) el.textContent = msg;
     });
 
-    // Translate aria-labels using data-i18n-aria attributes
     document.querySelectorAll('[data-i18n-aria]').forEach(el => {
         const msg = browser.i18n.getMessage(el.getAttribute('data-i18n-aria'));
         if (msg) el.setAttribute('aria-label', msg);
     });
 }
 
-// Run translation as microtask to not block UI initialization
 Promise.resolve().then(translatePage);
 
 const DEFAULTS = {
@@ -28,7 +25,11 @@ const DEFAULTS = {
 
 const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
 
-const sliders = ['letterSpacing', 'wordSpacing', 'lineHeight'];
+// Debounce timeouts
+const DEBOUNCE_SLIDER_INPUT = 10;   // Live visual updates while dragging
+const DEBOUNCE_STORAGE_SAVE = 100;  // Storage writes (unified for all)
+const DEBOUNCE_BACKGROUND_UPDATE = 100; // Background tab updates
+
 const els = {
     toggle: document.getElementById('toggleBtn'),
     letterSlider: document.getElementById('letterSpacing'),
@@ -45,8 +46,8 @@ const els = {
 
 let currentDomain = null;
 let sliderTimeout = null;
-let backgroundUpdateTimeout = null;
 let storageSaveTimeout = null;
+let backgroundUpdateTimeout = null;
 
 browser.storage.local.get(Object.keys(DEFAULTS)).then(result => {
     const settings = { ...DEFAULTS, ...result };
@@ -69,7 +70,7 @@ async function initExclusion(excludedDomains, enabled) {
         const url = new URL(tab.url);
         currentDomain = url.hostname;
 
-        // Determine if any hostname in this tab is excluded
+        // Check all frames for excluded hostnames (handles iframes)
         const hostnames = await getAllHostnamesInTab();
         const isExcluded = hostnames.some(hostname => excludedDomains.includes(hostname));
 
@@ -99,10 +100,8 @@ async function getAllHostnamesInTab() {
             func: () => window.location.hostname
         });
         const hostnames = results.map(r => r.result).filter(Boolean);
-        const unique = [...new Set(hostnames)];
-        return unique;
+        return [...new Set(hostnames)];
     } catch (e) {
-        console.error('Failed to query frames:', e);
         return [];
     }
 }
@@ -116,7 +115,6 @@ function formatEm(value) {
 function updateToggleUI(enabled) {
     els.toggle.classList.toggle('active', enabled);
 
-    // Get current exclusion state and update sliders accordingly
     const isExcluded = currentDomain && (els.exclude.checked || false);
     updateSlidersState(isExcluded, enabled);
 }
@@ -147,9 +145,9 @@ els.exclude.addEventListener('change', async () => {
     const { excludedDomains, enabled } = await browser.storage.local.get(['excludedDomains', 'enabled']);
     let domains = excludedDomains || [];
 
+    // Exclude/include all frames in this tab
     const hostnames = await getAllHostnamesInTab();
     if (hostnames.length === 0) {
-        // fallback to top-level domain
         hostnames.push(currentDomain);
     }
 
@@ -172,33 +170,29 @@ els.exclude.addEventListener('change', async () => {
 });
 
 [els.letterSlider, els.wordSlider, els.lineSlider].forEach(slider => {
+    // Input event: fires while dragging (~60 times/sec)
     slider.addEventListener('input', () => {
         updateDisplayValues();
 
-        if (sliderTimeout) clearTimeout(sliderTimeout);
+        clearTimeout(sliderTimeout);
         sliderTimeout = setTimeout(() => {
             updateCurrentTabStyles(getCurrentSettings());
-            sliderTimeout = null;
-        }, 10);
+        }, DEBOUNCE_SLIDER_INPUT);
     }, { passive: true });
 
+    // Change event: fires once on release (discrete action)
     slider.addEventListener('change', () => {
-        if (sliderTimeout) {
-            clearTimeout(sliderTimeout);
-            sliderTimeout = null;
-        }
+        clearTimeout(sliderTimeout);
         updateCurrentTabStyles(getCurrentSettings());
 
-        // Debounced storage update - only the last one wins
-        if (storageSaveTimeout) clearTimeout(storageSaveTimeout);
+        clearTimeout(storageSaveTimeout);
         storageSaveTimeout = setTimeout(() => {
             saveSettingsAndBroadcast();
-            storageSaveTimeout = null;
-        }, 100);
-    }, { passive: true }); // Can be passive since we don't call preventDefault()
+        }, DEBOUNCE_STORAGE_SAVE);
+    }, { passive: true });
 
+    // Wheel event: allow scrolling on sliders for fine control
     slider.addEventListener('wheel', (e) => {
-        // Don't process wheel events if slider is disabled
         if (slider.disabled) {
             return;
         }
@@ -212,32 +206,26 @@ els.exclude.addEventListener('change', async () => {
 
         updateDisplayValues();
 
-        // Update current tab styles with 10ms debounce
-        if (sliderTimeout) clearTimeout(sliderTimeout);
+        clearTimeout(sliderTimeout);
         sliderTimeout = setTimeout(() => {
             updateCurrentTabStyles(getCurrentSettings());
-            sliderTimeout = null;
-        }, 10);
+        }, DEBOUNCE_SLIDER_INPUT);
 
-        // Schedule storage update only when wheel stops for 100ms
-        if (storageSaveTimeout) clearTimeout(storageSaveTimeout);
+        clearTimeout(storageSaveTimeout);
         storageSaveTimeout = setTimeout(() => {
             saveSettingsAndBroadcast();
-            storageSaveTimeout = null;
-        }, 100);
+        }, DEBOUNCE_STORAGE_SAVE);
     }, { passive: false });
 });
 
 els.fontModeSelect.addEventListener('change', () => {
     const fontMode = els.fontModeSelect.value;
-    updateCurrentTabStyles({ fontMode: fontMode });
+    updateCurrentTabStyles({ fontMode });
 
-    // Debounced storage update - only the last one wins
-    if (storageSaveTimeout) clearTimeout(storageSaveTimeout);
+    clearTimeout(storageSaveTimeout);
     storageSaveTimeout = setTimeout(() => {
         saveSettingsAndBroadcast();
-        storageSaveTimeout = null;
-    }, 100);
+    }, DEBOUNCE_STORAGE_SAVE);
 });
 
 function getCurrentSettings() {
@@ -258,10 +246,9 @@ async function updateCurrentTabStyles(settings) {
             settings: settings
         }).catch(() => null);
 
-        // If content script isn't loaded, inject it and send message
+        // If content script isn't loaded, inject it
         if (!response) {
             injectContentScript(tab.id).then(() => {
-                // Send the message after injection to ensure current settings are applied
                 browser.tabs.sendMessage(tab.id, {
                     action: 'UPDATE_STYLES',
                     settings: settings
@@ -290,10 +277,10 @@ function saveSettingsAndBroadcast() {
 }
 
 function scheduleBackgroundUpdate() {
-    if (backgroundUpdateTimeout) clearTimeout(backgroundUpdateTimeout);
+    clearTimeout(backgroundUpdateTimeout);
     backgroundUpdateTimeout = setTimeout(() => {
         browser.runtime.sendMessage({ action: 'UPDATE_BACKGROUND_TABS' });
-    }, 100);
+    }, DEBOUNCE_BACKGROUND_UPDATE);
 }
 
 els.themeToggle.addEventListener('click', async (e) => {
@@ -307,10 +294,9 @@ els.themeToggle.addEventListener('click', async (e) => {
 });
 
 els.reset.addEventListener('click', async () => {
-    // Trigger storage read early (async)
     const enabledPromise = browser.storage.local.get('enabled');
 
-    // Reset UI to defaults - batch all synchronous DOM updates
+    // Reset UI to defaults
     els.letterSlider.value = DEFAULTS.letterSpacing;
     els.wordSlider.value = DEFAULTS.wordSpacing;
     els.lineSlider.value = DEFAULTS.lineHeight;
@@ -319,27 +305,22 @@ els.reset.addEventListener('click', async () => {
     applyTheme(DEFAULTS.theme);
     els.exclude.checked = false;
 
-    // Prepare settings for content script (exclude theme) - global reset
     const contentSettings = {
         ...getCurrentSettings(),
         excludedDomains: []
     };
 
-    // Await enabled value when needed
     const { enabled } = await enabledPromise;
     if (currentDomain) {
-        // Update sliders state and content script (heavy async, fire and forget)
         updateSlidersState(false, enabled);
         updateCurrentTabStyles(contentSettings);
     }
 
-    // Storage settings (include theme)
     const storageSettings = {
         ...contentSettings,
         theme: DEFAULTS.theme
     };
 
-    // Parallelize storage write and background update
     browser.storage.local.set(storageSettings);
     scheduleBackgroundUpdate();
 });

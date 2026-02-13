@@ -3,6 +3,9 @@
 
     const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
 
+    // Debounce timeout for mutation observer
+    const DEBOUNCE_MUTATION = 10;
+
     const state = {
         enabled: false,
         excluded: false,
@@ -29,6 +32,8 @@
 
     init();
 
+    // BFCache: Firefox caches page state when navigating back/forward.
+    // When restored, we must re-read storage and restart observer for fresh state.
     window.addEventListener('pageshow', (event) => {
         if (event.persisted) {
             stopObserver();
@@ -36,7 +41,7 @@
         }
     });
 
-    // Handle GitHub/Turbo SPA navigation
+    // GitHub/Turbo SPA navigation - handle route changes without full page reload
     document.addEventListener('turbo:load', applyStyles);
     document.addEventListener('turbo:render', applyStyles);
 
@@ -63,6 +68,8 @@
         if (animationFrameId) {
             cancelAnimationFrame(animationFrameId);
         }
+        // Set animationFrameId to null BEFORE callback to prevent race conditions
+        // if callback calls scheduleUpdate again
         animationFrameId = requestAnimationFrame(() => {
             animationFrameId = null;
             callback();
@@ -79,6 +86,8 @@
                 updateCSSVariables();
                 document.documentElement.classList.add('opendyslexic-active');
             });
+            // Start observer OUTSIDE scheduleUpdate to monitor immediately, not after 16ms delay.
+            // This prevents missing mutations during the rAF delay window.
             startObserver();
         } else {
             stopObserver();
@@ -112,6 +121,8 @@
     }
 
     function startObserver() {
+        // Always recreate observer to ensure it's monitoring current DOM,
+        // not stale cached DOM from BFCache restoration
         if (observer) {
             observer.disconnect();
             observer = null;
@@ -124,18 +135,23 @@
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', startObserver, { once: true });
             } else {
+                // Edge case: SPA might have body but not ready yet
                 scheduleUpdate(startObserver);
             }
             return;
         }
 
         observer = new MutationObserver((mutations) => {
+            // CRITICAL: Check CSS variable, not class. SPA navigation may clear variables
+            // but leave class intact, causing fallback to default font.
             if (document.documentElement.style.getPropertyValue('--od-primary-font-family')) {
                 return;
             }
 
             if (!shouldApplyStyles()) return;
 
+            // Only re-apply on childList mutations (nodes added/removed), not text changes.
+            // This catches SPA navigation while ignoring minor DOM updates.
             const hasSignificantChanges = mutations.some(mutation =>
                 mutation.addedNodes.length > 0 ||
                 mutation.removedNodes.length > 0
@@ -143,15 +159,18 @@
 
             if (!hasSignificantChanges) return;
 
+            // DEBOUNCE_MUTATION batches rapid mutations during SPA navigation
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
                 scheduleUpdate(() => {
                     updateCSSVariables();
                     document.documentElement.classList.add('opendyslexic-active');
                 });
-            }, 10);
+            }, DEBOUNCE_MUTATION);
         });
 
+        // Monitor <body> for childList changes only (not attributes or characterData)
+        // to detect SPA navigation without performance overhead
         observer.observe(document.body, {
             childList: true,
             subtree: true
