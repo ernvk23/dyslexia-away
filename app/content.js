@@ -29,25 +29,16 @@
 
     init();
 
-    // Handle BFCache restoration in Firefox
     window.addEventListener('pageshow', (event) => {
         if (event.persisted) {
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
-                animationFrameId = null;
-            }
             stopObserver();
             init();
         }
     });
 
     // Handle GitHub/Turbo SPA navigation
-    const handleNavigation = () => {
-        stopObserver();
-        applyStyles();
-    };
-    document.addEventListener('turbo:load', handleNavigation);
-    document.addEventListener('turbo:render', handleNavigation);
+    document.addEventListener('turbo:load', applyStyles);
+    document.addEventListener('turbo:render', applyStyles);
 
     function init() {
         if (RESTRICTED.some(prefix => location.href.startsWith(prefix))) {
@@ -73,8 +64,8 @@
             cancelAnimationFrame(animationFrameId);
         }
         animationFrameId = requestAnimationFrame(() => {
-            callback();
             animationFrameId = null;
+            callback();
         });
     }
 
@@ -83,20 +74,15 @@
     }
 
     function applyStyles() {
-        const shouldApply = shouldApplyStyles();
-
-        if (shouldApply) {
+        if (shouldApplyStyles()) {
             scheduleUpdate(() => {
                 updateCSSVariables();
                 document.documentElement.classList.add('opendyslexic-active');
-                startObserver();
             });
-
+            startObserver();
         } else {
-            scheduleUpdate(() => {
-                stopObserver();
-                removeStyles();
-            });
+            stopObserver();
+            scheduleUpdate(removeStyles);
         }
     }
 
@@ -138,7 +124,6 @@
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', startObserver, { once: true });
             } else {
-                // Fallback: SPA edge case
                 scheduleUpdate(startObserver);
             }
             return;
