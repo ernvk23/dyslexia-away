@@ -38,7 +38,7 @@ html.opendyslexic-active optgroup,
 html.opendyslexic-active textarea,
 html.opendyslexic-active select,
 html.opendyslexic-active input {
-    font-family: var(--od-primary-font-family, 'Andika') !important;
+    font-family: var(--od-primary-font-family) !important;
     letter-spacing: var(--od-letter-spacing) !important;
     word-spacing: var(--od-word-spacing) !important;
 }
@@ -49,7 +49,7 @@ html.opendyslexic-active span:not([aria-hidden="true"]):not([role="img"]):not([c
 html.opendyslexic-active div:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
 html.opendyslexic-active button:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
 html.opendyslexic-active i:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]) {
-    font-family: var(--od-primary-font-family, 'OpenDyslexic') !important;
+    font-family: var(--od-primary-font-family) !important;
     letter-spacing: var(--od-letter-spacing) !important;
     word-spacing: var(--od-word-spacing) !important;
 }
@@ -105,5 +105,5 @@ html.opendyslexic-active.opendyslexic-type-active h6 {
 }
 
 html.opendyslexic-active ::placeholder {
-    font-family: var(--od-primary-font-family, 'OpenDyslexic') !important;
+    font-family: var(--od-primary-font-family) !important;
 }
