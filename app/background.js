@@ -1,98 +1,46 @@
-const DEFAULTS = {
-    enabled: false,
-    letterSpacing: 0,
-    wordSpacing: 0,
-    lineHeight: 140,
-    excludedDomains: [],
-    fontMode: 'andika',
-    theme: 'system'
-};
-
+const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], fontMode: 'andika', theme: 'system' };
 const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
 
-let state = { ...DEFAULTS };
-
-async function initState() {
-    const result = await browser.storage.local.get(Object.keys(DEFAULTS));
-    state = { ...DEFAULTS, ...result };
-}
-
-async function initStateWithDefaultsOnly() {
-    state = { ...DEFAULTS };
-    await browser.storage.local.set(DEFAULTS);
-}
+// Sync badge with enabled state
+browser.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && changes.enabled) updateBadge(changes.enabled.newValue);
+});
 
 browser.runtime.onInstalled.addListener(async (details) => {
-    if (details.reason === 'install') {
-        // Fresh install: set defaults
-        await initStateWithDefaultsOnly();
-    } else {
-        // Update: preserve existing settings
-        await initState();
-    }
+    if (details.reason === 'install') await browser.storage.local.set(DEFAULTS);
 
-    updateBadge(state.enabled);
-    if (state.enabled) updateAllTabs();
+    const { enabled } = await browser.storage.local.get('enabled');
+    updateBadge(enabled);
+
+    // Inject into all open tabs in parallel
+    const tabs = await browser.tabs.query({});
+    Promise.allSettled(tabs.map(injectOrReinitialize));
 });
 
 browser.runtime.onStartup.addListener(async () => {
-    await initState();
-    updateBadge(state.enabled);
+    const { enabled } = await browser.storage.local.get('enabled');
+    updateBadge(enabled);
 });
-
-browser.storage.onChanged.addListener((changes, namespace) => {
-    if (namespace !== 'local') return;
-
-    for (const [key, { newValue }] of Object.entries(changes)) {
-        if (key in state) state[key] = newValue;
-    }
-
-    if (changes.enabled) updateBadge(state.enabled);
-    if (changes.enabled || changes.excludedDomains) updateBackgroundTabs();
-});
-
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === 'UPDATE_BACKGROUND_TABS') {
-        updateBackgroundTabs();
-    }
-});
-
-async function updateAllTabs() {
-    const tabs = await browser.tabs.query({});
-    tabs.forEach(injectOrReinitialize);
-}
-
-async function updateBackgroundTabs() {
-    // Parallel queries for efficiency - don't update active tab (already updated by popup)
-    const [tabs, [activeTab]] = await Promise.all([
-        browser.tabs.query({}),
-        browser.tabs.query({ active: true, currentWindow: true })
-    ]);
-
-    tabs.forEach(tab => {
-        if (!activeTab || tab.id !== activeTab.id) {
-            injectOrReinitialize(tab);
-        }
-    });
-}
 
 async function injectOrReinitialize(tab) {
-    if (!tab.url || RESTRICTED.some(prefix => tab.url.startsWith(prefix))) return;
+    if (!tab.url || RESTRICTED.some(p => tab.url.startsWith(p))) return;
 
-    // Try to reinitialize existing content script first (faster than re-injection)
-    const response = await browser.tabs.sendMessage(tab.id, { action: 'REINITIALIZE' }).catch(() => null);
+    // Ping existing script to avoid duplicate injection
+    const isAlive = await browser.tabs.sendMessage(tab.id, { action: 'REINITIALIZE' }).catch(() => false);
+    if (isAlive) return;
 
-    // If content script not loaded, inject it
-    if (!response) {
-        browser.scripting.insertCSS({
+    try {
+        // Await CSS so the environment is ready before logic runs
+        await browser.scripting.insertCSS({
             target: { tabId: tab.id, allFrames: true },
             files: ['fonts.css', 'style.css']
-        }).then(() =>
-            browser.scripting.executeScript({
-                target: { tabId: tab.id, allFrames: true },
-                files: ['content.js']
-            })
-        ).catch(() => { });
+        });
+        await browser.scripting.executeScript({
+            target: { tabId: tab.id, allFrames: true },
+            files: ['content.js']
+        });
+    } catch (e) {
+        // Ignore errors for restricted or closed tabs
     }
 }
 
