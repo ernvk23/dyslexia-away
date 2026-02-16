@@ -156,7 +156,8 @@ els.reset.addEventListener('click', () => {
         wordSpacing: DEFAULTS.wordSpacing,
         lineHeight: DEFAULTS.lineHeight,
         fontMode: DEFAULTS.fontMode,
-        excludedDomains: []
+        excludedDomains: [],
+        theme: DEFAULTS.theme
     });
 });
 
