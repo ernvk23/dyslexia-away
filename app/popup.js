@@ -19,7 +19,6 @@ let currentDomain = null;
 let storageSaveTimeout = null;
 let settings = { ...DEFAULTS };
 
-// Initialize popup state and UI
 browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
     settings = { ...DEFAULTS, ...result };
 
@@ -141,8 +140,24 @@ els.themeToggle.addEventListener('click', () => {
 });
 
 els.reset.addEventListener('click', () => {
-    const resetSettings = { ...DEFAULTS, enabled: settings.enabled };
-    browser.storage.local.set(resetSettings).then(() => location.reload());
+    // Manually update UI to defaults (Flicker-free)
+    els.letterSlider.value = DEFAULTS.letterSpacing;
+    els.wordSlider.value = DEFAULTS.wordSpacing;
+    els.lineSlider.value = DEFAULTS.lineHeight;
+    els.fontModeSelect.value = DEFAULTS.fontMode;
+    applyTheme(DEFAULTS.theme);
+    els.exclude.checked = false;
+    updateDisplayValues();
+    updateToggleUI(settings.enabled);
+
+    // Broadcast the change (updates active tab instantly, debounces storage)
+    broadcastChange({
+        letterSpacing: DEFAULTS.letterSpacing,
+        wordSpacing: DEFAULTS.wordSpacing,
+        lineHeight: DEFAULTS.lineHeight,
+        fontMode: DEFAULTS.fontMode,
+        excludedDomains: []
+    });
 });
 
 function applyTheme(theme) {
