@@ -71,14 +71,24 @@ function updateSlidersState(isExcluded, isEnabled) {
 }
 
 // Instant update to active tab and debounced storage write
+let popupFrameId = null;
 function broadcastChange(changedSettings) {
     Object.assign(settings, changedSettings);
 
-    browser.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
-        if (tab?.id) {
-            browser.tabs.sendMessage(tab.id, { action: 'UPDATE_STYLES', settings: changedSettings }).catch(() => { });
-        }
-    });
+    // Throttled messaging to active tab
+    if (!popupFrameId) {
+        popupFrameId = requestAnimationFrame(() => {
+            browser.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
+                if (tab?.id) {
+                    browser.tabs.sendMessage(tab.id, {
+                        action: 'UPDATE_STYLES',
+                        settings: settings
+                    }).catch(() => { });
+                }
+                popupFrameId = null;
+            });
+        });
+    }
 
     clearTimeout(storageSaveTimeout);
     storageSaveTimeout = setTimeout(() => browser.storage.local.set(settings), 100);
