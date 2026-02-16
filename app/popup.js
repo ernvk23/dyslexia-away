@@ -19,6 +19,11 @@ let currentDomain = null;
 let storageSaveTimeout = null;
 let settings = { ...DEFAULTS };
 
+function injectContentScript(tabId) {
+    browser.scripting.insertCSS({ target: { tabId: tabId, allFrames: true }, files: ['fonts.css', 'style.css'] }).catch(() => { });
+    browser.scripting.executeScript({ target: { tabId: tabId, allFrames: true }, files: ['content.js'] }).catch(() => { });
+}
+
 browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
     settings = { ...DEFAULTS, ...result };
 
@@ -32,12 +37,23 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
     updateDisplayValues();
 
     const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
-    if (tab?.url && !RESTRICTED.some(p => tab.url.startsWith(p))) {
+
+    const isRestricted = !tab?.url || RESTRICTED.some(p => tab.url.startsWith(p));
+
+    if (!isRestricted) {
         currentDomain = new URL(tab.url).hostname;
         const isExcluded = settings.excludedDomains.includes(currentDomain);
         els.exclude.checked = isExcluded;
+        els.exclude.disabled = false;
         updateSlidersState(isExcluded, settings.enabled);
+
+        // PING: Force active tab to sync its state immediately
+        browser.tabs.sendMessage(tab.id, { action: 'REINITIALIZE' }).catch(() => {
+            // Fallback: Inject if the script isn't running yet
+            injectContentScript(tab.id);
+        });
     } else {
+        els.exclude.checked = false;
         els.exclude.disabled = true;
         updateSlidersState(true, settings.enabled);
     }
@@ -60,12 +76,13 @@ function updateToggleUI(enabled) {
 }
 
 function updateSlidersState(isExcluded, isEnabled) {
-    const slidersDisabled = !isEnabled || isExcluded;
+    const isRestrictedPage = !currentDomain || RESTRICTED.some(p => currentDomain.startsWith(p));
+    const slidersDisabled = !isEnabled || isExcluded || isRestrictedPage;
+
     [els.letterSlider, els.wordSlider, els.lineSlider].forEach(s => {
         s.disabled = slidersDisabled;
         s.classList.toggle('active', !slidersDisabled);
     });
-    // Font selection remains available even if site is excluded
     els.fontModeSelect.disabled = !isEnabled;
 }
 
@@ -150,7 +167,7 @@ els.reset.addEventListener('click', () => {
     updateDisplayValues();
     updateToggleUI(settings.enabled);
 
-    // Broadcast the change (updates active tab instantly, debounces storage)
+    // Broadcast all changes (updates active tab instantly, debounces storage)
     broadcastChange({
         letterSpacing: DEFAULTS.letterSpacing,
         wordSpacing: DEFAULTS.wordSpacing,
