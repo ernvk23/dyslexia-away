@@ -1,20 +1,17 @@
 const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], fontMode: 'andika', theme: 'system' };
 const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
 
-// Sync badge with enabled state
 browser.storage.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes.enabled) updateBadge(changes.enabled.newValue);
 });
 
 browser.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install') await browser.storage.local.set(DEFAULTS);
-
     const { enabled } = await browser.storage.local.get('enabled');
     updateBadge(enabled);
-
-    // Inject into all open tabs in parallel
+    // Inject into tabs already open when the extension is installed or updated
     const tabs = await browser.tabs.query({});
-    Promise.allSettled(tabs.map(injectOrReinitialize));
+    Promise.allSettled(tabs.map(tab => ensureInjected(tab.id, tab.url)));
 });
 
 browser.runtime.onStartup.addListener(async () => {
@@ -22,26 +19,28 @@ browser.runtime.onStartup.addListener(async () => {
     updateBadge(enabled);
 });
 
-async function injectOrReinitialize(tab) {
-    if (!tab.url || RESTRICTED.some(p => tab.url.startsWith(p))) return;
-
-    // Ping existing script to avoid duplicate injection
-    const isAlive = await browser.tabs.sendMessage(tab.id, { action: 'REINITIALIZE' }).catch(() => false);
-    if (isAlive) return;
-
-    try {
-        // Await CSS so the environment is ready before logic runs
-        await browser.scripting.insertCSS({
-            target: { tabId: tab.id, allFrames: true },
-            files: ['fonts.css', 'style.css']
-        });
-        await browser.scripting.executeScript({
-            target: { tabId: tab.id, allFrames: true },
-            files: ['content.js']
-        });
-    } catch (e) {
-        // Ignore errors for restricted or closed tabs
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'ENSURE_INJECTED') {
+        ensureInjected(request.tabId, request.tabUrl)
+            .then(() => sendResponse({ success: true }))
+            .catch(() => sendResponse({ success: false }));
+        return true; // Keep message channel open for async response
     }
+});
+
+async function ensureInjected(tabId, tabUrl) {
+    const url = tabUrl || (await browser.tabs.get(tabId).catch(() => null))?.url;
+    if (!url || RESTRICTED.some(p => url.startsWith(p))) return;
+
+    // If alive, storage.onChanged listener is already running — nothing else needed
+    const alive = await browser.tabs.sendMessage(tabId, { action: 'PING' }).catch(() => false);
+    if (alive) return;
+
+    // Not alive — inject into main frame and all iframes; content.js auto-runs init()
+    try {
+        await browser.scripting.insertCSS({ target: { tabId, allFrames: true }, files: ['fonts.css', 'style.css'] });
+        await browser.scripting.executeScript({ target: { tabId, allFrames: true }, files: ['content.js'] });
+    } catch (e) { /* protected page or tab closed */ }
 }
 
 function updateBadge(enabled) {

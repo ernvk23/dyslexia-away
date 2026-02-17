@@ -1,28 +1,23 @@
 (() => {
     const api = typeof browser !== 'undefined' ? browser : chrome;
-    const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
-
-    let state = { enabled: false, excluded: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, fontMode: 'andika' };
     const FONT_MAP = { 'andika': 'Andika', 'lexend': 'Lexend', 'opendyslexic': 'OpenDyslexic', 'shantell': 'ShantellSans', 'balsamiq': 'BalsamiqSans', 'atkinson': 'AtkinsonHyperlegible' };
 
-    let animationFrameId = null;
+    let state = { enabled: false, excluded: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, fontMode: 'andika' };
+    let rafId = null;
     let observer = null;
 
-    // Batch DOM writes to prevent layout thrashing
-    function scheduleUpdate(callback) {
-        if (animationFrameId) cancelAnimationFrame(animationFrameId);
-        animationFrameId = requestAnimationFrame(() => {
-            animationFrameId = null;
-            callback();
-        });
+    // Coalesce rapid updates into a single paint
+    function scheduleRender(callback) {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => { rafId = null; callback(); });
     }
 
     function applyStyles() {
         if (state.enabled && !state.excluded) {
-            scheduleUpdate(updateDOM);
+            scheduleRender(updateDOM);
         } else {
             stopObserver();
-            scheduleUpdate(removeDOM);
+            scheduleRender(removeDOM);
         }
     }
 
@@ -46,7 +41,6 @@
         const root = document.documentElement;
         const style = root.style;
         if (!root.classList.contains('opendyslexic-active')) return;
-
         root.classList.remove('opendyslexic-active', 'opendyslexic-type-active');
         style.removeProperty('--od-primary-font-family');
         style.removeProperty('--od-letter-spacing');
@@ -56,18 +50,17 @@
 
     function startObserver() {
         if (observer) return;
-        // Observe root to survive body replacements in SPAs
-        observer = new MutationObserver((mutations) => {
-            // Early exit if no new elements were added (ignores removals/attribute changes)
-            const hasNewNodes = mutations.some(m => m.addedNodes.length > 0);
-            if (!hasNewNodes) return;
-
-            // Check if styles were stripped by the site's own scripts
-            if (!document.documentElement.style.getPropertyValue('--od-primary-font-family')) {
+        // Optimized: Only watch root attributes. Iframes handled by manifest all_frames.
+        observer = new MutationObserver(() => {
+            const root = document.documentElement;
+            if (!root.style.getPropertyValue('--od-primary-font-family') || !root.classList.contains('opendyslexic-active')) {
                 applyStyles();
             }
         });
-        observer.observe(document.documentElement, { childList: true, subtree: true });
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['style', 'class']
+        });
     }
 
     function stopObserver() {
@@ -76,52 +69,42 @@
 
     function updateState(changes) {
         let changed = false;
-        const keys = ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode'];
-
-        for (const key of keys) {
+        ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode'].forEach(key => {
             const val = changes[key]?.newValue ?? changes[key];
-            if (val !== undefined && state[key] !== val) {
-                state[key] = val;
-                changed = true;
-            }
-        }
-
+            if (val !== undefined && state[key] !== val) { state[key] = val; changed = true; }
+        });
         const domains = changes.excludedDomains?.newValue ?? changes.excludedDomains;
         if (domains !== undefined) {
             const isExcluded = domains.includes(location.hostname);
-            if (state.excluded !== isExcluded) {
-                state.excluded = isExcluded;
-                changed = true;
-            }
+            if (state.excluded !== isExcluded) { state.excluded = isExcluded; changed = true; }
         }
         return changed;
     }
 
     async function init() {
-        if (RESTRICTED.some(p => location.href.startsWith(p))) return;
         const res = await api.storage.local.get(['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'excludedDomains', 'fontMode']);
         updateState(res);
         applyStyles();
     }
 
-    // Sync background tabs and iframes via storage
+    // Fires in all frames — the only way to reach iframes
     api.storage.onChanged.addListener((changes, area) => {
         if (area === 'local' && updateState(changes)) applyStyles();
     });
 
-    // Handle instant updates from popup or re-pings from background
     api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-        if (msg.action === 'REINITIALIZE') {
-            init();
-            sendResponse({ success: true });
-        } else if (msg.action === 'UPDATE_STYLES') {
+        if (msg.action === 'PING') {
+            sendResponse(true);
+            return;
+        }
+        if (msg.action === 'UPDATE_STYLES') {
             if (updateState(msg.settings)) applyStyles();
-            sendResponse({ success: true });
+            sendResponse(true);
+            return;
         }
     });
 
-    // BFCache and SPA support
-    window.addEventListener('pageshow', (e) => e.persisted && init());
+    window.addEventListener('pageshow', (e) => e.persisted && init()); // BFCache restore
     document.addEventListener('turbo:load', applyStyles);
     document.addEventListener('turbo:render', applyStyles);
 

@@ -38,7 +38,7 @@
 
 /* System preference - use same values as light theme */
 @media (prefers-color-scheme: light) {
-    :root:not([data-theme]) {
+    :root:not([data-theme="dark"]) {
         --bg-primary: #f0f2f5;
         --bg-secondary: #f8f9fa;
         --border-color: #d1d5db;
