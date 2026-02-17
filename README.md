@@ -7,10 +7,11 @@ A simple browser extension that applies a dyslexic-friendly font. For some of us
 ## Features
 
 * **Dyslexic-friendly fonts:** Andika, Lexend, OpenDyslexic, Shantell Sans, Balsamiq Sans, or Atkinson Hyperlegible
-* **Theme switching:** Choose between light, dark, or system themes
 * **Custom settings:** Adjust spacing and line height
 * **Site exclusion:** Skip pages where it could cause issues
 * **Cross-browser compatible:** Works on Chrome/Firefox compatible browsers (including Firefox for Android)
+* **Minimal overhead:** Runs with near-zero CPU usage
+* **Theme switching:** Choose between light, dark, or system themes
 
 > [!NOTE]
 > Some fonts may not support specific languages (e.g., Cyrillic/Greek).
@@ -53,8 +54,11 @@ For me, it made things click in a way they hadn't before.
 
 - **Manifest Version:** 3 (Chrome & Firefox)
 - **Font Loading:** Local font files bundled with extension
-- **Storage:** Browser local storage for settings persistence
-- **Compatibility:** Chrome 88+, Firefox 142+
+- **Compatibility:** Chrome 88+, Firefox 142+ (including Firefox for Android)
+- **Zero-footprint:** Stays asleep unless settings change
+- **Privacy First:** No tracking, no data collection, no external dependencies
+
+
 
 ## License
 
