@@ -57,6 +57,7 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
         els.exclude.disabled = isRestricted;
         updateSlidersState(isExcluded, settings.enabled);
     });
+    setTimeout(() => document.documentElement.classList.add('ready'), 50);
 });
 
 function updateDisplayValues() {
