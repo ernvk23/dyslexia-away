@@ -32,7 +32,7 @@
         style.setProperty('--od-line-height', (state.lineHeight / 100).toFixed(2));
 
         root.classList.add('opendyslexic-active');
-        root.classList.toggle('opendyslexic-type-active', primaryFont.startsWith('Open'));
+        root.classList.toggle('opendyslexic-type-active', state.fontMode === 'opendyslexic');
 
         startObserver();
     }
@@ -40,7 +40,6 @@
     function removeDOM() {
         const root = document.documentElement;
         const style = root.style;
-        if (!root.classList.contains('opendyslexic-active')) return;
         root.classList.remove('opendyslexic-active', 'opendyslexic-type-active');
         style.removeProperty('--od-primary-font-family');
         style.removeProperty('--od-letter-spacing');
