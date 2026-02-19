@@ -19,19 +19,8 @@
     --slider-number: #b1b1b1;
 }
 
-/* Disable transitions for specific elements until the popup is "ready" */
-:root:not(.ready) body,
-:root:not(.ready) .popup-container,
-:root:not(.ready) .setting,
-:root:not(.ready) #fontModeSelect,
-:root:not(.ready) .header,
-:root:not(.ready) h2,
-:root:not(.ready) .toggle-icon,
-:root:not(.ready) label,
-:root:not(.ready) label span,
-:root:not(.ready) input[type="range"],
-:root:not(.ready) .reset-btn,
-:root:not(.ready) .theme-icon {
+/* Disable transitions until ready */
+:root:not(.ready) * {
     transition: none !important;
 }
 
