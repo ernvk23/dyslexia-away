@@ -1,63 +1,52 @@
-/* Theme System - Optimized for performance */
 :root {
-    /* Dark theme (default) */
-    --bg-primary: #181818;
-    --bg-secondary: #222222;
-    --border-color: #404040;
-    --header-border: rgba(255, 255, 255, 0.1);
-    --text-primary: #b1b1b1;
-    --text-secondary: #ccc;
+    color-scheme: dark light;
+
+    /* --- Palette --- */
+    --bg-primary: light-dark(#f0f2f5, #181818);
+    --bg-secondary: light-dark(#f8f9fa, #222222);
+    --border-color: light-dark(#d1d5db, #404040);
+    --header-border: light-dark(#c5c6c7, rgba(255, 255, 255, 0.1));
+    --text-primary: light-dark(#1f2937, #b1b1b1);
+    --text-secondary: light-dark(#4b5563, #ccc);
+    --accent-glow: light-dark(rgba(14, 165, 233, .15), rgba(14, 165, 233, .1));
+    --setting-bg: light-dark(#e5e7eb, #2a2a2a);
+    --setting-border: light-dark(#d1d5db, #3a3a3a);
+    --slider-bg: light-dark(#d1d5db, #2e2e2e);
+    --toggle-inactive: light-dark(#9ca3af, #5e5c64);
+    --checkbox-border: light-dark(#9ca3af, #5e5c64);
+    --slider-number: light-dark(#1f2937, #b1b1b1);
+
+    /* --- Constants --- */
     --accent-color: #0ea5e9;
     --accent-hover: #0284c7;
     --accent-active: #0369a1;
-    --accent-glow: rgba(14, 165, 233, 0.1);
-    --setting-bg: #2a2a2a;
-    --setting-border: #3a3a3a;
-    --slider-bg: #2e2e2e;
-    --toggle-inactive: #5e5c64;
-    --checkbox-border: #5e5c64;
-    --slider-number: #b1b1b1;
+
+    /* --- Configuration --- */
+    --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+
+    /* --- Timers --- */
+    --t-theme: 0.5s ease;
+    /* Backgrounds, Borders, Text */
+    --t-state: 0.3s ease;
+    /* On/Off Colors (Icons, Checkboxes) */
+    --t-phys: 0.15s ease;
+    /* Movement, Scale, Dragging */
+
+    --thumb-size: 0.875rem;
+    --radius-pill: 0.5rem;
 }
 
-/* Disable transitions until ready */
+[data-theme="light"] {
+    color-scheme: light;
+}
+
+[data-theme="dark"] {
+    color-scheme: dark;
+}
+
+/* Stop all animations until JS is ready */
 :root:not(.ready) * {
     transition: none !important;
-}
-
-/* Light theme - only override what changes */
-[data-theme="light"] {
-    --bg-primary: #f0f2f5;
-    --bg-secondary: #f8f9fa;
-    --border-color: #d1d5db;
-    --header-border: #c5c6c7;
-    --text-primary: #1f2937;
-    --text-secondary: #4b5563;
-    --accent-glow: rgba(14, 165, 233, 0.15);
-    --setting-bg: #e5e7eb;
-    --setting-border: #d1d5db;
-    --slider-bg: #d1d5db;
-    --toggle-inactive: #9ca3af;
-    --checkbox-border: #9ca3af;
-    --slider-number: #1f2937;
-}
-
-/* System preference - use same values as light theme */
-@media (prefers-color-scheme: light) {
-    :root:not([data-theme="dark"]) {
-        --bg-primary: #f0f2f5;
-        --bg-secondary: #f8f9fa;
-        --border-color: #d1d5db;
-        --header-border: #c5c6c7;
-        --text-primary: #1f2937;
-        --text-secondary: #4b5563;
-        --accent-glow: rgba(14, 165, 233, 0.15);
-        --setting-bg: #e5e7eb;
-        --setting-border: #d1d5db;
-        --slider-bg: #d1d5db;
-        --toggle-inactive: #9ca3af;
-        --checkbox-border: #9ca3af;
-        --slider-number: #1f2937;
-    }
 }
 
 * {
@@ -69,16 +58,25 @@
 html {
     height: 100%;
     width: 100%;
-    color: var(--text-primary);
 }
+
+body,
+button,
+input,
+select {
+    font-family: var(--font-ui);
+}
+
+/* --- Layout --- */
 
 body {
     width: 16rem;
     min-width: fit-content;
     background: var(--bg-primary);
-    transition: background-color 0.5s ease, color 0.5s ease;
+    color: var(--text-primary);
     padding: 0.25rem;
     overflow-y: auto;
+    transition: background-color var(--t-theme), color var(--t-theme);
 }
 
 .popup-container {
@@ -89,14 +87,12 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background: var(--bg-secondary);
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.3),
-        0 0 0 1px var(--accent-glow);
-    transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--accent-glow);
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     overflow-y: auto;
+    transition: background-color var(--t-theme), border-color var(--t-theme), box-shadow var(--t-theme);
 }
 
 .header {
@@ -105,8 +101,8 @@ body {
     justify-content: space-between;
     border-bottom: 1px solid var(--header-border);
     padding-bottom: 0.2rem;
-    transition: border-color 0.5s ease;
     flex-shrink: 0;
+    transition: border-color var(--t-theme);
 }
 
 .main-toggle-container {
@@ -114,15 +110,6 @@ body {
     display: flex;
     justify-content: center;
     flex-shrink: 0;
-}
-
-h2 {
-    font-size: 0.7rem;
-    font-weight: bold;
-    transition: color 0.5s ease;
-    user-select: none;
-    -webkit-user-select: none;
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
 .settings-container {
@@ -133,11 +120,21 @@ h2 {
     gap: 0.5rem;
 }
 
-.toggle-button {
+h2 {
+    font-size: 0.7rem;
+    font-weight: bold;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: color var(--t-theme);
+}
+
+/* --- Interactive Elements --- */
+
+.toggle-button,
+.theme-toggle-button {
     cursor: pointer;
     border-radius: 50%;
     padding: 0.25rem;
-    transition: all 0.2s ease;
     background: transparent;
     border: none;
     display: flex;
@@ -145,45 +142,90 @@ h2 {
     justify-content: center;
     user-select: none;
     -webkit-user-select: none;
+    transition: transform var(--t-phys), box-shadow var(--t-phys);
 }
 
-/* Active state for all devices */
-.toggle-button:active {
+.toggle-button:active,
+.theme-toggle-button:active {
     transform: scale(0.95);
 }
 
 .toggle-button.active {
-    box-shadow:
-        0 0 4px rgba(14, 165, 233, 0.4),
-        0 0 8px rgba(14, 165, 233, 0.2);
+    box-shadow: 0 0 4px rgba(14, 165, 233, 0.4), 0 0 8px rgba(14, 165, 233, 0.2);
 }
 
 .toggle-icon {
     color: var(--toggle-inactive);
-    transition: color 0.3s ease;
     fill: currentColor;
     height: 4rem;
     width: 4rem;
+    transition: color var(--t-state);
 }
 
 .toggle-button.active .toggle-icon {
     color: var(--accent-color);
-    fill: currentColor;
 }
 
+.theme-toggle-button {
+    position: relative;
+    width: 2rem;
+    height: 2rem;
+}
+
+.theme-icon {
+    display: none;
+    color: var(--toggle-inactive);
+    position: absolute;
+    transition: color var(--t-theme), transform var(--t-theme);
+}
+
+[data-theme="system"] .theme-icon.system,
+[data-theme="light"] .theme-icon.light,
+[data-theme="dark"] .theme-icon.dark,
+:root:not([data-theme]) .theme-icon.system {
+    display: block;
+}
+
+/* --- Settings Rows --- */
 .setting {
     font-size: 0.7rem;
     padding-inline: 0.5rem;
     padding-block: 0.15rem;
     background: var(--setting-bg);
-    border-radius: 0.5rem;
+    border-radius: var(--radius-pill);
     border: 1px solid var(--setting-border);
-    transition: background-color 0.5s ease, border-color 0.5s ease;
     flex-basis: 3rem;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    transition: background-color var(--t-theme), border-color var(--t-theme);
+}
+
+.setting.exclusion-setting {
+    flex-basis: auto;
+    padding-block: 0.375rem;
+}
+
+.setting.reset-btn {
+    flex-basis: auto;
+    padding-block: 0.5rem;
+}
+
+label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap;
+    transition: color var(--t-theme);
+}
+
+label span {
+    color: var(--slider-number);
+    font-variant-numeric: tabular-nums;
+    min-width: 2rem;
+    text-align: right;
+    flex-shrink: 0;
+    transition: color var(--t-theme);
 }
 
 #fontModeSelect {
@@ -193,38 +235,12 @@ h2 {
     padding-block: 0.1rem;
     background-color: var(--setting-bg);
     color: var(--text-primary);
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
     cursor: pointer;
     border-radius: 0.25rem;
-    transition: background-color 0.5s ease, color 0.5s ease;
+    transition: background-color var(--t-theme), color var(--t-theme);
 }
 
-.setting.exclusion-setting {
-    flex-basis: auto;
-    padding-block: 0.375rem;
-}
-
-
-.setting.reset-btn {
-    flex-basis: auto;
-    padding-block: 0.5rem;
-}
-
-
-
-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    white-space: nowrap;
-    transition: color 0.5s ease;
-}
-
-
-.exclusion-setting label {
-    align-items: center;
-}
-
+/* Custom Checkbox */
 .exclusion-setting input[type="checkbox"] {
     -webkit-appearance: none;
     appearance: none;
@@ -233,9 +249,9 @@ label {
     border: 2px solid var(--checkbox-border);
     border-radius: 0.25rem;
     cursor: pointer;
-    transition: all 0.2s ease;
     position: relative;
     background-color: transparent;
+    transition: background-color var(--t-theme), border-color var(--t-theme);
 }
 
 .exclusion-setting input[type="checkbox"]:checked {
@@ -252,43 +268,53 @@ label {
     transform: translate(-50%, -50%);
 }
 
-label span {
-    color: var(--slider-number);
-    font-variant-numeric: tabular-nums;
-    min-width: 2rem;
-    text-align: right;
-    flex-shrink: 0;
-    transition: color 0.5s ease;
-}
-
+/* --- Range Sliders --- */
 input[type="range"] {
     width: 100%;
     height: 0.3rem;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-pill);
     background: var(--slider-bg);
     outline: none;
     -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
-    transition: background-color 0.5s ease;
+    transition: background-color var(--t-theme);
 }
 
 input[type="range"]:disabled {
     opacity: 0.6;
 }
 
+/* WebKit Thumb */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 0.875rem;
-    height: 0.875rem;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
     border-radius: 50%;
     background: var(--toggle-inactive);
     cursor: pointer;
     box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3);
-    transition: all 0.15s;
+    transition: transform var(--t-phys), background-color var(--t-theme);
+}
+
+/* Firefox Thumb */
+input[type="range"]::-moz-range-thumb {
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    border-radius: 50%;
+    background: var(--toggle-inactive);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3);
+    transition: transform var(--t-phys), background-color var(--t-theme);
 }
 
 input[type="range"]:disabled::-webkit-slider-thumb {
+    background: var(--toggle-inactive);
+    opacity: 0.6;
+}
+
+input[type="range"]:disabled::-moz-range-thumb {
     background: var(--toggle-inactive);
     opacity: 0.6;
 }
@@ -297,41 +323,25 @@ input[type="range"].active::-webkit-slider-thumb {
     background: var(--accent-color);
 }
 
-input[type="range"]::-webkit-slider-thumb:active {
-    background: var(--accent-active);
-}
-
-input[type="range"]::-moz-range-thumb {
-    width: 0.875rem;
-    height: 0.875rem;
-    border-radius: 50%;
-    background: var(--toggle-inactive);
-    cursor: pointer;
-    border: none;
-    box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3);
-    transition: all 0.15s;
-}
-
-input[type="range"]:disabled::-moz-range-thumb {
-    background: var(--toggle-inactive);
-    opacity: 0.6;
-}
-
 input[type="range"].active::-moz-range-thumb {
     background: var(--accent-color);
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+    background: var(--accent-active);
 }
 
 input[type="range"]::-moz-range-thumb:active {
     background: var(--accent-active);
 }
 
+/* --- Reset Button --- */
 .reset-btn {
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.5s ease;
     margin-top: 1.25rem;
     margin-bottom: 0.5rem;
+    transition: background-color var(--t-theme), color var(--t-theme), border-color var(--t-theme), transform var(--t-phys);
 }
 
 .reset-btn:active {
@@ -339,50 +349,16 @@ input[type="range"]::-moz-range-thumb:active {
     background: var(--setting-bg);
 }
 
-/* Theme toggle button styles */
-.theme-toggle-button {
-    cursor: pointer;
-    border-radius: 50%;
-    padding: 0.25rem;
-    transition: all 0.2s ease;
-    background: transparent;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    -webkit-user-select: none;
-    position: relative;
-    width: 2rem;
-    height: 2rem;
-}
-
-/* Theme icon visibility and transitions */
-.theme-icon {
-    display: none;
-    color: var(--toggle-inactive);
-    transition: color 0.5s ease, transform 0.5s ease;
-    position: absolute;
-}
-
-/* Show only the active theme icon */
-[data-theme="system"] .theme-icon.system,
-[data-theme="light"] .theme-icon.light,
-[data-theme="dark"] .theme-icon.dark,
-:root:not([data-theme]) .theme-icon.system {
-    display: block;
-}
-
-/* Desktop-only hover effects */
+/* --- Desktop Hover Effects --- */
 @media (hover: hover) {
-    .toggle-button:hover {
+
+    .toggle-button:hover,
+    .theme-toggle-button:hover {
         transform: scale(1.1);
     }
 
     .toggle-button.active:hover {
-        box-shadow:
-            0 0 6px rgba(14, 165, 233, 0.5),
-            0 0 10px rgba(14, 165, 233, 0.3);
+        box-shadow: 0 0 6px rgba(14, 165, 233, 0.5), 0 0 10px rgba(14, 165, 233, 0.3);
     }
 
     input[type="range"]::-webkit-slider-thumb:hover {
@@ -398,10 +374,7 @@ input[type="range"]::-moz-range-thumb:active {
     .reset-btn:hover {
         background: var(--bg-secondary);
         border-color: var(--accent-color);
-    }
-
-    .theme-toggle-button:hover {
-        transform: scale(1.1);
+        transition: background-color var(--t-theme), border-color var(--t-theme);
     }
 
     .theme-toggle-button:hover .theme-icon {
@@ -409,16 +382,14 @@ input[type="range"]::-moz-range-thumb:active {
     }
 }
 
-/* Default mobile styles for all touch devices */
+/* --- Mobile / Touch Adjustments --- */
 @media ((any-hover: none) or (hover: none)) and (pointer: coarse) {
-
     html {
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    /* On mobile, we want the popup to be centered but adapt to screen size */
     body {
         margin-inline: auto;
         width: 100%;
@@ -434,12 +405,12 @@ input[type="range"]::-moz-range-thumb:active {
         touch-action: manipulation;
     }
 
-    h2 {
+    h2,
+    .setting {
         font-size: 0.9rem;
     }
 
     .setting {
-        font-size: 0.9rem;
         flex-basis: 3.5rem;
     }
 
@@ -448,7 +419,6 @@ input[type="range"]::-moz-range-thumb:active {
     }
 
     input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
         width: 1.1rem;
         height: 1.1rem;
     }
@@ -467,10 +437,6 @@ input[type="range"]::-moz-range-thumb:active {
         margin-block: 0.75rem;
     }
 
-    .settings-container {
-        gap: 0.5rem;
-    }
-
     #fontModeSelect {
         font-size: 0.8rem;
     }
@@ -479,7 +445,6 @@ input[type="range"]::-moz-range-thumb:active {
         margin-top: 0.75rem;
         margin-bottom: 0.25rem;
     }
-
 }
 
 @media (min-width: 600px) and ((any-hover: none) or (hover: none)) and (pointer: coarse) {
