@@ -6,7 +6,6 @@ const { execSync } = require('child_process');
 const projectRoot = path.join(__dirname, '..');
 const distDir = path.join(projectRoot, 'dist');
 const sourceDir = __dirname;
-const fontsDir = path.join(__dirname, 'fonts');
 
 // Files in src/ to include in the extension package (excluding manifest.json)
 const srcFiles = [

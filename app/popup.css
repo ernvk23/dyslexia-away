@@ -25,10 +25,8 @@
     --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
 
     /* --- Timers --- */
-    --t-theme: 0.5s ease;
-    /* Backgrounds, Borders, Text */
-    --t-state: 0.3s ease;
-    /* On/Off Colors (Icons, Checkboxes) */
+    --t-theme: 0.3s ease;
+    /* Backgrounds, Borders, Text, On/Off Colors */
     --t-phys: 0.15s ease;
     /* Movement, Scale, Dragging */
 
@@ -159,7 +157,7 @@ h2 {
     fill: currentColor;
     height: 4rem;
     width: 4rem;
-    transition: color var(--t-state);
+    transition: color var(--t-theme);
 }
 
 .toggle-button.active .toggle-icon {
@@ -354,7 +352,7 @@ input[type="range"]::-moz-range-thumb:active {
 
     .toggle-button:hover,
     .theme-toggle-button:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 
     .toggle-button.active:hover {
