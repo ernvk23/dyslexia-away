@@ -56,7 +56,7 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
         els.exclude.checked = isExcluded;
         els.exclude.disabled = isRestricted;
         updateSlidersState(isExcluded, settings.enabled);
-        requestAnimationFrame(() => document.documentElement.classList.add('ready'));
+        setTimeout(() => document.documentElement.classList.add('ready'), 50);
     });
 });
 
