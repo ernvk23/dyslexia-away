@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "DyslexiaAway",
     "short_name": "DyslexiaAway",
-    "version": "1.5.0",
+    "version": "1.6.0",
     "description": "A simple browser extension that applies a dyslexic-friendly font. For some of us, that small change makes reading a lot easier.",
     "default_locale": "en",
     "author": "ernvk23",
