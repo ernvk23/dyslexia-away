@@ -187,7 +187,9 @@ els.customFontInput.addEventListener('keydown', (e) => {
     }
 });
 
-els.customFontInput.addEventListener('blur', () => {
+function trimAndSaveCustomFont() {
+    if (els.fontModeSelect.value !== 'custom') return false;
+
     const trimmedValue = els.customFontInput.value.trim();
 
     if (trimmedValue !== els.customFontInput.value) {
@@ -195,25 +197,21 @@ els.customFontInput.addEventListener('blur', () => {
     }
 
     if (trimmedValue !== settings.customFont) {
-        broadcastChange({ customFont: trimmedValue });
+        settings.customFont = trimmedValue;
+        return true;
+    }
+
+    return false;
+}
+
+els.customFontInput.addEventListener('blur', () => {
+    if (trimAndSaveCustomFont()) {
+        broadcastChange({ customFont: settings.customFont });
     }
 });
 
 function performFinalSave() {
-    let changed = false;
-
-    if (els.fontModeSelect.value === 'custom') {
-        const trimmedValue = els.customFontInput.value.trim();
-
-        if (trimmedValue !== els.customFontInput.value) {
-            els.customFontInput.value = trimmedValue;
-        }
-
-        if (trimmedValue !== settings.customFont) {
-            settings.customFont = trimmedValue;
-            changed = true;
-        }
-    }
+    const changed = trimAndSaveCustomFont();
 
     if (changed || saveTimeout) {
         browser.runtime.sendMessage({ action: 'SAVE_SETTINGS', settings });
