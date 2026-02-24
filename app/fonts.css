@@ -48,47 +48,6 @@
     font-display: swap;
 }
 
-/* OpenDyslexic Font */
-@font-face {
-    font-family: 'OpenDyslexic';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Regular.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Regular.woff2') format('woff2'),
-        url('fonts/OpenDyslexicAlta-Regular.woff2') format('woff2');
-    font-weight: 100 599;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'OpenDyslexic';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Bold.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Bold.woff2') format('woff2'),
-        url('fonts/OpenDyslexicAlta-Bold.woff2') format('woff2');
-    font-weight: 600 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'OpenDyslexic';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Italic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Italic.woff2') format('woff2'),
-        url('fonts/OpenDyslexicAlta-Italic.woff2') format('woff2');
-    font-weight: 100 599;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'OpenDyslexic';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-BoldItalic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-BoldItalic.woff2') format('woff2'),
-        url('fonts/OpenDyslexicAlta-BoldItalic.woff2') format('woff2');
-    font-weight: 600 900;
-    font-style: italic;
-    font-display: swap;
-}
-
 /* ShantellSans Font */
 @font-face {
     font-family: 'ShantellSans';
@@ -130,42 +89,42 @@
     font-display: swap;
 }
 
-/* BalsamiqSans Font */
+/* OpenDyslexic Font */
 @font-face {
-    font-family: 'BalsamiqSans';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/BalsamiqSans-Regular.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/BalsamiqSans-Regular.woff2') format('woff2'),
-        url('fonts/BalsamiqSans-Regular.woff2') format('woff2');
+    font-family: 'OpenDyslexic';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Regular.woff2') format('woff2'),
+        url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Regular.woff2') format('woff2'),
+        url('fonts/OpenDyslexicAlta-Regular.woff2') format('woff2');
     font-weight: 100 599;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'BalsamiqSans';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/BalsamiqSans-Bold.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/BalsamiqSans-Bold.woff2') format('woff2'),
-        url('fonts/BalsamiqSans-Bold.woff2') format('woff2');
+    font-family: 'OpenDyslexic';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Bold.woff2') format('woff2'),
+        url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Bold.woff2') format('woff2'),
+        url('fonts/OpenDyslexicAlta-Bold.woff2') format('woff2');
     font-weight: 600 900;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'BalsamiqSans';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/BalsamiqSans-Italic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/BalsamiqSans-Italic.woff2') format('woff2'),
-        url('fonts/BalsamiqSans-Italic.woff2') format('woff2');
+    font-family: 'OpenDyslexic';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Italic.woff2') format('woff2'),
+        url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Italic.woff2') format('woff2'),
+        url('fonts/OpenDyslexicAlta-Italic.woff2') format('woff2');
     font-weight: 100 599;
     font-style: italic;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'BalsamiqSans';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/BalsamiqSans-BoldItalic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/BalsamiqSans-BoldItalic.woff2') format('woff2'),
-        url('fonts/BalsamiqSans-BoldItalic.woff2') format('woff2');
+    font-family: 'OpenDyslexic';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-BoldItalic.woff2') format('woff2'),
+        url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-BoldItalic.woff2') format('woff2'),
+        url('fonts/OpenDyslexicAlta-BoldItalic.woff2') format('woff2');
     font-weight: 600 900;
     font-style: italic;
     font-display: swap;

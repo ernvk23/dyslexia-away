@@ -9,7 +9,7 @@
     "getFirefox": "Get for Firefox",
     "aboutTitle": "What it does",
     "feature1Title": "Applies dyslexic‑friendly fonts",
-    "feature1Desc": "Changes website fonts to Andika, Lexend, OpenDyslexic, Shantell Sans, Balsamiq Sans, or Atkinson Hyperlegible.",
+    "feature1Desc": "Changes website fonts to Andika, Lexend, Shantell Sans, OpenDyslexic, Atkinson Hyperlegible, or use any custom font available on your system.",
     "feature2Title": "Adjustable spacing",
     "feature2Desc": "Increase letter and line spacing.",
     "feature3Title": "Site exclusion",

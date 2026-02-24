@@ -1,8 +1,8 @@
 (() => {
     const api = typeof browser !== 'undefined' ? browser : chrome;
-    const FONT_MAP = { 'andika': 'Andika', 'lexend': 'Lexend', 'opendyslexic': 'OpenDyslexic', 'shantell': 'ShantellSans', 'balsamiq': 'BalsamiqSans', 'atkinson': 'AtkinsonHyperlegible' };
+    const FONT_MAP = { 'andika': 'Andika', 'lexend': 'Lexend', 'shantell': 'ShantellSans', 'opendyslexic': 'OpenDyslexic', 'atkinson': 'AtkinsonHyperlegible' };
 
-    let state = { enabled: false, excluded: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, fontMode: 'andika' };
+    let state = { enabled: false, excluded: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, fontMode: 'andika', customFont: '' };
     let rafId = null;
     let observer = null;
 
@@ -24,7 +24,12 @@
     function updateDOM() {
         const root = document.documentElement;
         const style = root.style;
-        const primaryFont = FONT_MAP[state.fontMode] || 'Andika';
+        let primaryFont = FONT_MAP[state.fontMode] || 'Andika';
+
+        // Handle custom font option
+        if (state.fontMode === 'custom' && state.customFont) {
+            primaryFont = `"${state.customFont}"`;
+        }
 
         style.setProperty('--od-primary-font-family', primaryFont);
         style.setProperty('--od-letter-spacing', `${(state.letterSpacing / 1000).toFixed(3)}em`);
@@ -68,7 +73,7 @@
 
     function updateState(changes) {
         let changed = false;
-        ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode'].forEach(key => {
+        ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode', 'customFont'].forEach(key => {
             const val = changes[key]?.newValue ?? changes[key];
             if (val !== undefined && state[key] !== val) { state[key] = val; changed = true; }
         });
@@ -81,7 +86,7 @@
     }
 
     async function init() {
-        const res = await api.storage.local.get(['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'excludedDomains', 'fontMode']);
+        const res = await api.storage.local.get(['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'excludedDomains', 'fontMode', 'customFont']);
         updateState(res);
         applyStyles();
     }

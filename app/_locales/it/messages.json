@@ -22,5 +22,8 @@
     },
     "fontModeLabel": {
         "message": "Tipo carattere"
+    },
+    "customFontOption": {
+        "message": "Personalizzato"
     }
 }

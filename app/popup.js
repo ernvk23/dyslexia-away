@@ -1,4 +1,4 @@
-const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], theme: 'system', fontMode: 'andika' };
+const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], theme: 'system', fontMode: 'andika', customFont: '' };
 const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
 
 const els = {
@@ -12,7 +12,9 @@ const els = {
     reset: document.getElementById('resetBtn'),
     exclude: document.getElementById('excludeSite'),
     themeToggle: document.getElementById('themeToggleBtn'),
-    fontModeSelect: document.getElementById('fontModeSelect')
+    fontModeSelect: document.getElementById('fontModeSelect'),
+    customFontInput: document.getElementById('customFontInput'),
+    fontModeSetting: document.querySelector('.font-mode-setting')
 };
 
 const sliders = [els.letterSlider, els.wordSlider, els.lineSlider];
@@ -52,6 +54,8 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
         els.wordSlider.value = settings.wordSpacing;
         els.lineSlider.value = settings.lineHeight;
         els.fontModeSelect.value = settings.fontMode;
+        els.customFontInput.value = settings.customFont || '';
+        updateCustomFontInputVisibility();
         updateDisplayValues();
         els.exclude.checked = isExcluded;
         els.exclude.disabled = isRestricted;
@@ -83,6 +87,24 @@ function updateSlidersState(isExcluded, isEnabled) {
         s.classList.toggle('active', !disabled);
     });
     els.fontModeSelect.disabled = !isEnabled;
+    els.customFontInput.disabled = !isEnabled;
+}
+
+function updateCustomFontInputVisibility() {
+    if (els.fontModeSelect.value === 'custom') {
+        els.fontModeSetting.classList.add('show-custom-input');
+    } else {
+        els.fontModeSetting.classList.remove('show-custom-input');
+    }
+}
+
+function sanitizeCustomFont(fontName) {
+    if (typeof fontName !== 'string') return '';
+    return fontName
+        .replace(/[^a-zA-Z0-9\s\-]/g, '')
+        .replace(/\s*-\s*/g, '-')
+        .replace(/\s+/g, ' ')
+        .substring(0, 100);
 }
 
 function broadcastChange(changedSettings) {
@@ -98,7 +120,10 @@ function broadcastChange(changedSettings) {
 
     // 100ms debounce for storage to respect write limits
     clearTimeout(saveTimeout);
-    saveTimeout = setTimeout(() => browser.storage.local.set(settings), 100);
+    saveTimeout = setTimeout(async () => {
+        await browser.storage.local.set(settings);
+        saveTimeout = null;
+    }, 100);
 }
 
 els.toggle.addEventListener('click', () => {
@@ -134,7 +159,69 @@ sliders.forEach(slider => {
     }, { passive: false });
 });
 
-els.fontModeSelect.addEventListener('change', () => broadcastChange({ fontMode: els.fontModeSelect.value }));
+els.fontModeSelect.addEventListener('change', () => {
+    const newFontMode = els.fontModeSelect.value;
+    updateCustomFontInputVisibility();
+    broadcastChange({ fontMode: newFontMode });
+});
+
+els.customFontInput.addEventListener('input', () => {
+    // Remove invalid characters in real-time (but keep spaces)
+    const sanitizedValue = sanitizeCustomFont(els.customFontInput.value);
+
+    // Synchronous update prevents visual flickering of invalid characters
+    if (sanitizedValue !== els.customFontInput.value) {
+        els.customFontInput.value = sanitizedValue;
+    }
+
+    if (sanitizedValue !== settings.customFont) {
+        broadcastChange({ customFont: sanitizedValue });
+    }
+});
+
+els.customFontInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        els.customFontInput.blur();
+    }
+});
+
+els.customFontInput.addEventListener('blur', () => {
+    // Trim trailing spaces on blur
+    const trimmedValue = els.customFontInput.value.trim();
+
+    // Synchronous update
+    if (trimmedValue !== els.customFontInput.value) {
+        els.customFontInput.value = trimmedValue;
+    }
+
+    if (trimmedValue !== settings.customFont) {
+        broadcastChange({ customFont: trimmedValue });
+    }
+});
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'hidden') return;
+
+    let changed = false;
+
+    if (els.fontModeSelect.value === 'custom') {
+        const trimmedValue = els.customFontInput.value.trim();
+        if (trimmedValue !== settings.customFont) {
+            settings.customFont = trimmedValue;
+            changed = true;
+        }
+    }
+
+    if (changed || saveTimeout) {
+        browser.runtime.sendMessage({ action: 'SAVE_SETTINGS', settings });
+
+        if (saveTimeout) {
+            clearTimeout(saveTimeout);
+            saveTimeout = null;
+        }
+    }
+});
 
 els.themeToggle.addEventListener('click', () => {
     const themes = ['system', 'light', 'dark'];
@@ -149,6 +236,8 @@ els.reset.addEventListener('click', () => {
         els.wordSlider.value = DEFAULTS.wordSpacing;
         els.lineSlider.value = DEFAULTS.lineHeight;
         els.fontModeSelect.value = DEFAULTS.fontMode;
+        els.customFontInput.value = DEFAULTS.customFont;
+        updateCustomFontInputVisibility();
         applyTheme(DEFAULTS.theme);
         els.exclude.checked = false;
         updateDisplayValues();
@@ -160,6 +249,7 @@ els.reset.addEventListener('click', () => {
         wordSpacing: DEFAULTS.wordSpacing,
         lineHeight: DEFAULTS.lineHeight,
         fontMode: DEFAULTS.fontMode,
+        customFont: DEFAULTS.customFont,
         excludedDomains: [],
         theme: DEFAULTS.theme
     });

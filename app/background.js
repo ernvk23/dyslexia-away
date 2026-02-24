@@ -26,6 +26,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
             .catch(() => sendResponse({ success: false }));
         return true; // Keep message channel open for async response
     }
+    if (request.action === 'SAVE_SETTINGS') {
+        browser.storage.local.set(request.settings);
+        return false;
+    }
 });
 
 async function ensureInjected(tabId, tabUrl) {

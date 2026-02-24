@@ -27,11 +27,6 @@
         }
 
         @font-face {
-            font-family: 'Balsamiq Sans';
-            src: url('fonts/BalsamiqSans-Regular.woff2') format('woff2');
-        }
-
-        @font-face {
             font-family: 'Atkinson Hyperlegible';
             src: url('fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2');
         }
@@ -97,7 +92,7 @@
             grid-row: 1 / span 2;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr) auto;
             gap: 16px;
             align-content: center;
             padding: 2rem;
@@ -148,10 +143,6 @@
             font-family: 'Shantell Sans', sans-serif;
         }
 
-        .font-balsamiq {
-            font-family: 'Balsamiq Sans', sans-serif;
-        }
-
         .font-atkinson {
             font-family: 'Atkinson Hyperlegible', sans-serif;
         }
@@ -195,14 +186,6 @@
             </div>
 
             <div class="card">
-                <div class="card-header">OpenDyslexic</div>
-                <p class="sample-text font-opendyslexic">
-                    The quick brown fox jumps over the lazy dog. Letters designed to be
-                    <span class="highlight">easily distinguished</span>.
-                </p>
-            </div>
-
-            <div class="card">
                 <div class="card-header">Shantell Sans</div>
                 <p class="sample-text font-shantell">
                     The quick brown fox jumps over the lazy dog. <span class="highlight">Friendly and
@@ -211,10 +194,10 @@
             </div>
 
             <div class="card">
-                <div class="card-header">Balsamiq Sans</div>
-                <p class="sample-text font-balsamiq">
-                    The quick brown fox jumps over the lazy dog. <span class="highlight">Warm and approachable</span>
-                    hand-drawn style.
+                <div class="card-header">OpenDyslexic</div>
+                <p class="sample-text font-opendyslexic">
+                    The quick brown fox jumps over the lazy dog. Letters designed to be
+                    <span class="highlight">easily distinguished</span>.
                 </p>
             </div>
 
@@ -224,6 +207,14 @@
                     The quick brown fox jumps over the lazy dog. Designed to <span class="highlight">increase
                         legibility</span>
                     for low vision readers.
+                </p>
+            </div>
+
+            <div class="card" style="grid-column: 1 / span 2;">
+                <div class="card-header">Custom Font</div>
+                <p class="sample-text">
+                    The quick brown fox jumps over the lazy dog. <span class="highlight">Use any system font</span>
+                    of your choice.
                 </p>
             </div>
 

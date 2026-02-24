@@ -209,6 +209,10 @@ h2 {
     padding-block: 0.5rem;
 }
 
+.setting.font-mode-setting {
+    flex-basis: 3.5rem;
+}
+
 label {
     display: flex;
     justify-content: space-between;
@@ -236,6 +240,25 @@ label span {
     cursor: pointer;
     border-radius: 0.25rem;
     transition: background-color var(--t-theme), color var(--t-theme);
+}
+
+.custom-font-input {
+    display: none;
+    width: 100%;
+    margin-block: 0.1rem;
+    padding-block: 0.1rem;
+    padding-inline: 0.5rem;
+    border: none;
+    outline: none;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.65rem;
+    border-radius: 0.25rem;
+    transition: background-color var(--t-theme), color var(--t-theme);
+}
+
+.font-mode-setting.show-custom-input .custom-font-input {
+    display: block;
 }
 
 /* Custom Checkbox */
@@ -410,6 +433,10 @@ input[type="range"]::-moz-range-thumb:active {
 
     .setting {
         flex-basis: 3.5rem;
+    }
+
+    .setting.font-mode-setting {
+        flex-basis: 4rem;
     }
 
     input[type="range"] {

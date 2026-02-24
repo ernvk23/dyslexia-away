@@ -22,5 +22,8 @@
     },
     "fontModeLabel": {
         "message": "Schriftart"
+    },
+    "customFontOption": {
+        "message": "Benutzerdefiniert"
     }
 }

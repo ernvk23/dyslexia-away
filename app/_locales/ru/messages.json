@@ -22,5 +22,8 @@
     },
     "fontModeLabel": {
         "message": "Тип шрифта"
+    },
+    "customFontOption": {
+        "message": "Пользовательский"
     }
 }
