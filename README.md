@@ -46,7 +46,6 @@ This one only does one thing - and that's enough for me.
 If reading has ever felt harder than it should be, this might help.
 For me, it made things click in a way they hadn't before.
 
-
 ## Technical Details
 
 - **Manifest Version:** 3 (Chrome & Firefox)
@@ -54,8 +53,6 @@ For me, it made things click in a way they hadn't before.
 - **Compatibility:** Chrome 88+, Firefox 142+ (including Firefox for Android)
 - **Zero-footprint:** Stays asleep unless settings change
 - **Privacy First:** No tracking, no data collection, no external dependencies
-
-
 
 ## License
 

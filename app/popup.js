@@ -103,6 +103,7 @@ function sanitizeCustomFont(fontName) {
     return fontName
         .replace(/[^a-zA-Z0-9\s\-]/g, '')
         .replace(/\s*-\s*/g, '-')
+        .replace(/-+/g, '-')
         .replace(/\s+/g, ' ')
         .substring(0, 100);
 }
@@ -187,10 +188,8 @@ els.customFontInput.addEventListener('keydown', (e) => {
 });
 
 els.customFontInput.addEventListener('blur', () => {
-    // Trim trailing spaces on blur
     const trimmedValue = els.customFontInput.value.trim();
 
-    // Synchronous update
     if (trimmedValue !== els.customFontInput.value) {
         els.customFontInput.value = trimmedValue;
     }
@@ -200,13 +199,16 @@ els.customFontInput.addEventListener('blur', () => {
     }
 });
 
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState !== 'hidden') return;
-
+function performFinalSave() {
     let changed = false;
 
     if (els.fontModeSelect.value === 'custom') {
         const trimmedValue = els.customFontInput.value.trim();
+
+        if (trimmedValue !== els.customFontInput.value) {
+            els.customFontInput.value = trimmedValue;
+        }
+
         if (trimmedValue !== settings.customFont) {
             settings.customFont = trimmedValue;
             changed = true;
@@ -221,7 +223,13 @@ document.addEventListener('visibilitychange', () => {
             saveTimeout = null;
         }
     }
+}
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') performFinalSave();
 });
+
+window.addEventListener('blur', performFinalSave);
 
 els.themeToggle.addEventListener('click', () => {
     const themes = ['system', 'light', 'dark'];
