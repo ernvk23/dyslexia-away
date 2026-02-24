@@ -8,8 +8,8 @@
     "getChrome": "Get for Chrome",
     "getFirefox": "Get for Firefox",
     "aboutTitle": "What it does",
-    "feature1Title": "Applies dyslexic‑friendly fonts",
-    "feature1Desc": "Changes website fonts to Andika, Lexend, Shantell Sans, OpenDyslexic, Atkinson Hyperlegible, or use any custom font available on your system.",
+    "feature1Title": "Dyslexic‑friendly fonts",
+    "feature1Desc": "Choose from Andika, Lexend, Shantell Sans, OpenDyslexic, Atkinson Hyperlegible, or use any custom font available on your system.",
     "feature2Title": "Adjustable spacing",
     "feature2Desc": "Increase letter and line spacing.",
     "feature3Title": "Site exclusion",
@@ -26,6 +26,6 @@
     "feature8Desc": "Everything happens locally. No tracking.",
     "feature9Title": "Open source",
     "feature9Desc": "See source code",
-    "fontNote": "Some fonts may not support specific languages (e.g., Cyrillic/Greek).",
+    "fontNote": "Note: Language support varies by font.",
     "footerCopyright": "© 2026 DyslexiaAway by <a href=\"mailto:ernvk23@gmail.com\" title=\"Email Edgar R.N\" class=\"author-link\">Edgar R.N</a>. Open-source under GPL-3.0."
 }
