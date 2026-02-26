@@ -51,6 +51,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* Prevent accidental text highlighting */
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 html {
@@ -121,8 +124,6 @@ body {
 h2 {
     font-size: 0.7rem;
     font-weight: bold;
-    user-select: none;
-    -webkit-user-select: none;
     transition: color var(--t-theme);
 }
 
@@ -138,8 +139,6 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    user-select: none;
-    -webkit-user-select: none;
     transition: transform var(--t-phys), box-shadow var(--t-phys);
 }
 
@@ -157,7 +156,7 @@ h2 {
     fill: currentColor;
     height: 4rem;
     width: 4rem;
-    transition: color var(--t-theme);
+    transition: color var(--t-phys);
 }
 
 .toggle-button.active .toggle-icon {
@@ -174,7 +173,7 @@ h2 {
     display: none;
     color: var(--toggle-inactive);
     position: absolute;
-    transition: color var(--t-theme), transform var(--t-theme);
+    transition: color var(--t-phys);
 }
 
 [data-theme="system"] .theme-icon.system,
@@ -250,10 +249,12 @@ label span {
     padding-inline: 0.5rem;
     border: none;
     outline: none;
-    background-color: var(--bg-primary);
+    background-color: var(--bg-secondary);
     color: var(--text-primary);
     font-size: 0.65rem;
     border-radius: 0.25rem;
+    user-select: text;
+    -webkit-user-select: text;
     transition: background-color var(--t-theme), color var(--t-theme);
 }
 
@@ -272,7 +273,7 @@ label span {
     cursor: pointer;
     position: relative;
     background-color: transparent;
-    transition: background-color var(--t-theme), border-color var(--t-theme);
+    transition: background-color var(--t-phys), border-color var(--t-phys);
 }
 
 .exclusion-setting input[type="checkbox"]:checked {
@@ -315,7 +316,7 @@ input[type="range"]::-webkit-slider-thumb {
     background: var(--toggle-inactive);
     cursor: pointer;
     box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3);
-    transition: transform var(--t-phys), background-color var(--t-theme);
+    transition: transform var(--t-phys), background-color var(--t-phys);
 }
 
 /* Firefox Thumb */
@@ -327,7 +328,7 @@ input[type="range"]::-moz-range-thumb {
     cursor: pointer;
     border: none;
     box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3);
-    transition: transform var(--t-phys), background-color var(--t-theme);
+    transition: transform var(--t-phys), background-color var(--t-phys);
 }
 
 input[type="range"]:disabled::-webkit-slider-thumb {
@@ -350,10 +351,12 @@ input[type="range"].active::-moz-range-thumb {
 
 input[type="range"]::-webkit-slider-thumb:active {
     background: var(--accent-active);
+    transform: scale(1.1);
 }
 
 input[type="range"]::-moz-range-thumb:active {
     background: var(--accent-active);
+    transform: scale(1.1);
 }
 
 /* --- Reset Button --- */
@@ -395,7 +398,6 @@ input[type="range"]::-moz-range-thumb:active {
     .reset-btn:hover {
         background: var(--bg-secondary);
         border-color: var(--accent-color);
-        transition: background-color var(--t-theme), border-color var(--t-theme);
     }
 
     .theme-toggle-button:hover .theme-icon {
@@ -432,11 +434,11 @@ input[type="range"]::-moz-range-thumb:active {
     }
 
     .setting {
-        flex-basis: 3.5rem;
+        flex-basis: 4.5rem;
     }
 
     .setting.font-mode-setting {
-        flex-basis: 4rem;
+        flex-basis: 5rem;
     }
 
     input[type="range"] {
@@ -464,6 +466,10 @@ input[type="range"]::-moz-range-thumb:active {
 
     #fontModeSelect {
         font-size: 0.8rem;
+    }
+
+    .custom-font-input {
+        font-size: 0.85;
     }
 
     .reset-btn {
