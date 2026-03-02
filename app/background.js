@@ -1,4 +1,4 @@
-const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], fontMode: 'andika', theme: 'system' };
+const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], fontMode: 'andika', theme: 'system', heartRated: false, installDate: null };
 const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
 
 browser.storage.onChanged.addListener((changes, area) => {
@@ -6,10 +6,21 @@ browser.storage.onChanged.addListener((changes, area) => {
 });
 
 browser.runtime.onInstalled.addListener(async (details) => {
-    if (details.reason === 'install') await browser.storage.local.set(DEFAULTS);
+    if (details.reason === 'install') {
+        await browser.storage.local.set({ ...DEFAULTS, installDate: Date.now() });
+    } else if (details.reason === 'update') {
+        const { heartRated, installDate } = await browser.storage.local.get(['heartRated', 'installDate']);
+        if (heartRated === undefined) {
+            await browser.storage.local.set({ heartRated: DEFAULTS.heartRated });
+        }
+
+        if (installDate === undefined) {
+            await browser.storage.local.set({ installDate: Date.now() - 216000000 }); // 2.5 days ago to show immediately
+        }
+    }
+
     const { enabled } = await browser.storage.local.get('enabled');
     updateBadge(enabled);
-    // Inject into tabs already open when the extension is installed or updated
     const tabs = await browser.tabs.query({});
     Promise.allSettled(tabs.map(tab => ensureInjected(tab.id, tab.url)));
 });

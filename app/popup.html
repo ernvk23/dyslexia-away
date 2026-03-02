@@ -11,31 +11,42 @@
     <div class="popup-container">
         <div class="header">
             <h2>DyslexiaAway</h2>
-            <button class="theme-toggle-button" id="themeToggleBtn" type="button" data-i18n-aria="toggleThemeAria"
-                tabindex="0">
-                <!-- System theme icon (auto/contrast split circle) -->
-                <svg class="theme-icon system" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none" />
-                    <path d="M12 3 L12 21 A9 9 0 0 0 12 3" fill="currentColor" />
-                </svg>
+            <div class="header-actions">
+                <button class="heart-button hidden" id="heartBtn" type="button" aria-label="Rate extension"
+                    tabindex="0">
+                    <svg class="heart-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path class="heart-path"
+                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                            stroke="currentColor" stroke-width="2" fill="none" />
+                    </svg>
+                </button>
+                <button class="theme-toggle-button" id="themeToggleBtn" type="button" data-i18n-aria="toggleThemeAria"
+                    tabindex="0">
+                    <!-- System theme icon (auto/contrast split circle) -->
+                    <svg class="theme-icon system" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none" />
+                        <path d="M12 3 L12 21 A9 9 0 0 0 12 3" fill="currentColor" />
+                    </svg>
 
-                <!-- Light theme icon (sun) -->
-                <svg class="theme-icon light" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="4" fill="currentColor" />
-                    <path
-                        d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                </svg>
+                    <!-- Light theme icon (sun) -->
+                    <svg class="theme-icon light" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="4" fill="currentColor" />
+                        <path
+                            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
 
-                <!-- Dark theme icon (moon) -->
-                <svg class="theme-icon dark" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </button>
+                    <!-- Dark theme icon (moon) -->
+                    <svg class="theme-icon dark" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
         </div>
         <div class="main-toggle-container">
             <button class="toggle-button" id="toggleBtn" type="button" data-i18n-aria="toggleFontAria" tabindex="0">
@@ -90,7 +101,6 @@
             <button class="setting reset-btn" id="resetBtn" type="button" data-i18n="resetDefaults">Reset</button>
         </div>
     </div>
-
 
     <script src="browser-polyfill.min.js"></script>
     <script src="popup.js"></script>

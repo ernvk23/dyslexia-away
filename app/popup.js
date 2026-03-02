@@ -1,4 +1,4 @@
-const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], theme: 'system', fontMode: 'andika', customFont: '' };
+const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], theme: 'system', fontMode: 'andika', customFont: '', heartRated: false, installDate: null };
 const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
 
 const els = {
@@ -12,6 +12,7 @@ const els = {
     reset: document.getElementById('resetBtn'),
     exclude: document.getElementById('excludeSite'),
     themeToggle: document.getElementById('themeToggleBtn'),
+    heartBtn: document.getElementById('heartBtn'),
     fontModeSelect: document.getElementById('fontModeSelect'),
     customFontInput: document.getElementById('customFontInput'),
     fontModeSetting: document.querySelector('.font-mode-setting')
@@ -48,6 +49,10 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
         browser.runtime.sendMessage({ action: 'ENSURE_INJECTED', tabId: tab.id, tabUrl: tab.url }).catch(() => { });
     }
 
+    const shouldShowHeart = !settings.heartRated &&
+        settings.installDate &&
+        (Date.now() - settings.installDate > 216000000);
+
     scheduleRender(() => {
         updateToggleUI(settings.enabled);
         els.letterSlider.value = settings.letterSpacing;
@@ -60,12 +65,21 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
         els.exclude.checked = isExcluded;
         els.exclude.disabled = isRestricted;
         updateSlidersState(isExcluded, settings.enabled);
+
+        if (shouldShowHeart) {
+            els.heartBtn.classList.remove('hidden');
+        }
+
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 document.documentElement.classList.add('ready');
             });
         });
     });
+
+    if (shouldShowHeart) {
+        setupHeartButton();
+    }
 });
 
 function updateDisplayValues() {
@@ -112,18 +126,16 @@ function sanitizeCustomFont(fontName) {
         .substring(0, 100);
 }
 
-function broadcastChange(changedSettings) {
+function broadcastChange(changedSettings, shouldNotifyTabs = true) {
     Object.assign(settings, changedSettings);
 
-    // 5ms debounce for messaging to prevent flooding the IPC bus
-    clearTimeout(messageTimeout);
-    messageTimeout = setTimeout(() => {
-        if (activeTabId) {
+    if (shouldNotifyTabs && activeTabId) {
+        clearTimeout(messageTimeout);
+        messageTimeout = setTimeout(() => {
             browser.tabs.sendMessage(activeTabId, { action: 'UPDATE_STYLES', settings }).catch(() => { });
-        }
-    }, 5);
+        }, 5);
+    }
 
-    // 100ms debounce for storage to respect write limits
     clearTimeout(saveTimeout);
     saveTimeout = setTimeout(async () => {
         await browser.storage.local.set(settings);
@@ -237,7 +249,7 @@ els.themeToggle.addEventListener('click', () => {
     const themes = ['system', 'light', 'dark'];
     const nextTheme = themes[(themes.indexOf(settings.theme) + 1) % themes.length];
     scheduleRender(() => applyTheme(nextTheme));
-    broadcastChange({ theme: nextTheme });
+    broadcastChange({ theme: nextTheme }, false);
 });
 
 els.reset.addEventListener('click', () => {
@@ -280,3 +292,24 @@ Promise.resolve().then(() => {
         if (msg) el.setAttribute('aria-label', msg);
     });
 });
+
+// Heart Rating Button
+function setupHeartButton() {
+    // Determine rating URL based on browser
+    const isFirefox = navigator.userAgent.includes('Firefox');
+    const ratingUrl = isFirefox
+        ? 'https://addons.mozilla.org/en-US/firefox/addon/dyslexiaaway/'
+        : 'https://chromewebstore.google.com/detail/dyslexiaaway-beta/cdlibplbalgnomagghdgogdofiphhjce/reviews';
+
+    // Handle heart click
+    els.heartBtn.addEventListener('click', () => {
+        // Mark as rated and hide button
+        els.heartBtn.classList.add('hidden');
+
+        // Save to storage, then open URL, then close popup
+        browser.storage.local.set({ heartRated: true }).then(() => {
+            browser.tabs.create({ url: ratingUrl });
+            window.close();
+        });
+    });
+}

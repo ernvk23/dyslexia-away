@@ -1,7 +1,5 @@
 :root {
     color-scheme: dark light;
-
-    /* --- Palette --- */
     --bg-primary: light-dark(#f0f2f5, #181818);
     --bg-secondary: light-dark(#f8f9fa, #222222);
     --border-color: light-dark(#d1d5db, #404040);
@@ -15,25 +13,17 @@
     --toggle-inactive: light-dark(#9ca3af, #5e5c64);
     --checkbox-border: light-dark(#9ca3af, #5e5c64);
     --slider-number: light-dark(#1f2937, #b1b1b1);
-
-    /* --- Constants --- */
     --accent-color: #0ea5e9;
     --accent-hover: #0284c7;
     --accent-active: #0369a1;
-
-    /* --- Configuration --- */
     --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-
-    /* --- Timers --- */
     --t-theme: 0.3s ease;
-    /* Backgrounds, Borders, Text, On/Off Colors */
     --t-phys: 0.15s ease;
-    /* Movement, Scale, Dragging */
-
     --thumb-size: 0.875rem;
     --radius-pill: 0.5rem;
 }
 
+/* Theme Overrides */
 [data-theme="light"] {
     color-scheme: light;
 }
@@ -42,16 +32,16 @@
     color-scheme: dark;
 }
 
-/* Stop all animations until JS is ready */
+/* Initialization Lock */
 :root:not(.ready) * {
     transition: none !important;
 }
 
+/* Global Resets */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* Prevent accidental text highlighting */
     user-select: none;
     -webkit-user-select: none;
 }
@@ -68,8 +58,7 @@ select {
     font-family: var(--font-ui);
 }
 
-/* --- Layout --- */
-
+/* Layout & Containers */
 body {
     width: 16rem;
     min-width: fit-content;
@@ -106,6 +95,87 @@ body {
     transition: border-color var(--t-theme);
 }
 
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Heart Rating Button */
+.heart-button {
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--t-phys);
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+}
+
+.heart-button:active {
+    transform: scale(0.95);
+}
+
+.heart-button .heart-icon {
+    color: var(--toggle-inactive);
+    transition: color var(--t-phys);
+}
+
+.heart-button .heart-path {
+    transition: fill var(--t-phys), stroke var(--t-phys);
+    stroke: var(--toggle-inactive);
+    fill: none;
+}
+
+/* Hidden state - after user has rated */
+.heart-button.hidden {
+    display: none;
+}
+
+/* Infinite subtle breathing wave animation for the heart SVG */
+@keyframes heartbeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+/* Breathing wave effect for the heart stroke */
+@keyframes stroke-ripple {
+
+    0%,
+    100% {
+        stroke-width: 2;
+        stroke: var(--toggle-inactive);
+        filter: drop-shadow(0 0 0 rgba(14, 165, 233, 0));
+    }
+
+    50% {
+        stroke-width: 2.5;
+        stroke: var(--accent-color);
+        filter: drop-shadow(0 0 4px rgba(14, 165, 233, 0.4));
+    }
+}
+
+/* Apply animations when heart button is visible (not hidden) */
+.heart-button:not(.hidden) .heart-icon {
+    animation: heartbeat 3s ease-in-out infinite;
+}
+
+.heart-button:not(.hidden) .heart-path {
+    animation: stroke-ripple 3s ease-in-out infinite;
+}
+
 .main-toggle-container {
     margin-block: 0.5rem;
     display: flex;
@@ -127,8 +197,7 @@ h2 {
     transition: color var(--t-theme);
 }
 
-/* --- Interactive Elements --- */
-
+/* Main Toggles & Icons */
 .toggle-button,
 .theme-toggle-button {
     cursor: pointer;
@@ -183,7 +252,7 @@ h2 {
     display: block;
 }
 
-/* --- Settings Rows --- */
+/* Settings Rows */
 .setting {
     font-size: 0.7rem;
     padding-inline: 0.5rem;
@@ -229,6 +298,7 @@ label span {
     transition: color var(--t-theme);
 }
 
+/* Inputs & Selects */
 #fontModeSelect {
     font-size: 0.6rem;
     border: none;
@@ -290,7 +360,7 @@ label span {
     transform: translate(-50%, -50%);
 }
 
-/* --- Range Sliders --- */
+/* Range Sliders */
 input[type="range"] {
     width: 100%;
     height: 0.3rem;
@@ -307,7 +377,6 @@ input[type="range"]:disabled {
     opacity: 0.6;
 }
 
-/* WebKit Thumb */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: var(--thumb-size);
@@ -319,7 +388,6 @@ input[type="range"]::-webkit-slider-thumb {
     transition: transform var(--t-phys), background-color var(--t-phys);
 }
 
-/* Firefox Thumb */
 input[type="range"]::-moz-range-thumb {
     width: var(--thumb-size);
     height: var(--thumb-size);
@@ -359,7 +427,7 @@ input[type="range"]::-moz-range-thumb:active {
     transform: scale(1.1);
 }
 
-/* --- Reset Button --- */
+/* Reset Button */
 .reset-btn {
     color: var(--text-secondary);
     cursor: pointer;
@@ -373,7 +441,7 @@ input[type="range"]::-moz-range-thumb:active {
     background: var(--setting-bg);
 }
 
-/* --- Desktop Hover Effects --- */
+/* Desktop Hover Effects */
 @media (hover: hover) {
 
     .toggle-button:hover,
@@ -403,9 +471,22 @@ input[type="range"]::-moz-range-thumb:active {
     .theme-toggle-button:hover .theme-icon {
         color: var(--accent-color);
     }
+
+    .heart-button:hover {
+        transform: scale(1.05);
+    }
+
+    .heart-button:hover .heart-icon {
+        color: var(--accent-color);
+    }
+
+    .heart-button:hover .heart-path {
+        stroke: var(--accent-color);
+        fill: var(--accent-color);
+    }
 }
 
-/* --- Mobile / Touch Adjustments --- */
+/* Mobile & Touch Adjustments */
 @media ((any-hover: none) or (hover: none)) and (pointer: coarse) {
     html {
         display: flex;
@@ -469,7 +550,7 @@ input[type="range"]::-moz-range-thumb:active {
     }
 
     .custom-font-input {
-        font-size: 0.85;
+        font-size: 0.85rem;
     }
 
     .reset-btn {
