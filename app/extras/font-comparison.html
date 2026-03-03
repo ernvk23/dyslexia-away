@@ -8,27 +8,27 @@
     <style>
         @font-face {
             font-family: 'Andika';
-            src: url('fonts/Andika-Regular.woff2') format('woff2');
+            src: url('../fonts/Andika-Regular.woff2') format('woff2');
         }
 
         @font-face {
             font-family: 'Lexend';
-            src: url('fonts/Lexend-VariableFont_wght.woff2') format('woff2');
+            src: url('../fonts/Lexend-VariableFont_wght.woff2') format('woff2');
         }
 
         @font-face {
             font-family: 'OpenDyslexic';
-            src: url('fonts/OpenDyslexicAlta-Regular.woff2') format('woff2');
+            src: url('../fonts/OpenDyslexicAlta-Regular.woff2') format('woff2');
         }
 
         @font-face {
             font-family: 'Shantell Sans';
-            src: url('fonts/ShantellSans-Regular.woff2') format('woff2');
+            src: url('../fonts/ShantellSans-Regular.woff2') format('woff2');
         }
 
         @font-face {
             font-family: 'Atkinson Hyperlegible';
-            src: url('fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2');
+            src: url('../fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2');
         }
 
         * {
@@ -68,7 +68,7 @@
 
         .extension-image img {
             max-width: 100%;
-            max-height: 320px;
+            max-height: 400px;
             width: auto;
             height: auto;
             filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.15));
@@ -122,7 +122,8 @@
         }
 
         .font-standard {
-            font-family: Arial, sans-serif;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 20px;
         }
 
         .font-andika {
@@ -135,8 +136,6 @@
 
         .font-opendyslexic {
             font-family: 'OpenDyslexic', sans-serif;
-            letter-spacing: -0.02em;
-            word-spacing: -0.01em;
         }
 
         .font-shantell {
@@ -145,6 +144,10 @@
 
         .font-atkinson {
             font-family: 'Atkinson Hyperlegible', sans-serif;
+        }
+
+        .font-roboto {
+            font-family: Roboto, Arial, sans-serif;
         }
 
         .highlight {
@@ -210,11 +213,10 @@
                 </p>
             </div>
 
-            <div class="card" style="grid-column: 1 / span 2;">
-                <div class="card-header">Custom Font</div>
-                <p class="sample-text">
-                    The quick brown fox jumps over the lazy dog. <span class="highlight">Use any system font</span>
-                    of your choice.
+            <div class="card">
+                <div class="card-header">Custom</div>
+                <p class="sample-text font-roboto">
+                    <span class="highlight">Use any system font of your choice.</span>
                 </p>
             </div>
 
