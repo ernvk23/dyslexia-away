@@ -3,6 +3,7 @@
     const FONT_MAP = { 'andika': 'Andika', 'lexend': 'Lexend', 'shantell': 'ShantellSans', 'opendyslexic': 'OpenDyslexic', 'atkinson': 'AtkinsonHyperlegible' };
 
     let state = { enabled: false, excluded: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, fontMode: 'andika', customFont: '' };
+    let topHost = location.hostname; // Fallback; overwritten by GET_TOP_HOST on init
     let rafId = null;
     let observer = null;
 
@@ -26,7 +27,6 @@
         const style = root.style;
         let primaryFont = FONT_MAP[state.fontMode] || 'Andika';
 
-        // Handle custom font option
         if (state.fontMode === 'custom' && state.customFont) {
             primaryFont = `"${state.customFont}"`;
         }
@@ -35,10 +35,8 @@
         style.setProperty('--od-letter-spacing', `${(state.letterSpacing / 1000).toFixed(3)}em`);
         style.setProperty('--od-word-spacing', `${(state.wordSpacing / 1000).toFixed(3)}em`);
         style.setProperty('--od-line-height', (state.lineHeight / 100).toFixed(2));
-
         root.classList.add('opendyslexic-active');
         root.classList.toggle('opendyslexic-type-active', state.fontMode === 'opendyslexic');
-
         startObserver();
     }
 
@@ -53,8 +51,8 @@
     }
 
     function startObserver() {
+        // Re-apply styles on SPA navigation
         if (observer) return;
-        // Optimized: Only watch root attributes. Iframes handled by manifest all_frames.
         observer = new MutationObserver(() => {
             const root = document.documentElement;
             if (!root.style.getPropertyValue('--od-primary-font-family') || !root.classList.contains('opendyslexic-active')) {
@@ -79,19 +77,22 @@
         });
         const domains = changes.excludedDomains?.newValue ?? changes.excludedDomains;
         if (domains !== undefined) {
-            const isExcluded = domains.includes(location.hostname);
+            const isExcluded = domains.includes(topHost);
             if (state.excluded !== isExcluded) { state.excluded = isExcluded; changed = true; }
         }
         return changed;
     }
 
     async function init() {
-        const res = await api.storage.local.get(['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'excludedDomains', 'fontMode', 'customFont']);
+        const [res, host] = await Promise.all([
+            api.storage.local.get(['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'excludedDomains', 'fontMode', 'customFont']),
+            api.runtime.sendMessage({ action: 'GET_TOP_HOST' }).catch(() => location.hostname)
+        ]);
+        topHost = host || location.hostname;
         updateState(res);
         applyStyles();
     }
 
-    // Fires in all frames — the only way to reach iframes
     api.storage.onChanged.addListener((changes, area) => {
         if (area === 'local' && updateState(changes)) applyStyles();
     });
@@ -102,13 +103,14 @@
             return;
         }
         if (msg.action === 'UPDATE_STYLES') {
+            if (msg.topLevelDomain) topHost = msg.topLevelDomain;
             if (updateState(msg.settings)) applyStyles();
             sendResponse(true);
             return;
         }
     });
 
-    window.addEventListener('pageshow', (e) => e.persisted && init()); // BFCache restore
+    window.addEventListener('pageshow', (e) => e.persisted && init()); // Restore on BFCache navigation
     document.addEventListener('turbo:load', applyStyles);
     document.addEventListener('turbo:render', applyStyles);
 

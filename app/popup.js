@@ -27,7 +27,7 @@ let messageTimeout = null;
 let renderRafId = null;
 let settings = { ...DEFAULTS };
 
-// Coalesce DOM writes into the next paint frame to prevent layout thrashing
+// Coalesce DOM writes to prevent layout thrashing
 function scheduleRender(callback) {
     if (renderRafId) cancelAnimationFrame(renderRafId);
     renderRafId = requestAnimationFrame(() => { renderRafId = null; callback(); });
@@ -35,7 +35,6 @@ function scheduleRender(callback) {
 
 browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
     settings = { ...DEFAULTS, ...result };
-
     applyTheme(settings.theme);
 
     const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
@@ -98,13 +97,12 @@ function updateToggleUI(enabled) {
 }
 
 function updateSlidersState(isExcluded, isEnabled) {
-    const isRestrictedPage = !currentDomain || RESTRICTED.some(p => currentDomain.startsWith(p));
-    const disabled = !isEnabled || isExcluded || isRestrictedPage;
+    const slidersDisabled = !isEnabled || isExcluded || !currentDomain;
     sliders.forEach(s => {
-        s.disabled = disabled;
-        s.classList.toggle('active', !disabled);
+        s.disabled = slidersDisabled;
+        s.classList.toggle('active', !slidersDisabled);
     });
-    els.fontModeSelect.disabled = !isEnabled;
+    els.fontModeSelect.disabled = !isEnabled; // Font mode remains enabled even when site is excluded
     els.customFontInput.disabled = !isEnabled;
 }
 
@@ -126,16 +124,15 @@ function sanitizeCustomFont(fontName) {
         .substring(0, 100);
 }
 
+// Debounce updates to reduce writes and messages
 function broadcastChange(changedSettings, shouldNotifyTabs = true) {
     Object.assign(settings, changedSettings);
-
     if (shouldNotifyTabs && activeTabId) {
         clearTimeout(messageTimeout);
         messageTimeout = setTimeout(() => {
-            browser.tabs.sendMessage(activeTabId, { action: 'UPDATE_STYLES', settings }).catch(() => { });
+            browser.tabs.sendMessage(activeTabId, { action: 'UPDATE_STYLES', settings, topLevelDomain: currentDomain }).catch(() => { });
         }, 5);
     }
-
     clearTimeout(saveTimeout);
     saveTimeout = setTimeout(async () => {
         await browser.storage.local.set(settings);
@@ -183,10 +180,8 @@ els.fontModeSelect.addEventListener('change', () => {
 });
 
 els.customFontInput.addEventListener('input', () => {
-    // Remove invalid characters in real-time (but keep spaces)
     const sanitizedValue = sanitizeCustomFont(els.customFontInput.value);
 
-    // Synchronous update prevents visual flickering of invalid characters
     if (sanitizedValue !== els.customFontInput.value) {
         els.customFontInput.value = sanitizedValue;
     }
@@ -205,7 +200,6 @@ els.customFontInput.addEventListener('keydown', (e) => {
 
 function trimAndSaveCustomFont() {
     if (els.fontModeSelect.value !== 'custom') return false;
-
     const trimmedValue = els.customFontInput.value.trim();
 
     if (trimmedValue !== els.customFontInput.value) {
@@ -228,7 +222,6 @@ els.customFontInput.addEventListener('blur', () => {
 
 function performFinalSave() {
     const changed = trimAndSaveCustomFont();
-
     if (changed || saveTimeout) {
         browser.runtime.sendMessage({ action: 'SAVE_SETTINGS', settings });
 
@@ -242,7 +235,6 @@ function performFinalSave() {
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') performFinalSave();
 });
-
 window.addEventListener('blur', performFinalSave);
 
 els.themeToggle.addEventListener('click', () => {
@@ -265,7 +257,6 @@ els.reset.addEventListener('click', () => {
         updateDisplayValues();
         updateToggleUI(settings.enabled);
     });
-
     broadcastChange({
         letterSpacing: DEFAULTS.letterSpacing,
         wordSpacing: DEFAULTS.wordSpacing,
@@ -293,20 +284,14 @@ Promise.resolve().then(() => {
     });
 });
 
-// Heart Rating Button
 function setupHeartButton() {
-    // Determine rating URL based on browser
     const isFirefox = navigator.userAgent.includes('Firefox');
     const ratingUrl = isFirefox
         ? 'https://addons.mozilla.org/en-US/firefox/addon/dyslexiaaway/'
         : 'https://chromewebstore.google.com/detail/dyslexiaaway-beta/cdlibplbalgnomagghdgogdofiphhjce/reviews';
 
-    // Handle heart click
     els.heartBtn.addEventListener('click', () => {
-        // Mark as rated and hide button
         els.heartBtn.classList.add('hidden');
-
-        // Save to storage, then open URL, then close popup
         browser.storage.local.set({ heartRated: true }).then(() => {
             browser.tabs.create({ url: ratingUrl });
             window.close();

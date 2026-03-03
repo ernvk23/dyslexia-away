@@ -13,12 +13,10 @@ browser.runtime.onInstalled.addListener(async (details) => {
         if (heartRated === undefined) {
             await browser.storage.local.set({ heartRated: DEFAULTS.heartRated });
         }
-
         if (installDate === undefined) {
-            await browser.storage.local.set({ installDate: Date.now() - 216000000 }); // 2.5 days ago to show immediately
+            await browser.storage.local.set({ installDate: Date.now() - 216000000 }); // Backdate to trigger review prompt
         }
     }
-
     const { enabled } = await browser.storage.local.get('enabled');
     updateBadge(enabled);
     const tabs = await browser.tabs.query({});
@@ -37,6 +35,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
             .catch(() => sendResponse({ success: false }));
         return true; // Keep message channel open for async response
     }
+    if (request.action === 'GET_TOP_HOST') {
+        sendResponse(sender.tab?.url ? new URL(sender.tab.url).hostname : ''); // Get top-level hostname from tab URL
+        return false;
+    }
     if (request.action === 'SAVE_SETTINGS') {
         browser.storage.local.set(request.settings);
         return false;
@@ -47,15 +49,13 @@ async function ensureInjected(tabId, tabUrl) {
     const url = tabUrl || (await browser.tabs.get(tabId).catch(() => null))?.url;
     if (!url || RESTRICTED.some(p => url.startsWith(p))) return;
 
-    // If alive, storage.onChanged listener is already running — nothing else needed
-    const alive = await browser.tabs.sendMessage(tabId, { action: 'PING' }).catch(() => false);
+    const alive = await browser.tabs.sendMessage(tabId, { action: 'PING' }).catch(() => false); // Check if content script is active
     if (alive) return;
 
-    // Not alive — inject into main frame and all iframes; content.js auto-runs init()
     try {
         await browser.scripting.insertCSS({ target: { tabId, allFrames: true }, files: ['fonts.css', 'style.css'] });
         await browser.scripting.executeScript({ target: { tabId, allFrames: true }, files: ['content.js'] });
-    } catch (e) { /* protected page or tab closed */ }
+    } catch (e) { } // Ignore protected pages or closed tabs
 }
 
 function updateBadge(enabled) {
