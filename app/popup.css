@@ -98,7 +98,7 @@ body {
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    position: relative;
 }
 
 /* Heart Rating Button */
@@ -114,7 +114,8 @@ body {
     transition: transform var(--t-phys);
     width: 2rem;
     height: 2rem;
-    position: relative;
+    position: absolute;
+    right: 2.25rem;
 }
 
 .heart-button:active {
@@ -163,7 +164,7 @@ body {
     50% {
         stroke-width: 2.5;
         stroke: var(--accent-color);
-        filter: drop-shadow(0 0 4px rgba(14, 165, 233, 0.4));
+        filter: drop-shadow(0 0 2px rgba(14, 165, 233, 0.4));
     }
 }
 
