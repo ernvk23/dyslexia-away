@@ -31,23 +31,23 @@
             primaryFont = `"${state.customFont}"`;
         }
 
-        style.setProperty('--od-primary-font-family', primaryFont);
-        style.setProperty('--od-letter-spacing', `${(state.letterSpacing / 1000).toFixed(3)}em`);
-        style.setProperty('--od-word-spacing', `${(state.wordSpacing / 1000).toFixed(3)}em`);
-        style.setProperty('--od-line-height', (state.lineHeight / 100).toFixed(2));
-        root.classList.add('opendyslexic-active');
-        root.classList.toggle('opendyslexic-type-active', state.fontMode === 'opendyslexic');
+        style.setProperty('--da-font-family', primaryFont);
+        style.setProperty('--da-letter-spacing', `${(state.letterSpacing / 1000).toFixed(3)}em`);
+        style.setProperty('--da-word-spacing', `${(state.wordSpacing / 1000).toFixed(3)}em`);
+        style.setProperty('--da-line-height', (state.lineHeight / 100).toFixed(2));
+        root.classList.add('d-away-active');
+        root.classList.toggle('od-no-italic', state.fontMode === 'opendyslexic');
         startObserver();
     }
 
     function removeDOM() {
         const root = document.documentElement;
         const style = root.style;
-        root.classList.remove('opendyslexic-active', 'opendyslexic-type-active');
-        style.removeProperty('--od-primary-font-family');
-        style.removeProperty('--od-letter-spacing');
-        style.removeProperty('--od-word-spacing');
-        style.removeProperty('--od-line-height');
+        root.classList.remove('d-away-active', 'od-no-italic');
+        style.removeProperty('--da-font-family');
+        style.removeProperty('--da-letter-spacing');
+        style.removeProperty('--da-word-spacing');
+        style.removeProperty('--da-line-height');
     }
 
     function startObserver() {
@@ -55,7 +55,7 @@
         if (observer) return;
         observer = new MutationObserver(() => {
             const root = document.documentElement;
-            if (!root.style.getPropertyValue('--od-primary-font-family') || !root.classList.contains('opendyslexic-active')) {
+            if (!root.style.getPropertyValue('--da-font-family') || !root.classList.contains('d-away-active')) {
                 applyStyles();
             }
         });

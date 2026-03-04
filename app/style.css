@@ -1,109 +1,109 @@
 /* 1. SAFE ELEMENTS: Apply Font, Letter Spacing, and Word Spacing */
-html.opendyslexic-active p,
-html.opendyslexic-active h1,
-html.opendyslexic-active h2,
-html.opendyslexic-active h3,
-html.opendyslexic-active h4,
-html.opendyslexic-active h5,
-html.opendyslexic-active h6,
-html.opendyslexic-active li,
-html.opendyslexic-active dt,
-html.opendyslexic-active dd,
-html.opendyslexic-active th,
-html.opendyslexic-active td,
-html.opendyslexic-active label,
-html.opendyslexic-active legend,
-html.opendyslexic-active caption,
-html.opendyslexic-active blockquote,
-html.opendyslexic-active article,
-html.opendyslexic-active section,
-html.opendyslexic-active main,
-html.opendyslexic-active aside,
-html.opendyslexic-active nav,
-html.opendyslexic-active header,
-html.opendyslexic-active footer,
-html.opendyslexic-active address,
-html.opendyslexic-active time,
-html.opendyslexic-active summary,
-html.opendyslexic-active figcaption,
-html.opendyslexic-active b,
-html.opendyslexic-active strong,
-html.opendyslexic-active em,
-html.opendyslexic-active small,
-html.opendyslexic-active mark,
-html.opendyslexic-active cite,
-html.opendyslexic-active q,
-html.opendyslexic-active option,
-html.opendyslexic-active optgroup,
-html.opendyslexic-active textarea,
-html.opendyslexic-active select,
-html.opendyslexic-active input {
-    font-family: var(--od-primary-font-family) !important;
-    letter-spacing: var(--od-letter-spacing) !important;
-    word-spacing: var(--od-word-spacing) !important;
+html.d-away-active p,
+html.d-away-active h1,
+html.d-away-active h2,
+html.d-away-active h3,
+html.d-away-active h4,
+html.d-away-active h5,
+html.d-away-active h6,
+html.d-away-active li,
+html.d-away-active dt,
+html.d-away-active dd,
+html.d-away-active th,
+html.d-away-active td,
+html.d-away-active label,
+html.d-away-active legend,
+html.d-away-active caption,
+html.d-away-active blockquote,
+html.d-away-active article,
+html.d-away-active section,
+html.d-away-active main,
+html.d-away-active aside,
+html.d-away-active nav,
+html.d-away-active header,
+html.d-away-active footer,
+html.d-away-active address,
+html.d-away-active time,
+html.d-away-active summary,
+html.d-away-active figcaption,
+html.d-away-active b,
+html.d-away-active strong,
+html.d-away-active em,
+html.d-away-active small,
+html.d-away-active mark,
+html.d-away-active cite,
+html.d-away-active q,
+html.d-away-active option,
+html.d-away-active optgroup,
+html.d-away-active textarea,
+html.d-away-active select,
+html.d-away-active input {
+    font-family: var(--da-font-family) !important;
+    letter-spacing: var(--da-letter-spacing) !important;
+    word-spacing: var(--da-word-spacing) !important;
 }
 
 /* 2. RISKY ELEMENTS: Fail Fast Order (Aria > Role > FA > Material > Ico (Icon) > Bi > Glyph > Data) */
-html.opendyslexic-active a:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
-html.opendyslexic-active span:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
-html.opendyslexic-active div:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
-html.opendyslexic-active button:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
-html.opendyslexic-active i:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]) {
-    font-family: var(--od-primary-font-family) !important;
-    letter-spacing: var(--od-letter-spacing) !important;
-    word-spacing: var(--od-word-spacing) !important;
+html.d-away-active a:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
+html.d-away-active span:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
+html.d-away-active div:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
+html.d-away-active button:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
+html.d-away-active i:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]) {
+    font-family: var(--da-font-family) !important;
+    letter-spacing: var(--da-letter-spacing) !important;
+    word-spacing: var(--da-word-spacing) !important;
 }
 
 /* 3. LINE HEIGHT: Apply only to text chunks */
-html.opendyslexic-active p,
-html.opendyslexic-active li,
-html.opendyslexic-active dd,
-html.opendyslexic-active blockquote,
-html.opendyslexic-active article,
-html.opendyslexic-active section,
-html.opendyslexic-active main,
-html.opendyslexic-active td,
-html.opendyslexic-active th,
-html.opendyslexic-active figcaption,
-html.opendyslexic-active [role="article"] {
-    line-height: var(--od-line-height) !important;
+html.d-away-active p,
+html.d-away-active li,
+html.d-away-active dd,
+html.d-away-active blockquote,
+html.d-away-active article,
+html.d-away-active section,
+html.d-away-active main,
+html.d-away-active td,
+html.d-away-active th,
+html.d-away-active figcaption,
+html.d-away-active [role="article"] {
+    line-height: var(--da-line-height) !important;
 }
 
 /* 4. CODE PROTECTION */
-html.opendyslexic-active:not(#_) pre,
-html.opendyslexic-active:not(#_) pre *,
-html.opendyslexic-active:not(#_) code,
-html.opendyslexic-active:not(#_) code *,
-html.opendyslexic-active:not(#_) kbd,
-html.opendyslexic-active:not(#_) kbd *,
-html.opendyslexic-active:not(#_) samp,
-html.opendyslexic-active:not(#_) samp *,
-html.opendyslexic-active:not(#_) svg,
-html.opendyslexic-active:not(#_) svg * {
+html.d-away-active:not(#_) pre,
+html.d-away-active:not(#_) pre *,
+html.d-away-active:not(#_) code,
+html.d-away-active:not(#_) code *,
+html.d-away-active:not(#_) kbd,
+html.d-away-active:not(#_) kbd *,
+html.d-away-active:not(#_) samp,
+html.d-away-active:not(#_) samp *,
+html.d-away-active:not(#_) svg,
+html.d-away-active:not(#_) svg * {
     font-family: revert !important;
     letter-spacing: initial !important;
     word-spacing: initial !important;
 }
 
 /* 5. UTILITIES: Fix "Bold Italic" breakage for OpenDyslexic - prevent italic on elements that could inherit bold */
-html.opendyslexic-active.opendyslexic-type-active b,
-html.opendyslexic-active.opendyslexic-type-active strong,
-html.opendyslexic-active.opendyslexic-type-active i,
-html.opendyslexic-active.opendyslexic-type-active em,
-html.opendyslexic-active.opendyslexic-type-active cite,
-html.opendyslexic-active.opendyslexic-type-active address,
-html.opendyslexic-active.opendyslexic-type-active var,
-html.opendyslexic-active.opendyslexic-type-active dfn,
-html.opendyslexic-active.opendyslexic-type-active th,
-html.opendyslexic-active.opendyslexic-type-active h1,
-html.opendyslexic-active.opendyslexic-type-active h2,
-html.opendyslexic-active.opendyslexic-type-active h3,
-html.opendyslexic-active.opendyslexic-type-active h4,
-html.opendyslexic-active.opendyslexic-type-active h5,
-html.opendyslexic-active.opendyslexic-type-active h6 {
+html.d-away-active.od-no-italic b,
+html.d-away-active.od-no-italic strong,
+html.d-away-active.od-no-italic i,
+html.d-away-active.od-no-italic em,
+html.d-away-active.od-no-italic cite,
+html.d-away-active.od-no-italic address,
+html.d-away-active.od-no-italic var,
+html.d-away-active.od-no-italic dfn,
+html.d-away-active.od-no-italic th,
+html.d-away-active.od-no-italic h1,
+html.d-away-active.od-no-italic h2,
+html.d-away-active.od-no-italic h3,
+html.d-away-active.od-no-italic h4,
+html.d-away-active.od-no-italic h5,
+html.d-away-active.od-no-italic h6 {
     font-style: normal !important;
 }
 
-html.opendyslexic-active ::placeholder {
-    font-family: var(--od-primary-font-family) !important;
+html.d-away-active ::placeholder {
+    font-family: var(--da-font-family) !important;
 }
