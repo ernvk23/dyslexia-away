@@ -1,5 +1,6 @@
 const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], fontMode: 'andika', theme: 'system', heartRated: false, installDate: null };
 const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
+const injectionLocks = new Set();
 
 browser.storage.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes.enabled) updateBadge(changes.enabled.newValue);
@@ -14,7 +15,7 @@ browser.runtime.onInstalled.addListener(async (details) => {
             await browser.storage.local.set({ heartRated: DEFAULTS.heartRated });
         }
         if (installDate === undefined) {
-            await browser.storage.local.set({ installDate: Date.now() - 216000000 }); // Backdate to trigger review prompt
+            await browser.storage.local.set({ installDate: Date.now() - 216000000 });
         }
     }
     const { enabled } = await browser.storage.local.get('enabled');
@@ -33,10 +34,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         ensureInjected(request.tabId, request.tabUrl)
             .then(() => sendResponse({ success: true }))
             .catch(() => sendResponse({ success: false }));
-        return true; // Keep message channel open for async response
+        return true;
     }
     if (request.action === 'GET_TOP_HOST') {
-        sendResponse(sender.tab?.url ? new URL(sender.tab.url).hostname : ''); // Get top-level hostname from tab URL
+        sendResponse(sender.tab?.url ? new URL(sender.tab.url).hostname : '');
         return false;
     }
     if (request.action === 'SAVE_SETTINGS') {
@@ -46,16 +47,22 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 async function ensureInjected(tabId, tabUrl) {
-    const url = tabUrl || (await browser.tabs.get(tabId).catch(() => null))?.url;
-    if (!url || RESTRICTED.some(p => url.startsWith(p))) return;
-
-    const alive = await browser.tabs.sendMessage(tabId, { action: 'PING' }).catch(() => false); // Check if content script is active
-    if (alive) return;
+    if (injectionLocks.has(tabId)) return;
+    injectionLocks.add(tabId);
 
     try {
+        const url = tabUrl || (await browser.tabs.get(tabId).catch(() => null))?.url;
+        if (!url || RESTRICTED.some(p => url.startsWith(p))) return;
+
+        const alive = await browser.tabs.sendMessage(tabId, { action: 'PING' }).catch(() => false);
+        if (alive) return;
+
         await browser.scripting.insertCSS({ target: { tabId, allFrames: true }, files: ['fonts.css', 'style.css'] });
         await browser.scripting.executeScript({ target: { tabId, allFrames: true }, files: ['content.js'] });
-    } catch (e) { } // Ignore protected pages or closed tabs
+    } catch (e) {
+    } finally {
+        injectionLocks.delete(tabId);
+    }
 }
 
 function updateBadge(enabled) {
