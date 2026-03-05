@@ -1,4 +1,4 @@
-/* 1. SAFE ELEMENTS: Apply Font, Letter Spacing, and Word Spacing */
+/* Apply base typography to all standard text elements */
 html.d-away-active p,
 html.d-away-active h1,
 html.d-away-active h2,
@@ -43,7 +43,7 @@ html.d-away-active input {
     word-spacing: var(--da-word-spacing) !important;
 }
 
-/* 2. RISKY ELEMENTS: Fail Fast Order (Aria > Role > FA > Material > Ico (Icon) > Bi > Glyph > Data) */
+/* Apply to generic containers while strictly avoiding icon fonts */
 html.d-away-active a:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
 html.d-away-active span:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
 html.d-away-active div:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
@@ -54,7 +54,7 @@ html.d-away-active i:not([aria-hidden="true"]):not([role="img"]):not([class*="fa
     word-spacing: var(--da-word-spacing) !important;
 }
 
-/* 3. LINE HEIGHT: Apply only to text chunks */
+/* Apply line-height only to large blocks of text to prevent UI breakage */
 html.d-away-active p,
 html.d-away-active li,
 html.d-away-active dd,
@@ -69,7 +69,7 @@ html.d-away-active [role="article"] {
     line-height: var(--da-line-height) !important;
 }
 
-/* 4. CODE PROTECTION */
+/* Protect code blocks, keyboard inputs, and SVGs from font overrides */
 html.d-away-active:not(#_) pre,
 html.d-away-active:not(#_) pre *,
 html.d-away-active:not(#_) code,
@@ -85,7 +85,7 @@ html.d-away-active:not(#_) svg * {
     word-spacing: initial !important;
 }
 
-/* 5. UTILITIES: Fix "Bold Italic" breakage for OpenDyslexic - prevent italic on elements that could inherit bold */
+/* Prevent italic styles on bold elements to fix OpenDyslexic rendering bugs */
 html.d-away-active.od-no-italic b,
 html.d-away-active.od-no-italic strong,
 html.d-away-active.od-no-italic i,
@@ -104,6 +104,16 @@ html.d-away-active.od-no-italic h6 {
     font-style: normal !important;
 }
 
+/* Style input placeholders (isolated to prevent Shadow DOM parsing errors) */
 html.d-away-active ::placeholder {
     font-family: var(--da-font-family) !important;
+    letter-spacing: var(--da-letter-spacing) !important;
+    word-spacing: var(--da-word-spacing) !important;
+}
+
+/* Site-specific fixes for heavily used custom web components (YouTube) */
+html.d-away-active yt-formatted-string {
+    font-family: var(--da-font-family) !important;
+    letter-spacing: var(--da-letter-spacing) !important;
+    word-spacing: var(--da-word-spacing) !important;
 }
