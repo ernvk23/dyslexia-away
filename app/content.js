@@ -9,8 +9,11 @@
 
     // Coalesce rapid updates into a single paint
     function scheduleRender(callback) {
-        if (rafId) cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(() => { rafId = null; callback(); });
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+            rafId = null;
+            callback();
+        });
     }
 
     function applyStyles() {

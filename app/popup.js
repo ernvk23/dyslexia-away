@@ -128,11 +128,18 @@ function sanitizeCustomFont(fontName) {
 function broadcastChange(changedSettings, shouldNotifyTabs = true) {
     Object.assign(settings, changedSettings);
     if (shouldNotifyTabs && activeTabId) {
-        clearTimeout(messageTimeout);
-        messageTimeout = setTimeout(() => {
-            browser.tabs.sendMessage(activeTabId, { action: 'UPDATE_STYLES', settings, topLevelDomain: currentDomain }).catch(() => { });
-        }, 5);
+        if (!messageTimeout) {
+            messageTimeout = setTimeout(() => {
+                messageTimeout = null;
+                browser.tabs.sendMessage(activeTabId, {
+                    action: 'UPDATE_STYLES',
+                    settings,
+                    topLevelDomain: currentDomain
+                }).catch(() => { });
+            }, 5);
+        }
     }
+
     clearTimeout(saveTimeout);
     saveTimeout = setTimeout(async () => {
         await browser.storage.local.set(settings);
