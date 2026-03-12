@@ -8,21 +8,17 @@
     let observer = null;
 
     // Coalesce rapid updates into a single paint
-    function scheduleRender(callback) {
+    function applyStyles() {
         if (rafId) return;
         rafId = requestAnimationFrame(() => {
             rafId = null;
-            callback();
+            if (state.enabled && !state.excluded) {
+                updateDOM();
+            } else {
+                stopObserver();
+                removeDOM();
+            }
         });
-    }
-
-    function applyStyles() {
-        if (state.enabled && !state.excluded) {
-            scheduleRender(updateDOM);
-        } else {
-            stopObserver();
-            scheduleRender(removeDOM);
-        }
     }
 
     function updateDOM() {
