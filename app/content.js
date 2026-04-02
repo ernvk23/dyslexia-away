@@ -1,6 +1,7 @@
 (() => {
     const api = typeof browser !== 'undefined' ? browser : chrome;
     const FONT_MAP = { 'andika': 'Andika', 'lexend': 'Lexend', 'shantell': 'ShantellSans', 'opendyslexic': 'OpenDyslexic', 'atkinson': 'AtkinsonHyperlegible' };
+    const TRACKED_KEYS = ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode', 'customFont'];
 
     let state = { enabled: false, excluded: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, fontMode: 'andika', customFont: '' };
     let topHost = location.hostname; // Fallback; overwritten by GET_TOP_HOST on init
@@ -70,10 +71,10 @@
 
     function updateState(changes) {
         let changed = false;
-        ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode', 'customFont'].forEach(key => {
+        for (const key of TRACKED_KEYS) {
             const val = changes[key]?.newValue ?? changes[key];
             if (val !== undefined && state[key] !== val) { state[key] = val; changed = true; }
-        });
+        }
         const domains = changes.excludedDomains?.newValue ?? changes.excludedDomains;
         if (domains !== undefined) {
             const isExcluded = domains.includes(topHost);

@@ -41,8 +41,8 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return false;
     }
     if (request.action === 'SAVE_SETTINGS') {
-        browser.storage.local.set(request.settings);
-        return false;
+        browser.storage.local.set(request.settings).then(() => sendResponse(true));
+        return true;
     }
 });
 

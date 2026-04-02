@@ -117,10 +117,10 @@ function updateCustomFontInputVisibility() {
 function sanitizeCustomFont(fontName) {
     if (typeof fontName !== 'string') return '';
     return fontName
-        .replace(/[^a-zA-Z0-9\s\-]/g, '')
-        .replace(/\s*-\s*/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/\s+/g, ' ')
+        .replace(/[^a-zA-Z0-9 \-]/g, '') // ONLY allow letters, numbers, hyphens, and standard spaces
+        .replace(/  +/g, ' ')            // Collapse multiple spaces into one
+        .replace(/\s*-\s*/g, '-')        // Clean up spaces around hyphens
+        .replace(/-+/g, '-')             // Collapse multiple hyphens
         .substring(0, 100);
 }
 
