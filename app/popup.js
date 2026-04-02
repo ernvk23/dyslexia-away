@@ -117,11 +117,9 @@ function updateCustomFontInputVisibility() {
 function sanitizeCustomFont(fontName) {
     if (typeof fontName !== 'string') return '';
     return fontName
-        .replace(/[^a-zA-Z0-9 \-]/g, '') // ONLY allow letters, numbers, hyphens, and standard spaces
-        .replace(/  +/g, ' ')            // Collapse multiple spaces into one
-        .replace(/\s*-\s*/g, '-')        // Clean up spaces around hyphens
-        .replace(/-+/g, '-')             // Collapse multiple hyphens
-        .substring(0, 100);
+        .replace(/[^a-zA-Z0-9 \._\-]/g, '') // Allow safe chars only
+        .replace(/  +/g, ' ')               // Collapse multiple spaces
+        .substring(0, 100);                  // Limit length
 }
 
 // Debounce updates to reduce writes and messages
