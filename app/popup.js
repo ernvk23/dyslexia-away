@@ -69,6 +69,7 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
             els.heartBtn.classList.remove('hidden');
         }
 
+        // Double rAF prevents flash of unstyled content
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 document.documentElement.classList.add('ready');

@@ -26,12 +26,9 @@
     },
     "homepage": "https://ernvk23.github.io/dyslexia-away/",
     "bugs": "https://github.com/ernvk23/dyslexia-away/issues",
-    "devDependencies": {
-        "archiver": "^5.3.1",
-        "fs-extra": "^11.1.1"
-    },
+    "devDependencies": {},
     "private": true,
     "engines": {
-        "node": ">=18.0.0"
+        "node": ">=20.0.0"
     }
 }

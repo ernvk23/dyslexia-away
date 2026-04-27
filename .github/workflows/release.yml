@@ -2,8 +2,9 @@ name: Release Extension
 
 on:
     push:
-        tags: ["v*"] # Trigger on version tags
-    workflow_dispatch: # Allow manual triggering
+        tags: [ "v*" ] # Trigger on version tags
+    workflow_dispatch:
+        # Allow manual triggering
 
 permissions:
     contents: write
@@ -18,7 +19,7 @@ jobs:
             - name: Set up Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: "20"
+                  node-version: "22"
 
             - name: Install dependencies
               run: npm install
@@ -27,7 +28,7 @@ jobs:
               run: npm run build
 
             - name: Create or Update Release
-              uses: softprops/action-gh-release@v1
+              uses: softprops/action-gh-release@v3
               with:
                   files: |
                       dist/dyslexia-away-chrome.zip
