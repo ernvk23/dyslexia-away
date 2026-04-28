@@ -1,106 +1,31 @@
 /* Apply base typography to all standard text elements */
-html.d-away-active p,
-html.d-away-active h1,
-html.d-away-active h2,
-html.d-away-active h3,
-html.d-away-active h4,
-html.d-away-active h5,
-html.d-away-active h6,
-html.d-away-active li,
-html.d-away-active dt,
-html.d-away-active dd,
-html.d-away-active th,
-html.d-away-active td,
-html.d-away-active label,
-html.d-away-active legend,
-html.d-away-active caption,
-html.d-away-active blockquote,
-html.d-away-active article,
-html.d-away-active section,
-html.d-away-active main,
-html.d-away-active aside,
-html.d-away-active nav,
-html.d-away-active header,
-html.d-away-active footer,
-html.d-away-active address,
-html.d-away-active time,
-html.d-away-active summary,
-html.d-away-active figcaption,
-html.d-away-active b,
-html.d-away-active strong,
-html.d-away-active em,
-html.d-away-active small,
-html.d-away-active mark,
-html.d-away-active cite,
-html.d-away-active q,
-html.d-away-active option,
-html.d-away-active optgroup,
-html.d-away-active textarea,
-html.d-away-active select,
-html.d-away-active input {
+html.d-away-active :is(p, h1, h2, h3, h4, h5, h6, li, dt, dd, th, td, label, legend, caption, blockquote, article, section, main, aside, nav, header, footer, address, time, summary, figcaption, b, strong, em, small, mark, cite, q, option, optgroup, textarea, select, input) {
     font-family: var(--da-font-family) !important;
     letter-spacing: var(--da-letter-spacing) !important;
     word-spacing: var(--da-word-spacing) !important;
 }
 
 /* Apply to generic containers while strictly avoiding icon fonts */
-html.d-away-active a:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
-html.d-away-active span:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
-html.d-away-active div:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
-html.d-away-active button:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]),
-html.d-away-active i:not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]) {
+html.d-away-active :is(a, span, div, button, i):not([aria-hidden="true"]):not([role="img"]):not([class*="fa-"]):not([class*="material-"]):not([class*="ico"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]) {
     font-family: var(--da-font-family) !important;
     letter-spacing: var(--da-letter-spacing) !important;
     word-spacing: var(--da-word-spacing) !important;
 }
 
 /* Apply line-height only to large blocks of text to prevent UI breakage */
-html.d-away-active p,
-html.d-away-active li,
-html.d-away-active dd,
-html.d-away-active blockquote,
-html.d-away-active article,
-html.d-away-active section,
-html.d-away-active main,
-html.d-away-active td,
-html.d-away-active th,
-html.d-away-active figcaption,
-html.d-away-active [role="article"] {
+html.d-away-active :is(p, li, dd, blockquote, article, section, main, td, th, figcaption, [role="article"]) {
     line-height: var(--da-line-height) !important;
 }
 
 /* Protect code blocks, keyboard inputs, and SVGs from font overrides */
-html.d-away-active:not(#_) pre,
-html.d-away-active:not(#_) pre *,
-html.d-away-active:not(#_) code,
-html.d-away-active:not(#_) code *,
-html.d-away-active:not(#_) kbd,
-html.d-away-active:not(#_) kbd *,
-html.d-away-active:not(#_) samp,
-html.d-away-active:not(#_) samp *,
-html.d-away-active:not(#_) svg,
-html.d-away-active:not(#_) svg * {
+html.d-away-active:not(#_) :is(pre, pre *, code, code *, kbd, kbd *, samp, samp *, svg, svg *) {
     font-family: revert !important;
     letter-spacing: initial !important;
     word-spacing: initial !important;
 }
 
 /* Prevent italic styles on bold elements to fix OpenDyslexic rendering bugs */
-html.d-away-active.od-no-italic b,
-html.d-away-active.od-no-italic strong,
-html.d-away-active.od-no-italic i,
-html.d-away-active.od-no-italic em,
-html.d-away-active.od-no-italic cite,
-html.d-away-active.od-no-italic address,
-html.d-away-active.od-no-italic var,
-html.d-away-active.od-no-italic dfn,
-html.d-away-active.od-no-italic th,
-html.d-away-active.od-no-italic h1,
-html.d-away-active.od-no-italic h2,
-html.d-away-active.od-no-italic h3,
-html.d-away-active.od-no-italic h4,
-html.d-away-active.od-no-italic h5,
-html.d-away-active.od-no-italic h6 {
+html.d-away-active.od-no-italic :is(b, strong, i, em, cite, address, var, dfn, th, h1, h2, h3, h4, h5, h6) {
     font-style: normal !important;
 }
 
