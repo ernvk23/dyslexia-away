@@ -78,7 +78,7 @@
         }
         const domains = changes.excludedDomains?.newValue ?? changes.excludedDomains;
         if (domains !== undefined) {
-            const isExcluded = domains.includes(topHost);
+            const isExcluded = domains?.includes(topHost) ?? false;
             if (state.excluded !== isExcluded) { state.excluded = isExcluded; changed = true; }
         }
         return changed;

@@ -229,12 +229,13 @@ els.customFontInput.addEventListener('blur', () => {
 function performFinalSave() {
     const changed = trimAndSaveCustomFont();
     if (changed || saveTimeout) {
-        browser.runtime.sendMessage({ action: 'SAVE_SETTINGS', settings });
-
+        // KILL the local timeout so it doesn't race the background script
         if (saveTimeout) {
             clearTimeout(saveTimeout);
             saveTimeout = null;
         }
+        // Safely delegate to the background script
+        browser.runtime.sendMessage({ action: 'SAVE_SETTINGS', settings });
     }
 }
 
