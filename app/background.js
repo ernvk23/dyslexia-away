@@ -1,4 +1,4 @@
-const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], fontMode: 'andika', theme: 'system', heartRated: false, installDate: null };
+const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], fontMode: 'andika', customFont: '', theme: 'system', heartRated: false, installDate: null };
 const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
 const injectionLocks = new Set();
 
@@ -15,7 +15,7 @@ browser.runtime.onInstalled.addListener(async (details) => {
             await browser.storage.local.set({ heartRated: DEFAULTS.heartRated });
         }
         if (installDate === undefined) {
-            await browser.storage.local.set({ installDate: Date.now() - 216000000 });
+            await browser.storage.local.set({ installDate: Date.now() - 86400000 });
         }
     }
     const { enabled } = await browser.storage.local.get('enabled');

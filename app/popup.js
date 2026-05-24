@@ -50,7 +50,7 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
 
     const shouldShowHeart = !settings.heartRated &&
         settings.installDate &&
-        (Date.now() - settings.installDate > 216000000);
+        (Date.now() - settings.installDate > 86400000);
 
     scheduleRender(() => {
         updateToggleUI(settings.enabled);
@@ -292,7 +292,7 @@ Promise.resolve().then(() => {
 });
 
 function setupHeartButton() {
-    const isFirefox = navigator.userAgent.includes('Firefox');
+    const isFirefox = typeof browser.runtime.getBrowserInfo === 'function';
     const ratingUrl = isFirefox
         ? 'https://addons.mozilla.org/en-US/firefox/addon/dyslexiaaway/'
         : 'https://chromewebstore.google.com/detail/dyslexiaaway-beta/cdlibplbalgnomagghdgogdofiphhjce/reviews';
