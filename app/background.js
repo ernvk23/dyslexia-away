@@ -21,7 +21,7 @@ browser.runtime.onInstalled.addListener(async (details) => {
     const { enabled } = await browser.storage.local.get('enabled');
     updateBadge(enabled);
     const tabs = await browser.tabs.query({});
-    Promise.allSettled(tabs.map(tab => ensureInjected(tab.id, tab.url)));
+    await Promise.allSettled(tabs.map(tab => ensureInjected(tab.id, tab.url)));
 });
 
 browser.runtime.onStartup.addListener(async () => {

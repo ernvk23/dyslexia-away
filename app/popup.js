@@ -299,6 +299,8 @@ function setupHeartButton() {
 
     els.heartBtn.addEventListener('click', () => {
         els.heartBtn.classList.add('hidden');
+        // Sync in-memory state to prevent overwrite
+        settings.heartRated = true;
         browser.storage.local.set({ heartRated: true }).then(() => {
             browser.tabs.create({ url: ratingUrl });
             window.close();
