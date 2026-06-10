@@ -66,6 +66,14 @@ async function ensureInjected(tabId, tabUrl) {
 }
 
 function updateBadge(enabled) {
-    browser.action.setBadgeText({ text: enabled ? 'on' : '' });
-    browser.action.setBadgeBackgroundColor({ color: '#0ea5e9' });
+    browser.action.setBadgeText({ text: '' });
+    const suffix = enabled ? '' : '-off';
+    browser.action.setIcon({
+        path: {
+            16: `icons/icon16${suffix}.png`,
+            32: `icons/icon32${suffix}.png`,
+            48: `icons/icon48${suffix}.png`,
+            128: `icons/icon128${suffix}.png`
+        }
+    });
 }
