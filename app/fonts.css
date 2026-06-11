@@ -1,172 +1,26 @@
-/* Andika Font */
-@font-face {
-    font-family: 'Andika';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/Andika-Regular.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/Andika-Regular.woff2') format('woff2'),
-        url('fonts/Andika-Regular.woff2') format('woff2');
-    font-weight: 100 599;
-    font-style: normal;
-    font-display: swap;
-}
+/* Andika */
+@font-face{font-family:'Andika';src:url('chrome-extension://__MSG_@@extension_id__/fonts/Andika-Regular.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/Andika-Regular.woff2') format('woff2'),url('fonts/Andika-Regular.woff2') format('woff2');font-weight:100 599;font-style:normal;font-display:swap}
+@font-face{font-family:'Andika';src:url('chrome-extension://__MSG_@@extension_id__/fonts/Andika-Bold.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/Andika-Bold.woff2') format('woff2'),url('fonts/Andika-Bold.woff2') format('woff2');font-weight:600 900;font-style:normal;font-display:swap}
+@font-face{font-family:'Andika';src:url('chrome-extension://__MSG_@@extension_id__/fonts/Andika-Italic.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/Andika-Italic.woff2') format('woff2'),url('fonts/Andika-Italic.woff2') format('woff2');font-weight:100 599;font-style:italic;font-display:swap}
+@font-face{font-family:'Andika';src:url('chrome-extension://__MSG_@@extension_id__/fonts/Andika-BoldItalic.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/Andika-BoldItalic.woff2') format('woff2'),url('fonts/Andika-BoldItalic.woff2') format('woff2');font-weight:600 900;font-style:italic;font-display:swap}
 
-@font-face {
-    font-family: 'Andika';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/Andika-Bold.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/Andika-Bold.woff2') format('woff2'),
-        url('fonts/Andika-Bold.woff2') format('woff2');
-    font-weight: 600 900;
-    font-style: normal;
-    font-display: swap;
-}
+/* Lexend (variable) */
+@font-face{font-family:'Lexend';src:url('chrome-extension://__MSG_@@extension_id__/fonts/Lexend-VariableFont_wght.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/Lexend-VariableFont_wght.woff2') format('woff2'),url('fonts/Lexend-VariableFont_wght.woff2') format('woff2');font-display:swap}
 
-@font-face {
-    font-family: 'Andika';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/Andika-Italic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/Andika-Italic.woff2') format('woff2'),
-        url('fonts/Andika-Italic.woff2') format('woff2');
-    font-weight: 100 599;
-    font-style: italic;
-    font-display: swap;
-}
+/* ShantellSans */
+@font-face{font-family:'ShantellSans';src:url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-Regular.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-Regular.woff2') format('woff2'),url('fonts/ShantellSans-Regular.woff2') format('woff2');font-weight:100 599;font-style:normal;font-display:swap}
+@font-face{font-family:'ShantellSans';src:url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-Bold.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-Bold.woff2') format('woff2'),url('fonts/ShantellSans-Bold.woff2') format('woff2');font-weight:600 900;font-style:normal;font-display:swap}
+@font-face{font-family:'ShantellSans';src:url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-Italic.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-Italic.woff2') format('woff2'),url('fonts/ShantellSans-Italic.woff2') format('woff2');font-weight:100 599;font-style:italic;font-display:swap}
+@font-face{font-family:'ShantellSans';src:url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-BoldItalic.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-BoldItalic.woff2') format('woff2'),url('fonts/ShantellSans-BoldItalic.woff2') format('woff2');font-weight:600 900;font-style:italic;font-display:swap}
 
-@font-face {
-    font-family: 'Andika';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/Andika-BoldItalic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/Andika-BoldItalic.woff2') format('woff2'),
-        url('fonts/Andika-BoldItalic.woff2') format('woff2');
-    font-weight: 600 900;
-    font-style: italic;
-    font-display: swap;
-}
+/* OpenDyslexic */
+@font-face{font-family:'OpenDyslexic';src:url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Regular.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Regular.woff2') format('woff2'),url('fonts/OpenDyslexicAlta-Regular.woff2') format('woff2');font-weight:100 599;font-style:normal;font-display:swap}
+@font-face{font-family:'OpenDyslexic';src:url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Bold.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Bold.woff2') format('woff2'),url('fonts/OpenDyslexicAlta-Bold.woff2') format('woff2');font-weight:600 900;font-style:normal;font-display:swap}
+@font-face{font-family:'OpenDyslexic';src:url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Italic.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Italic.woff2') format('woff2'),url('fonts/OpenDyslexicAlta-Italic.woff2') format('woff2');font-weight:100 599;font-style:italic;font-display:swap}
+@font-face{font-family:'OpenDyslexic';src:url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-BoldItalic.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-BoldItalic.woff2') format('woff2'),url('fonts/OpenDyslexicAlta-BoldItalic.woff2') format('woff2');font-weight:600 900;font-style:italic;font-display:swap}
 
-/* Lexend Variable Font */
-@font-face {
-    font-family: 'Lexend';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/Lexend-VariableFont_wght.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/Lexend-VariableFont_wght.woff2') format('woff2'),
-        url('fonts/Lexend-VariableFont_wght.woff2') format('woff2');
-    font-display: swap;
-}
-
-/* ShantellSans Font */
-@font-face {
-    font-family: 'ShantellSans';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-Regular.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-Regular.woff2') format('woff2'),
-        url('fonts/ShantellSans-Regular.woff2') format('woff2');
-    font-weight: 100 599;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'ShantellSans';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-Bold.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-Bold.woff2') format('woff2'),
-        url('fonts/ShantellSans-Bold.woff2') format('woff2');
-    font-weight: 600 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'ShantellSans';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-Italic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-Italic.woff2') format('woff2'),
-        url('fonts/ShantellSans-Italic.woff2') format('woff2');
-    font-weight: 100 599;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'ShantellSans';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-BoldItalic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-BoldItalic.woff2') format('woff2'),
-        url('fonts/ShantellSans-BoldItalic.woff2') format('woff2');
-    font-weight: 600 900;
-    font-style: italic;
-    font-display: swap;
-}
-
-/* OpenDyslexic Font */
-@font-face {
-    font-family: 'OpenDyslexic';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Regular.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Regular.woff2') format('woff2'),
-        url('fonts/OpenDyslexicAlta-Regular.woff2') format('woff2');
-    font-weight: 100 599;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'OpenDyslexic';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Bold.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Bold.woff2') format('woff2'),
-        url('fonts/OpenDyslexicAlta-Bold.woff2') format('woff2');
-    font-weight: 600 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'OpenDyslexic';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Italic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-Italic.woff2') format('woff2'),
-        url('fonts/OpenDyslexicAlta-Italic.woff2') format('woff2');
-    font-weight: 100 599;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'OpenDyslexic';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-BoldItalic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/OpenDyslexicAlta-BoldItalic.woff2') format('woff2'),
-        url('fonts/OpenDyslexicAlta-BoldItalic.woff2') format('woff2');
-    font-weight: 600 900;
-    font-style: italic;
-    font-display: swap;
-}
-
-/* Atkinson Hyperlegible Font */
-@font-face {
-    font-family: 'AtkinsonHyperlegible';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2'),
-        url('fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2');
-    font-weight: 100 599;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'AtkinsonHyperlegible';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Bold.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Bold.woff2') format('woff2'),
-        url('fonts/AtkinsonHyperlegible-Bold.woff2') format('woff2');
-    font-weight: 600 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'AtkinsonHyperlegible';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Italic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Italic.woff2') format('woff2'),
-        url('fonts/AtkinsonHyperlegible-Italic.woff2') format('woff2');
-    font-weight: 100 599;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'AtkinsonHyperlegible';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-BoldItalic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-BoldItalic.woff2') format('woff2'),
-        url('fonts/AtkinsonHyperlegible-BoldItalic.woff2') format('woff2');
-    font-weight: 600 900;
-    font-style: italic;
-    font-display: swap;
-}
+/* Atkinson Hyperlegible */
+@font-face{font-family:'AtkinsonHyperlegible';src:url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2'),url('fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2');font-weight:100 599;font-style:normal;font-display:swap}
+@font-face{font-family:'AtkinsonHyperlegible';src:url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Bold.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Bold.woff2') format('woff2'),url('fonts/AtkinsonHyperlegible-Bold.woff2') format('woff2');font-weight:600 900;font-style:normal;font-display:swap}
+@font-face{font-family:'AtkinsonHyperlegible';src:url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Italic.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Italic.woff2') format('woff2'),url('fonts/AtkinsonHyperlegible-Italic.woff2') format('woff2');font-weight:100 599;font-style:italic;font-display:swap}
+@font-face{font-family:'AtkinsonHyperlegible';src:url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-BoldItalic.woff2') format('woff2'),url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-BoldItalic.woff2') format('woff2'),url('fonts/AtkinsonHyperlegible-BoldItalic.woff2') format('woff2');font-weight:600 900;font-style:italic;font-display:swap}
