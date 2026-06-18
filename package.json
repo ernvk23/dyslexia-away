@@ -4,6 +4,7 @@
     "description": "A simple browser extension that applies a dyslexic-friendly font. For some of us, that small change makes reading a lot easier.",
     "main": "background.js",
     "scripts": {
+        "test": "node --test",
         "build": "npm run build:chrome && npm run build:firefox",
         "build:chrome": "node app/build.js chrome",
         "build:firefox": "node app/build.js firefox",
