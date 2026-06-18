@@ -13,7 +13,7 @@ html.d-away-active :is(a, span, div, button, i):not([aria-hidden="true"]):not([r
 }
 
 /* Apply line-height only to large blocks of text to prevent UI breakage */
-html.d-away-active :is(p, li, dd, blockquote, article, section, main, td, th, figcaption, [role="article"]) {
+html.d-away-active :is(p, li, dd, blockquote, article, td, th, figcaption, [role="article"]) {
     line-height: var(--da-line-height) !important;
 }
 
