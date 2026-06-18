@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 
 // Define paths
 const projectRoot = path.join(__dirname, '..');
@@ -99,12 +99,11 @@ function buildExtension(browser = 'chrome') {
             const sourcePath = path.join(sourceDir, file);
             const destPath = path.join(browserDistDir, file);
 
-            if (fs.existsSync(sourcePath)) {
-                copyFile(sourcePath, destPath);
-                console.log(`✓ ${file}`);
-            } else {
-                console.log(`⚠ ${file} not found`);
+            if (!fs.existsSync(sourcePath)) {
+                throw new Error(`Required source file not found: ${file}`);
             }
+            copyFile(sourcePath, destPath);
+            console.log(`✓ ${file}`);
         }
 
         // Copy browser-specific manifest file as manifest.json
@@ -120,12 +119,11 @@ function buildExtension(browser = 'chrome') {
         // Copy browser polyfill for both Chrome and Firefox (keep original filename)
         const polyfillSourcePath = path.join(sourceDir, 'browser-polyfill.min.js');
         const polyfillDestPath = path.join(browserDistDir, 'browser-polyfill.min.js');
-        if (fs.existsSync(polyfillSourcePath)) {
-            copyFile(polyfillSourcePath, polyfillDestPath);
-            console.log(`✓ browser-polyfill.min.js`);
-        } else {
-            console.log(`⚠ browser-polyfill.min.js not found`);
+        if (!fs.existsSync(polyfillSourcePath)) {
+            throw new Error('Required runtime asset not found: browser-polyfill.min.js');
         }
+        copyFile(polyfillSourcePath, polyfillDestPath);
+        console.log(`✓ browser-polyfill.min.js`);
 
         // Copy files from project root/
         for (const file of rootFiles) {
@@ -144,34 +142,31 @@ function buildExtension(browser = 'chrome') {
         const fontsSourcePath = path.join(sourceDir, fontsDirToCopy);
         const fontsDestPath = path.join(browserDistDir, fontsDirToCopy);
 
-        if (fs.existsSync(fontsSourcePath)) {
-            copyDirectory(fontsSourcePath, fontsDestPath);
-            console.log(`✓ ${fontsDirToCopy}/`);
-        } else {
-            console.log(`⚠ ${fontsDirToCopy}/ not found`);
+        if (!fs.existsSync(fontsSourcePath)) {
+            throw new Error(`Required runtime asset not found: ${fontsDirToCopy}/`);
         }
+        copyDirectory(fontsSourcePath, fontsDestPath);
+        console.log(`✓ ${fontsDirToCopy}/`);
 
         // Copy icons/ directory
         const iconsSourcePath = path.join(sourceDir, iconsDirToCopy);
         const iconsDestPath = path.join(browserDistDir, iconsDirToCopy);
 
-        if (fs.existsSync(iconsSourcePath)) {
-            copyDirectory(iconsSourcePath, iconsDestPath);
-            console.log(`✓ ${iconsDirToCopy}/`);
-        } else {
-            console.log(`⚠ ${iconsDirToCopy}/ not found`);
+        if (!fs.existsSync(iconsSourcePath)) {
+            throw new Error(`Required runtime asset not found: ${iconsDirToCopy}/`);
         }
+        copyDirectory(iconsSourcePath, iconsDestPath);
+        console.log(`✓ ${iconsDirToCopy}/`);
 
         // Copy _locales/ directory
         const localesSourcePath = path.join(sourceDir, localesDirToCopy);
         const localesDestPath = path.join(browserDistDir, localesDirToCopy);
 
-        if (fs.existsSync(localesSourcePath)) {
-            copyDirectory(localesSourcePath, localesDestPath);
-            console.log(`✓ ${localesDirToCopy}/`);
-        } else {
-            console.log(`⚠ ${localesDirToCopy}/ not found`);
+        if (!fs.existsSync(localesSourcePath)) {
+            throw new Error(`Required runtime asset not found: ${localesDirToCopy}/`);
         }
+        copyDirectory(localesSourcePath, localesDestPath);
+        console.log(`✓ ${localesDirToCopy}/`);
 
         console.log(`✓ ${browser} built in dist/${browser}/`);
 
@@ -194,7 +189,14 @@ function createZipPackage(browserDistDir, zipFileName) {
         }
 
         // Create zip using system command
-        execSync(`cd "${browserDistDir}" && zip -r "${zipFileName}" .`, { stdio: 'inherit' });
+        execFileSync(
+            'zip',
+            ['-r', zipFileName, '.'],
+            {
+                cwd: browserDistDir,
+                stdio: 'inherit'
+            }
+        );
 
         // Move zip file to dist directory
         const tempZipPath = path.join(browserDistDir, zipFileName);
@@ -214,6 +216,7 @@ function createZipPackage(browserDistDir, zipFileName) {
     } catch (error) {
         console.error('❌ Failed to create zip:', error);
         console.log('Note: Make sure "zip" command is available');
+        throw error;
     }
 }
 

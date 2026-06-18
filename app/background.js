@@ -1,5 +1,8 @@
 const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], fontMode: 'andika', customFont: '', theme: 'system', heartRated: false, installDate: null };
-const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
+function isSupportedUrl(url) {
+    return typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'));
+}
+
 const injectionLocks = new Set();
 
 browser.storage.onChanged.addListener((changes, area) => {
@@ -37,7 +40,12 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return true;
     }
     if (request.action === 'GET_TOP_HOST') {
-        sendResponse(sender.tab?.url ? new URL(sender.tab.url).hostname : '');
+        try {
+            const url = sender.tab?.url;
+            sendResponse(url ? new URL(url).hostname : '');
+        } catch (e) {
+            sendResponse('');
+        }
         return false;
     }
     if (request.action === 'SAVE_SETTINGS') {
@@ -52,7 +60,7 @@ async function ensureInjected(tabId, tabUrl) {
 
     try {
         const url = tabUrl || (await browser.tabs.get(tabId).catch(() => null))?.url;
-        if (!url || RESTRICTED.some(p => url.startsWith(p))) return;
+        if (!isSupportedUrl(url)) return;
 
         const alive = await browser.tabs.sendMessage(tabId, { action: 'PING' }).catch(() => false);
         if (alive) return;

@@ -1,5 +1,8 @@
 const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], theme: 'system', fontMode: 'andika', customFont: '', heartRated: false, installDate: null };
-const RESTRICTED = ['chrome://', 'chrome-extension://', 'moz-extension://', 'file://', 'about:', 'edge://', 'brave://', 'data:'];
+
+function isSupportedUrl(url) {
+    return typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'));
+}
 
 const els = {
     toggle: document.getElementById('toggleBtn'),
@@ -38,7 +41,7 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
     applyTheme(settings.theme);
 
     const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
-    const isRestricted = !tab?.url || RESTRICTED.some(p => tab.url.startsWith(p));
+    const isRestricted = !isSupportedUrl(tab?.url);
     let isExcluded = false;
 
     if (!isRestricted) {
