@@ -17,3 +17,4 @@ Thumbs.db
 web-ext-artifacts
 app/font-test.html
 AUDIT_REPORT.md
+app/icons/generate-off.py
