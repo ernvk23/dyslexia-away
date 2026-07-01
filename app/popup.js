@@ -47,7 +47,7 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
     if (!isRestricted) {
         activeTabId = tab.id;
         currentDomain = new URL(tab.url).hostname;
-        isExcluded = settings.excludedDomains.includes(currentDomain);
+        isExcluded = (Array.isArray(settings.excludedDomains) ? settings.excludedDomains : []).includes(currentDomain);
         browser.runtime.sendMessage({ action: 'ENSURE_INJECTED', tabId: tab.id, tabUrl: tab.url }).catch(() => { });
     }
 
@@ -164,6 +164,10 @@ els.exclude.addEventListener('change', () => {
 });
 
 sliders.forEach(slider => {
+    const min = parseInt(slider.min);
+    const max = parseInt(slider.max);
+    const step = parseInt(slider.step) || 1;
+
     slider.addEventListener('input', () => {
         scheduleRender(updateDisplayValues);
         broadcastChange({
@@ -176,8 +180,7 @@ sliders.forEach(slider => {
     slider.addEventListener('wheel', (e) => {
         if (slider.disabled) return;
         e.preventDefault();
-        const step = parseInt(slider.step) || 1;
-        slider.value = Math.max(parseInt(slider.min), Math.min(parseInt(slider.max), parseInt(slider.value) + (-Math.sign(e.deltaY) * step)));
+        slider.value = Math.max(min, Math.min(max, parseInt(slider.value) + (-Math.sign(e.deltaY) * step)));
         slider.dispatchEvent(new Event('input'));
     }, { passive: false });
 });
