@@ -43,14 +43,14 @@ function copyDirectory(source, destination) {
         fs.mkdirSync(destination, { recursive: true });
     }
 
-    const files = fs.readdirSync(source);
+    const entries = fs.readdirSync(source, { withFileTypes: true });
 
-    for (const file of files) {
-        const sourcePath = path.join(source, file);
-        const destPath = path.join(destination, file);
-        const stat = fs.statSync(sourcePath);
+    for (const entry of entries) {
+        const sourcePath = path.join(source, entry.name);
+        const destPath = path.join(destination, entry.name);
+        const isDirectory = entry.isDirectory();
 
-        if (stat.isDirectory()) {
+        if (isDirectory) {
             copyDirectory(sourcePath, destPath);
         } else {
             copyFile(sourcePath, destPath);
