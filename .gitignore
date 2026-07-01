@@ -1,6 +1,5 @@
 # Build directory (not needed on GitHub)
 dist/
-dyslexia-away.zip
 
 # Node.js dependencies
 node_modules/
@@ -13,8 +12,6 @@ Thumbs.db
 # IDE files
 .vscode/
 .idea/
+.kilo/
 
 web-ext-artifacts
-app/font-test.html
-AUDIT_REPORT.md
-app/icons/generate-off.py
