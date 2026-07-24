@@ -9,8 +9,6 @@
     "homepage_url": "https://ernvk23.github.io/dyslexia-away/",
     "permissions": [
         "storage",
-        "activeTab",
-        "tabs",
         "scripting"
     ],
     "host_permissions": [
@@ -54,9 +52,7 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "fonts/*",
-                "fonts.css",
-                "style.css"
+                "fonts/*"
             ],
             "matches": [
                 "http://*/*",
