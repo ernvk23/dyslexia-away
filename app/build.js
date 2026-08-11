@@ -10,7 +10,6 @@ const sourceDir = __dirname;
 // Files in src/ to include in the extension package (excluding manifest.json)
 const srcFiles = [
     'background.js',
-    'background-wrapper.js',
     'content.js',
     'popup.js',
     'popup.html',
@@ -90,12 +89,6 @@ function buildExtension(browser = 'chrome') {
 
         // Copy files from src/ (excluding manifest.json)
         for (const file of srcFiles) {
-            // Skip background-wrapper.js for Firefox
-            if (browser === 'firefox' && file === 'background-wrapper.js') {
-                console.log(`⏭️ ${file} (skipped for Firefox)`);
-                continue;
-            }
-
             const sourcePath = path.join(sourceDir, file);
             const destPath = path.join(browserDistDir, file);
 
@@ -115,15 +108,6 @@ function buildExtension(browser = 'chrome') {
         } else {
             throw new Error(`Manifest not found: ${config.manifest}`);
         }
-
-        // Copy browser polyfill for both Chrome and Firefox (keep original filename)
-        const polyfillSourcePath = path.join(sourceDir, 'browser-polyfill.min.js');
-        const polyfillDestPath = path.join(browserDistDir, 'browser-polyfill.min.js');
-        if (!fs.existsSync(polyfillSourcePath)) {
-            throw new Error('Required runtime asset not found: browser-polyfill.min.js');
-        }
-        copyFile(polyfillSourcePath, polyfillDestPath);
-        console.log(`✓ browser-polyfill.min.js`);
 
         // Copy files from project root/
         for (const file of rootFiles) {

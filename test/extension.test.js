@@ -30,13 +30,12 @@ describe('build', () => {
         return dir;
     }
 
-    test('chrome zip contains background-wrapper.js and required assets', async () => {
+    test('chrome zip contains required assets', async () => {
         const workspace = await makeWorkspace();
         try {
             execFileSync('node', ['app/build.js', 'chrome'], { cwd: workspace, stdio: 'pipe' });
             const files = zipList(path.join(workspace, 'dist', 'dyslexia-away-chrome.zip'));
-            assert.ok(files.includes('background-wrapper.js'), 'chrome must include the service-worker wrapper');
-            for (const required of ['manifest.json', 'background.js', 'content.js', 'popup.js', 'popup.html', 'style.css', 'fonts.css', 'browser-polyfill.min.js']) {
+            for (const required of ['manifest.json', 'background.js', 'content.js', 'popup.js', 'popup.html', 'style.css', 'fonts.css']) {
                 assert.ok(files.includes(required), `chrome zip missing required file: ${required}`);
             }
             assert.ok(files.some(f => f.startsWith('fonts/Andika')), 'chrome zip missing font assets');
@@ -46,12 +45,11 @@ describe('build', () => {
         }
     });
 
-    test('firefox zip excludes background-wrapper.js', async () => {
+    test('firefox zip uses the shared background entry', async () => {
         const workspace = await makeWorkspace();
         try {
             execFileSync('node', ['app/build.js', 'firefox'], { cwd: workspace, stdio: 'pipe' });
             const files = zipList(path.join(workspace, 'dist', 'dyslexia-away-firefox.zip'));
-            assert.ok(!files.includes('background-wrapper.js'), 'firefox must NOT include the service-worker wrapper');
             assert.ok(files.includes('manifest.json'), 'firefox zip missing manifest');
             assert.ok(files.includes('background.js'), 'firefox zip missing background.js');
         } finally {
@@ -90,6 +88,22 @@ describe('static assets', () => {
             assert.ok(/^\d+\.\d+\.\d+/.test(m.version), `${file} version must look semver-ish`);
             assert.equal(m.version, pkg.version, `${file} version drifted from package.json`);
             assert.ok(m.default_locale, `${file} must declare default_locale`);
+        }
+    });
+
+    test('both builds use the shared runtime entry', () => {
+        for (const file of ['manifest-chrome.json', 'manifest-firefox.json']) {
+            const m = readJson(path.join(APP, file));
+            assert.deepEqual(m.content_scripts[0].js, ['content.js']);
+        }
+
+        const firefox = readJson(path.join(APP, 'manifest-firefox.json'));
+        const chrome = readJson(path.join(APP, 'manifest-chrome.json'));
+        assert.equal(chrome.minimum_chrome_version, '99');
+        assert.equal(chrome.background.service_worker, 'background.js');
+        assert.deepEqual(firefox.background.scripts, ['background.js']);
+        for (const file of ['background.js', 'content.js', 'popup.js']) {
+            assert.match(fs.readFileSync(path.join(APP, file), 'utf8'), /if \(!globalThis\.browser\) globalThis\.browser = chrome;/);
         }
     });
 
@@ -137,6 +151,53 @@ describe('isSupportedUrl (background.js)', () => {
         assert.equal(isSupportedUrl(undefined), false);
         assert.equal(isSupportedUrl(null), false);
         assert.equal(isSupportedUrl(''), false);
+    });
+});
+
+describe('content lifecycle', () => {
+    test('supports Firefox and pre-148 Chrome without duplicate listeners', async () => {
+        const source = fs.readFileSync(path.join(APP, 'content.js'), 'utf8');
+        for (const namespace of ['browser', 'chrome']) {
+            const listeners = { storage: 0, message: 0, window: 0, document: 0 };
+            const noop = () => {};
+            const root = {
+                classList: { add: noop, remove: noop, toggle: noop, contains: () => false },
+                style: { setProperty: noop, removeProperty: noop, getPropertyValue: () => '' }
+            };
+            const extensionApi = {
+                storage: {
+                    local: { get: () => Promise.resolve({}) },
+                    onChanged: { addListener: () => listeners.storage++ }
+                },
+                runtime: {
+                    sendMessage: () => Promise.resolve('example.com'),
+                    onMessage: { addListener: () => listeners.message++ }
+                }
+            };
+            const sandbox = {
+                [namespace]: extensionApi,
+                location: { hostname: 'example.com' },
+                document: {
+                    documentElement: root,
+                    addEventListener: () => listeners.document++
+                },
+                window: { addEventListener: () => listeners.window++ },
+                MutationObserver: class { observe() {} disconnect() {} },
+                requestAnimationFrame(callback) { callback(); return 1; }
+            };
+            if (namespace === 'browser') {
+                Object.defineProperty(sandbox, 'chrome', {
+                    get: () => { throw new Error('Firefox path must not access chrome'); }
+                });
+            }
+            vm.createContext(sandbox);
+
+            vm.runInContext(source, sandbox);
+            vm.runInContext(source, sandbox);
+            await new Promise(resolve => setImmediate(resolve));
+
+            assert.deepEqual(listeners, { storage: 1, message: 1, window: 1, document: 2 }, namespace);
+        }
     });
 });
 

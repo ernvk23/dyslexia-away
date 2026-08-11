@@ -1,8 +1,14 @@
 (() => {
-    const api = typeof browser !== 'undefined' ? browser : chrome;
+    if (!globalThis.browser) globalThis.browser = chrome;
+
+    // Declarative and dynamic injection can overlap in the same frame.
+    if (globalThis.__dyslexiaAwayContentLoaded) return;
+    globalThis.__dyslexiaAwayContentLoaded = true;
+
     const FONT_MAP = { 'andika': 'Andika', 'lexend': 'Lexend', 'shantell': 'ShantellSans', 'opendyslexic': 'OpenDyslexic', 'atkinson': 'AtkinsonHyperlegible' };
     // Note: excludedDomains is handled separately (domain matching)
     const TRACKED_KEYS = ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode', 'customFont'];
+    const STORAGE_KEYS = [...TRACKED_KEYS, 'excludedDomains'];
 
     let state = { enabled: false, excluded: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, fontMode: 'andika', customFont: '' };
     let topHost = location.hostname; // Fallback; overwritten by GET_TOP_HOST on init
@@ -86,19 +92,19 @@
 
     async function init() {
         const [res, host] = await Promise.all([
-            api.storage.local.get(['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'excludedDomains', 'fontMode', 'customFont']),
-            api.runtime.sendMessage({ action: 'GET_TOP_HOST' }).catch(() => location.hostname)
+            browser.storage.local.get(STORAGE_KEYS),
+            browser.runtime.sendMessage({ action: 'GET_TOP_HOST' }).catch(() => location.hostname)
         ]);
         topHost = host || location.hostname;
         updateState(res);
         applyStyles();
     }
 
-    api.storage.onChanged.addListener((changes, area) => {
+    browser.storage.onChanged.addListener((changes, area) => {
         if (area === 'local' && updateState(changes)) applyStyles();
     });
 
-    api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         if (msg.action === 'PING') {
             sendResponse(true);
             return;

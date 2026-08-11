@@ -1,3 +1,5 @@
+if (!globalThis.browser) globalThis.browser = chrome;
+
 const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], fontMode: 'andika', customFont: '', theme: 'system', heartRated: false, installDate: null };
 function isSupportedUrl(url) {
     return typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'));

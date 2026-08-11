@@ -6,15 +6,13 @@ Browser extension (Manifest V3) that applies dyslexic-friendly fonts to web page
 
 ```
 app/                 Extension source (shipped in both zips)
-  background.js            Background logic (shared by Chrome & Firefox)
-  background-wrapper.js    Chrome-only service-worker entry; just importScripts(polyfill, background.js)
+  background.js            Background entry and logic (shared by Chrome & Firefox)
   content.js               Content script injected into pages (run_at document_start, all_frames)
   popup.{js,html,css}      Popup UI
   style.css / fonts.css    Styles injected into pages / @font-face declarations
   build.js                 Build script (Node); not shipped
-  manifest-chrome.json     Chrome manifest (background.service_worker = background-wrapper.js)
-  manifest-firefox.json    Firefox manifest (background.scripts = [browser-polyfill.min.js, background.js])
-  browser-polyfill.min.js  WebExtension polyfill; loaded before background.js and content.js on both browsers
+  manifest-chrome.json     Chrome manifest (minimum Chrome 99; service worker = background.js)
+  manifest-firefox.json    Firefox manifest (background.scripts = [background.js])
   _locales/  fonts/  icons/   i18n / bundled fonts / icons
   extras/                  Dev helpers (font-comparison.html, generate-disabled-icons.py); NOT included in builds
 docs/                Static website (GitHub Pages)
@@ -24,10 +22,11 @@ dist/                Disposable build output (gitignored; local zips may exist)
 
 ## Architecture Notes
 
-- **Two background entry points.** Chrome MV3 service workers accept a single script, so `background-wrapper.js` exists only to `importScripts('browser-polyfill.min.js')` then `background.js`. Firefox supports a `background.scripts` array and loads `[polyfill, background.js]` directly, so the wrapper is skipped for Firefox builds. Put logic in `background.js`; never duplicate it in the wrapper.
-- `background-wrapper.js` is **required for Chrome and skipped for Firefox** — enforced by `build.js`.
+- Firefox and Chrome 148+ expose the native Promise-based `browser` namespace. Chrome 99–147 aliases native `chrome` APIs to that namespace with a one-line runtime guard; no compatibility polyfill is shipped.
+- Chrome 99 is the floor because `runtime.sendMessage()` and `tabs.sendMessage()` are the newest Promise APIs used. While supporting Chrome 99–147, keep `runtime.onMessage` listeners on `sendResponse`/`return true`; Promise-returning listeners require Chrome 148.
+- `background.js` is the direct background entry in both builds: a Chrome service worker and a Firefox background script.
 - Build output is two zips at `dist/dyslexia-away-chrome.zip` and `dist/dyslexia-away-firefox.zip`. The per-browser staging dir (`dist/chrome`, `dist/firefox`) is created then deleted after zipping, so it does not persist.
-- `build.js` fails closed when required runtime files/directories are missing (`srcFiles`, selected manifest, `browser-polyfill.min.js`, `fonts/`, `icons/`, `_locales/`). Project-root docs such as `README.md` are optional.
+- `build.js` fails closed when required runtime files/directories are missing (`srcFiles`, selected manifest, `fonts/`, `icons/`, `_locales/`). Project-root docs such as `README.md` are optional.
 - Static JSON (manifests, `_locales/*/messages.json`) is still copied without syntax/schema validation by `build.js`; the test suite parses it, so keep tests green before release.
 
 ## Build & Test

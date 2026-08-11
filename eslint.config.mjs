@@ -5,7 +5,7 @@ import { defineConfig } from "eslint/config";
 export default defineConfig([
     {
         files: ["app/**/*.js"],
-        ignores: ["app/browser-polyfill.min.js", "app/build.js"],
+        ignores: ["app/build.js"],
         languageOptions: {
             globals: {
                 ...globals.browser,
