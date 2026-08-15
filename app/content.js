@@ -91,9 +91,10 @@
     }
 
     async function init() {
+        const isTopFrame = window.self === window.top;
         const [res, host] = await Promise.all([
             browser.storage.local.get(STORAGE_KEYS),
-            browser.runtime.sendMessage({ action: 'GET_TOP_HOST' }).catch(() => location.hostname)
+            isTopFrame ? location.hostname : browser.runtime.sendMessage({ action: 'GET_TOP_HOST' }).catch(() => location.hostname)
         ]);
         topHost = host || location.hostname;
         updateState(res);
