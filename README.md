@@ -18,28 +18,31 @@ A simple browser extension that applies a dyslexic-friendly font. For some of us
 
 ## Sample
 
-<img src="./docs/img/sample-full.webp" alt="Sample" width="60%" style="border-radius: 0.4rem; margin: auto; display: block;">
+<img src="./docs/img/sample-full.webp?v=1" alt="Sample" width="60%" style="border-radius: 0.4rem; margin: auto; display: block;">
 
 ## Installation
 
 ### Browser Stores (Recommended)
+
 Get the extension directly from the official browser stores:
 
 [![Firefox Add-ons](https://img.shields.io/badge/Firefox_Add--ons-FF7139?logo=firefox&logoColor=white)](https://addons.mozilla.org/en-US/firefox/addon/dyslexiaaway/)
 [![Chrome Web Store](https://img.shields.io/badge/Chrome_Web_Store-4285F4?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/dyslexiaaway-beta/cdlibplbalgnomagghdgogdofiphhjce)
 
 ### Manual Installation (Alternative)
+
 Download the ZIP from [Latest Release](https://github.com/ernvk23/dyslexia-away/releases/latest), then:
 
-- **Firefox:** `about:debugging` → "This Firefox" → "Load Temporary Add-on"
-- **Chrome/Chromium:** `chrome://extensions` → enable "Developer mode" → drag & drop the ZIP
+* **Firefox:** `about:debugging` → "This Firefox" → "Load Temporary Add-on"
+* **Chrome/Chromium:** `chrome://extensions` → enable "Developer mode" → drag & drop the ZIP
 
 ## Usage
+
 Under extensions, click it to toggle and adjust settings.
 
 ## Motivation
 
-I built this because I wanted something simple that just makes reading feel better. 
+I built this because I wanted something simple that just makes reading feel better.
 A lot of accessibility tools are great but try to do too much.
 This one only does one thing - and that's enough for me.
 
@@ -48,11 +51,11 @@ For me, it made things click in a way they hadn't before.
 
 ## Technical Details
 
-- **Manifest Version:** 3 (Chrome & Firefox)
-- **Font Loading:** Local font files bundled with extension
-- **Compatibility:** Chrome 88+, Firefox 142+ (including Firefox for Android)
-- **Zero-footprint:** Stays asleep unless settings change
-- **Privacy First:** No tracking, no data collection, no external dependencies
+* **Manifest Version:** 3 (Chrome & Firefox)
+* **Font Loading:** Local font files bundled with extension
+* **Compatibility:** Chrome 88+, Firefox 142+ (including Firefox for Android)
+* **Zero-footprint:** Stays asleep unless settings change
+* **Privacy First:** No tracking, no data collection, no external dependencies
 
 ## License
 
