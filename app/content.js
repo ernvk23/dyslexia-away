@@ -5,7 +5,7 @@
     if (globalThis.__dyslexiaAwayContentLoaded) return;
     globalThis.__dyslexiaAwayContentLoaded = true;
 
-    const FONT_MAP = { 'andika': 'Andika', 'lexend': 'Lexend', 'shantell': 'ShantellSans', 'opendyslexic': 'OpenDyslexic', 'atkinson': 'AtkinsonHyperlegible' };
+    const FONT_MAP = { 'andika': 'Andika', 'lexend': 'Lexend', 'shantell': 'ShantellSans', 'opendyslexic': 'OpenDyslexic', 'atkinson': 'AtkinsonHyperlegibleNext' };
     // Note: excludedDomains is handled separately (domain matching)
     const TRACKED_KEYS = ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode', 'customFont'];
     const STORAGE_KEYS = [...TRACKED_KEYS, 'excludedDomains'];

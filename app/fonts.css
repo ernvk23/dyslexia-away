@@ -131,43 +131,23 @@
     font-display: swap;
 }
 
-/* Atkinson Hyperlegible Font */
+/* Atkinson Hyperlegible Next Variable Font */
 @font-face {
-    font-family: 'AtkinsonHyperlegible';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2'),
-        url('fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2');
-    font-weight: 100 599;
+    font-family: 'AtkinsonHyperlegibleNext';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegibleNext-VariableFont_wght.woff2') format('woff2'),
+        url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegibleNext-VariableFont_wght.woff2') format('woff2'),
+        url('fonts/AtkinsonHyperlegibleNext-VariableFont_wght.woff2') format('woff2');
+    font-weight: 200 800;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'AtkinsonHyperlegible';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Bold.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Bold.woff2') format('woff2'),
-        url('fonts/AtkinsonHyperlegible-Bold.woff2') format('woff2');
-    font-weight: 600 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'AtkinsonHyperlegible';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Italic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-Italic.woff2') format('woff2'),
-        url('fonts/AtkinsonHyperlegible-Italic.woff2') format('woff2');
-    font-weight: 100 599;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'AtkinsonHyperlegible';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-BoldItalic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegible-BoldItalic.woff2') format('woff2'),
-        url('fonts/AtkinsonHyperlegible-BoldItalic.woff2') format('woff2');
-    font-weight: 600 900;
+    font-family: 'AtkinsonHyperlegibleNext';
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegibleNext-Italic-VariableFont_wght.woff2') format('woff2'),
+        url('moz-extension://__MSG_@@extension_id__/fonts/AtkinsonHyperlegibleNext-Italic-VariableFont_wght.woff2') format('woff2'),
+        url('fonts/AtkinsonHyperlegibleNext-Italic-VariableFont_wght.woff2') format('woff2');
+    font-weight: 200 800;
     font-style: italic;
     font-display: swap;
 }

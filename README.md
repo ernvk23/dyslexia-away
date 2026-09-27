@@ -6,7 +6,7 @@ A simple browser extension that applies a dyslexic-friendly font. For some of us
 
 ## Features
 
-* **Fonts:** Choose from Andika, Lexend, Shantell Sans, OpenDyslexic, Atkinson Hyperlegible, or use any custom font available on your system.
+* **Fonts:** Choose from Andika, Lexend, Shantell Sans, OpenDyslexic, Atkinson Hyperlegible Next, or use any custom font available on your system.
 * **Custom settings:** Adjust spacing and line height
 * **Site exclusion:** Skip pages where it could cause issues
 * **Cross-browser compatible:** Works on Chrome/Firefox compatible browsers (including Firefox for Android)
@@ -18,7 +18,7 @@ A simple browser extension that applies a dyslexic-friendly font. For some of us
 
 ## Sample
 
-<img src="./docs/img/sample-full.webp?v=1" alt="Sample" width="60%" style="border-radius: 0.4rem; margin: auto; display: block;">
+<img src="./docs/img/sample-full.webp?v=2" alt="Sample" width="60%" style="border-radius: 0.4rem; margin: auto; display: block;">
 
 ## Installation
 
@@ -63,6 +63,6 @@ Licensed under [GPL-3.0](./LICENSE).
 
 ## Credits
 
-**Fonts** (all licensed under SIL OFL): [Andika](https://fonts.google.com/specimen/Andika), [Lexend](https://www.lexend.com/), [Shantell Sans](https://github.com/arrowtype/shantell-sans), [OpenDyslexic](https://opendyslexic.org/), [Atkinson Hyperlegible](https://www.brailleinstitute.org/freefont)
+**Fonts** (all licensed under SIL OFL): [Andika](https://fonts.google.com/specimen/Andika), [Lexend](https://www.lexend.com/), [Shantell Sans](https://github.com/arrowtype/shantell-sans), [OpenDyslexic](https://opendyslexic.org/), [Atkinson Hyperlegible Next](https://www.brailleinstitute.org/freefont)
 
 **Icons:** [SVGRepo](https://www.svgrepo.com/) (CC0).
