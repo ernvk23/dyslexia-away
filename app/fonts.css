@@ -49,43 +49,23 @@
     font-display: swap;
 }
 
-/* ShantellSans Font */
+/* ShantellSans Variable Font (wght axis only) */
 @font-face {
     font-family: 'ShantellSans';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-Regular.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-Regular.woff2') format('woff2'),
-        url('fonts/ShantellSans-Regular.woff2') format('woff2');
-    font-weight: 100 599;
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-VariableFont_wght.woff2') format('woff2'),
+        url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-VariableFont_wght.woff2') format('woff2'),
+        url('fonts/ShantellSans-VariableFont_wght.woff2') format('woff2');
+    font-weight: 300 800;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
     font-family: 'ShantellSans';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-Bold.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-Bold.woff2') format('woff2'),
-        url('fonts/ShantellSans-Bold.woff2') format('woff2');
-    font-weight: 600 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'ShantellSans';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-Italic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-Italic.woff2') format('woff2'),
-        url('fonts/ShantellSans-Italic.woff2') format('woff2');
-    font-weight: 100 599;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'ShantellSans';
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-BoldItalic.woff2') format('woff2'),
-        url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-BoldItalic.woff2') format('woff2'),
-        url('fonts/ShantellSans-BoldItalic.woff2') format('woff2');
-    font-weight: 600 900;
+    src: url('chrome-extension://__MSG_@@extension_id__/fonts/ShantellSans-Italic-VariableFont_wght.woff2') format('woff2'),
+        url('moz-extension://__MSG_@@extension_id__/fonts/ShantellSans-Italic-VariableFont_wght.woff2') format('woff2'),
+        url('fonts/ShantellSans-Italic-VariableFont_wght.woff2') format('woff2');
+    font-weight: 300 800;
     font-style: italic;
     font-display: swap;
 }
