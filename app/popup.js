@@ -1,5 +1,9 @@
 if (!globalThis.browser) globalThis.browser = chrome;
 
+if (getComputedStyle(document.body).borderTopLeftRadius !== '0px') {
+    document.documentElement.classList.add('panel-rounded');
+}
+
 const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], theme: 'system', fontMode: 'andika', customFont: '', heartRated: false, installDate: null };
 
 function isSupportedUrl(url) {

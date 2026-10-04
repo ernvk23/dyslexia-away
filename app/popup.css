@@ -20,7 +20,7 @@
     --t-theme: 0.3s ease;
     --t-phys: 0.15s ease;
     --thumb-size: 0.875rem;
-    --radius-pill: 0.5rem;
+    --radius-pill: 0.625rem;
 }
 
 /* Theme Overrides */
@@ -75,7 +75,7 @@ body {
     padding-block: 0.25rem;
     padding-inline: 0.5rem;
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: var(--radius-pill);
     background: var(--bg-secondary);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--accent-glow);
     display: flex;
@@ -83,6 +83,10 @@ body {
     gap: 0.5rem;
     overflow-y: auto;
     transition: background-color var(--t-theme), border-color var(--t-theme), box-shadow var(--t-theme);
+}
+
+.panel-rounded .popup-container {
+    border-radius: inherit;
 }
 
 .header {
