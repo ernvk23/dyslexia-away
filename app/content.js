@@ -7,10 +7,10 @@
 
     const FONT_MAP = { 'andika': 'Andika', 'lexend': 'Lexend', 'shantell': 'ShantellSans', 'opendyslexic': 'OpenDyslexic', 'atkinson': 'AtkinsonHyperlegibleNext' };
     // Note: excludedDomains is handled separately (domain matching)
-    const TRACKED_KEYS = ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode', 'customFont'];
+    const TRACKED_KEYS = ['enabled', 'letterSpacing', 'wordSpacing', 'lineHeight', 'fontMode', 'customFont', 'includeCode'];
     const STORAGE_KEYS = [...TRACKED_KEYS, 'excludedDomains'];
 
-    let state = { enabled: false, excluded: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, fontMode: 'andika', customFont: '' };
+    let state = { enabled: false, excluded: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, fontMode: 'andika', customFont: '', includeCode: false };
     let topHost = location.hostname; // Fallback; overwritten by GET_TOP_HOST on init
     let rafId = null;
     let observer = null;
@@ -44,13 +44,14 @@
         style.setProperty('--da-line-height', (state.lineHeight / 100).toFixed(2));
         root.classList.add('d-away-active');
         root.classList.toggle('od-no-italic', state.fontMode === 'opendyslexic');
+        root.classList.toggle('da-include-code', state.includeCode === true);
         startObserver();
     }
 
     function removeDOM() {
         const root = document.documentElement;
         const style = root.style;
-        root.classList.remove('d-away-active', 'od-no-italic');
+        root.classList.remove('d-away-active', 'od-no-italic', 'da-include-code');
         style.removeProperty('--da-font-family');
         style.removeProperty('--da-letter-spacing');
         style.removeProperty('--da-word-spacing');

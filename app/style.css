@@ -1,31 +1,68 @@
-/* Apply base typography while avoiding icon fonts and code blocks */
+/* Standard text and form elements */
 html.d-away-active :is(p, h1, h2, h3, h4, h5, h6, li, dt, dd, th, td, label, legend, caption,
     blockquote, article, section, main, aside, nav, header, footer, address,
     time, summary, figcaption, b, strong, em, small, mark, cite, q, option,
-    optgroup, textarea, select, input, yt-formatted-string):not(:is(pre, code, kbd, samp, svg) *),
-html.d-away-active :is(a, span, div, button, i):not([aria-hidden="true"]):not([role="img"]):not([class*="ico"]):not([class*="fa-"]):not([class*="material-"]):not([class*="bi-"]):not([class*="glyph"]):not([data-icon]):not(:is(pre, code, kbd, samp, svg) *) {
+    optgroup, textarea, select, input, yt-formatted-string) {
     font-family: var(--da-font-family) !important;
     letter-spacing: var(--da-letter-spacing) !important;
     word-spacing: var(--da-word-spacing) !important;
 }
 
-/* Apply line-height only to large blocks of text to prevent UI breakage */
-html.d-away-active :is(p, li, dd, blockquote, article, td, th, figcaption, [role="article"]) {
+/* Toggle off: code, editors, and icons protected */
+html.d-away-active:not(.da-include-code) :is(a, span, div, button, i):not([aria-hidden="true"],
+    [role="img"],
+    [class*="ico"],
+    [class*="fa-"],
+    [class*="material-"],
+    [class*="bi-"],
+    [class*="glyph"],
+    [data-icon],
+    .monaco-editor,
+    .cm-editor,
+    .CodeMirror,
+    .ace_editor,
+    .blob-code,
+    [class*="code-"],
+    svg *,
+    :is(pre, code, kbd, samp, .monaco-editor, .cm-editor, .CodeMirror, .ace_editor, .blob-code, [class*="code-"]) *) {
+    font-family: var(--da-font-family) !important;
+    letter-spacing: var(--da-letter-spacing) !important;
+    word-spacing: var(--da-word-spacing) !important;
+}
+
+/* Toggle on: code included, only icons and SVGs protected */
+html.d-away-active.da-include-code :is(a, span, div, button, i, pre, code, kbd, samp):not([aria-hidden="true"],
+    [role="img"],
+    [class*="ico"],
+    [class*="fa-"],
+    [class*="material-"],
+    [class*="bi-"],
+    [class*="glyph"],
+    [data-icon],
+    svg *) {
+    font-family: var(--da-font-family) !important;
+    letter-spacing: var(--da-letter-spacing) !important;
+    word-spacing: var(--da-word-spacing) !important;
+}
+
+/* Line height for text blocks */
+html.d-away-active :is(p, li, dd, blockquote, article, figcaption, [role="article"]) {
     line-height: var(--da-line-height) !important;
 }
 
-/* Cancel inherited spacing on protected elements */
-:where(html.d-away-active :is(pre, code, kbd, samp, svg)) {
+/* Keep code and SVG spacing normal */
+:where(html.d-away-active :is(svg)),
+:where(html.d-away-active:not(.da-include-code) :is(pre, code, kbd, samp, .monaco-editor, .cm-editor, .CodeMirror, .ace_editor, .blob-code, [class*="code-"])) {
     letter-spacing: normal;
     word-spacing: normal;
 }
 
-/* Prevent italic styles on bold elements to fix OpenDyslexic rendering bugs */
+/* OpenDyslexic has no real italics */
 html.d-away-active.od-no-italic :is(b, strong, i, em, cite, address, var, dfn, th, h1, h2, h3, h4, h5, h6) {
     font-style: normal !important;
 }
 
-/* Style input placeholders (isolated to prevent Shadow DOM parsing errors) */
+/* Form placeholders */
 html.d-away-active ::placeholder {
     font-family: var(--da-font-family) !important;
     letter-spacing: var(--da-letter-spacing) !important;
