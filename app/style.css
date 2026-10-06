@@ -23,8 +23,7 @@ html.d-away-active:not(.da-include-code) :is(a, span, div, button, i):not([aria-
     .ace_editor,
     .blob-code,
     [class*="code-"],
-    svg *,
-    :is(pre, code, kbd, samp, .monaco-editor, .cm-editor, .CodeMirror, .ace_editor, .blob-code, [class*="code-"]) *) {
+    :is(pre, code, kbd, samp, svg, .monaco-editor, .cm-editor, .CodeMirror, .ace_editor, .blob-code, [class*="code-"]) *) {
     font-family: var(--da-font-family) !important;
     letter-spacing: var(--da-letter-spacing) !important;
     word-spacing: var(--da-word-spacing) !important;
