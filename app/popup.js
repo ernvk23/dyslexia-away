@@ -306,9 +306,12 @@ Promise.resolve().then(() => {
         const key = el.getAttribute('data-i18n');
         const msg = browser.i18n.getMessage(key);
         if (!msg) return;
-        // Only this bundled translation contains markup.
-        if (key === 'includeCode') el.innerHTML = msg;
-        else el.textContent = msg;
+        if (key === 'includeCode') {
+            const [before, text, after] = msg.split(/<\/?code>/);
+            const code = document.createElement('code');
+            code.textContent = text;
+            el.replaceChildren(before, code, after);
+        } else el.textContent = msg;
     });
     document.querySelectorAll('[data-i18n-aria]').forEach(el => {
         const msg = browser.i18n.getMessage(el.getAttribute('data-i18n-aria'));
