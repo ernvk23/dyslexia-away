@@ -25,5 +25,8 @@
     },
     "customFontOption": {
         "message": "Custom"
+    },
+    "includeCode": {
+        "message": "Style <code>{code}</code>"
     }
 }

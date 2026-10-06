@@ -289,6 +289,16 @@ label span {
     transition: color var(--t-theme);
 }
 
+.setting label code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    background: var(--bg-primary);
+    border: 1px solid var(--setting-border);
+    border-radius: 0.25rem;
+    padding-inline: 0.3em;
+    transition: background-color var(--t-theme), border-color var(--t-theme);
+}
+
 /* Inputs & Selects */
 #fontModeSelect {
     font-size: 0.6rem;

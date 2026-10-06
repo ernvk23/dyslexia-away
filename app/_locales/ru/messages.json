@@ -25,5 +25,8 @@
     },
     "customFontOption": {
         "message": "Пользовательский"
+    },
+    "includeCode": {
+        "message": "Стилизовать <code>{код}</code>"
     }
 }

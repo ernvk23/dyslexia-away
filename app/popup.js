@@ -4,7 +4,7 @@ if (getComputedStyle(document.body).borderTopLeftRadius !== '0px') {
     document.documentElement.classList.add('panel-rounded');
 }
 
-const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], theme: 'system', fontMode: 'andika', customFont: '', heartRated: false, installDate: null };
+const DEFAULTS = { enabled: false, letterSpacing: 0, wordSpacing: 0, lineHeight: 140, excludedDomains: [], theme: 'system', fontMode: 'andika', customFont: '', includeCode: false, heartRated: false, installDate: null };
 
 function isSupportedUrl(url) {
     return typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'));
@@ -20,6 +20,7 @@ const els = {
     lineVal: document.getElementById('lineValue'),
     reset: document.getElementById('resetBtn'),
     exclude: document.getElementById('excludeSite'),
+    includeCodeToggle: document.getElementById('includeCodeToggle'),
     themeToggle: document.getElementById('themeToggleBtn'),
     heartBtn: document.getElementById('heartBtn'),
     fontModeSelect: document.getElementById('fontModeSelect'),
@@ -70,6 +71,7 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
         els.customFontInput.value = settings.customFont || '';
         updateCustomFontInputVisibility();
         updateDisplayValues();
+        els.includeCodeToggle.checked = settings.includeCode === true;
         els.exclude.checked = isExcluded;
         els.exclude.disabled = isRestricted;
         updateSlidersState(isExcluded, settings.enabled);
@@ -114,6 +116,7 @@ function updateSlidersState(isExcluded, isEnabled) {
     });
     els.fontModeSelect.disabled = !isEnabled; // Font mode remains enabled even when site is excluded
     els.customFontInput.disabled = !isEnabled;
+    els.includeCodeToggle.disabled = !isEnabled;
 }
 
 function updateCustomFontInputVisibility() {
@@ -167,6 +170,10 @@ els.exclude.addEventListener('change', () => {
     els.exclude.checked ? domains.add(currentDomain) : domains.delete(currentDomain);
     scheduleRender(() => updateSlidersState(els.exclude.checked, settings.enabled));
     broadcastChange({ excludedDomains: [...domains] });
+});
+
+els.includeCodeToggle.addEventListener('change', () => {
+    broadcastChange({ includeCode: els.includeCodeToggle.checked });
 });
 
 sliders.forEach(slider => {
@@ -272,6 +279,7 @@ els.reset.addEventListener('click', () => {
         els.customFontInput.value = DEFAULTS.customFont;
         updateCustomFontInputVisibility();
         applyTheme(DEFAULTS.theme);
+        els.includeCodeToggle.checked = DEFAULTS.includeCode;
         els.exclude.checked = false;
         updateDisplayValues();
         updateToggleUI(settings.enabled);
@@ -282,6 +290,7 @@ els.reset.addEventListener('click', () => {
         lineHeight: DEFAULTS.lineHeight,
         fontMode: DEFAULTS.fontMode,
         customFont: DEFAULTS.customFont,
+        includeCode: DEFAULTS.includeCode,
         excludedDomains: [],
         theme: DEFAULTS.theme
     });
@@ -294,8 +303,12 @@ function applyTheme(theme) {
 // i18n as microtask — avoids blocking initial popup render
 Promise.resolve().then(() => {
     document.querySelectorAll('[data-i18n]').forEach(el => {
-        const msg = browser.i18n.getMessage(el.getAttribute('data-i18n'));
-        if (msg) el.textContent = msg;
+        const key = el.getAttribute('data-i18n');
+        const msg = browser.i18n.getMessage(key);
+        if (!msg) return;
+        // Only this bundled translation contains markup.
+        if (key === 'includeCode') el.innerHTML = msg;
+        else el.textContent = msg;
     });
     document.querySelectorAll('[data-i18n-aria]').forEach(el => {
         const msg = browser.i18n.getMessage(el.getAttribute('data-i18n-aria'));

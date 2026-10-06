@@ -25,5 +25,8 @@
     },
     "customFontOption": {
         "message": "Benutzerdefiniert"
+    },
+    "includeCode": {
+        "message": "<code>{Code}</code> gestalten"
     }
 }

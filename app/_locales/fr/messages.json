@@ -25,5 +25,8 @@
     },
     "customFontOption": {
         "message": "Personnalisée"
+    },
+    "includeCode": {
+        "message": "Styliser <code>{code}</code>"
     }
 }

@@ -25,5 +25,8 @@
     },
     "customFontOption": {
         "message": "Personalizada"
+    },
+    "includeCode": {
+        "message": "Estilizar <code>{código}</code>"
     }
 }
