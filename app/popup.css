@@ -361,6 +361,11 @@ label span {
     transform: translate(-50%, -50%);
 }
 
+#includeCodeToggle:disabled:checked {
+    background-color: var(--toggle-inactive);
+    border-color: var(--toggle-inactive);
+}
+
 /* Range Sliders */
 input[type="range"] {
     width: 100%;
