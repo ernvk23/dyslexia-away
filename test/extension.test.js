@@ -99,7 +99,7 @@ describe('static assets', () => {
 
         const firefox = readJson(path.join(APP, 'manifest-firefox.json'));
         const chrome = readJson(path.join(APP, 'manifest-chrome.json'));
-        assert.equal(chrome.minimum_chrome_version, '99');
+        assert.equal(chrome.minimum_chrome_version, '123');
         assert.equal(chrome.background.service_worker, 'background.js');
         assert.deepEqual(firefox.background.scripts, ['background.js']);
         for (const file of ['background.js', 'content.js', 'popup.js']) {
