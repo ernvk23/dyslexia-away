@@ -29,6 +29,22 @@
         });
     }
 
+    function refreshStyles() {
+        if (state.enabled && !state.excluded) captureOriginalFont();
+        applyStyles();
+    }
+
+    // Use the site's font stack for unsupported glyphs.
+    function captureOriginalFont() {
+        const source = document.body;
+        if (!source) return;
+        const original = getComputedStyle(source).fontFamily;
+        const style = document.documentElement.style;
+        if (original && original !== style.getPropertyValue('--da-original-font')) {
+            style.setProperty('--da-original-font', original);
+        }
+    }
+
     function updateDOM() {
         const root = document.documentElement;
         const style = root.style;
@@ -37,6 +53,8 @@
         if (state.fontMode === 'custom' && state.customFont) {
             primaryFont = `"${state.customFont}"`;
         }
+
+        if (!style.getPropertyValue('--da-original-font')) captureOriginalFont();
 
         style.setProperty('--da-font-family', primaryFont);
         style.setProperty('--da-letter-spacing', `${(state.letterSpacing / 1000).toFixed(3)}em`);
@@ -56,6 +74,7 @@
         style.removeProperty('--da-letter-spacing');
         style.removeProperty('--da-word-spacing');
         style.removeProperty('--da-line-height');
+        style.removeProperty('--da-original-font');
     }
 
     function startObserver() {
@@ -99,7 +118,7 @@
         ]);
         topHost = host || location.hostname;
         updateState(res);
-        applyStyles();
+        refreshStyles();
     }
 
     browser.storage.onChanged.addListener((changes, area) => {
@@ -120,8 +139,18 @@
     });
 
     window.addEventListener('pageshow', (e) => e.persisted && init()); // Restore on BFCache navigation
-    document.addEventListener('turbo:load', applyStyles);
-    document.addEventListener('turbo:render', applyStyles);
+    document.addEventListener('turbo:load', refreshStyles);
+    document.addEventListener('turbo:render', refreshStyles);
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', refreshStyles, { once: true });
+    }
+    if (document.readyState !== 'complete') {
+        // Refresh the fallback after initial stylesheets load.
+        window.addEventListener('load', () => {
+            if (state.enabled && !state.excluded) captureOriginalFont();
+        }, { once: true });
+    }
 
     init();
 })();

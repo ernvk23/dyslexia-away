@@ -179,6 +179,7 @@ describe('content lifecycle', () => {
                 location: { hostname: 'example.com' },
                 document: {
                     documentElement: root,
+                    readyState: 'complete',
                     addEventListener: () => listeners.document++
                 },
                 window: { addEventListener: () => listeners.window++ },
@@ -198,6 +199,132 @@ describe('content lifecycle', () => {
 
             assert.deepEqual(listeners, { storage: 1, message: 1, window: 1, document: 2 }, namespace);
         }
+    });
+});
+
+// Use the site's font stack for unsupported glyphs.
+describe('original font fallback', () => {
+    test('style.css chains the site stack after the bundled font', () => {
+        const css = fs.readFileSync(path.join(APP, 'style.css'), 'utf8');
+        const decls = css.match(/font-family:\s*var\(--da-font-family\)[^;]*;/g) || [];
+        assert.equal(decls.length, 4, 'all font-family overrides must share the chain');
+        for (const decl of decls) {
+            assert.match(decl, /var\(--da-original-font, sans-serif\)/);
+        }
+    });
+
+    test('captures the body font stack as --da-original-font', async () => {
+        const computed = '"Noto Sans JP", Arial, sans-serif';
+        const h = createFontHarness({ settings: { enabled: true, fontMode: 'lexend' }, body: {}, computedFont: computed });
+        await flush();
+        assert.equal(h.props.get('--da-original-font'), computed);
+    });
+
+    test('reuses the fallback for settings updates and recaptures after re-enabling', async () => {
+        let reads = 0, font = 'serif';
+        const h = createFontHarness({ settings: { enabled: true }, body: {}, computedFont: () => { reads++; return font; } });
+        await flush();
+        assert.equal(reads, 1);
+        font = 'Arial, sans-serif';
+        for (const changes of [{ letterSpacing: 10 }, { fontMode: 'lexend' }]) {
+            h.changeSettings(changes);
+            await flush();
+        }
+        assert.equal(h.props.get('--da-letter-spacing'), '0.010em');
+        assert.equal(h.props.get('--da-font-family'), 'Lexend');
+        assert.equal(h.props.get('--da-original-font'), 'serif');
+        assert.equal(reads, 1);
+        h.changeSettings({ enabled: false });
+        await flush();
+        h.changeSettings({ enabled: true });
+        await flush();
+        assert.equal(h.props.get('--da-original-font'), font);
+        assert.equal(reads, 2);
+    });
+
+    test('refreshes on Turbo navigation and BFCache restoration', async () => {
+        let font = 'serif';
+        const h = createFontHarness({ settings: { enabled: true }, body: {}, computedFont: () => font });
+        await flush();
+        for (const event of ['turbo:render', 'turbo:load']) {
+            font = `${event}, sans-serif`;
+            h.dispatchDocument(event);
+            await flush();
+            assert.equal(h.props.get('--da-original-font'), font);
+        }
+        font = 'Arial, sans-serif';
+        h.dispatchWindow('pageshow', { persisted: false });
+        await flush();
+        assert.equal(h.props.get('--da-original-font'), 'turbo:load, sans-serif');
+        h.dispatchWindow('pageshow', { persisted: true });
+        await flush();
+        assert.equal(h.props.get('--da-original-font'), font);
+    });
+
+    test('applies early and refreshes at DOMContentLoaded and load', async () => {
+        let font = 'serif';
+        const h = createFontHarness({ settings: { enabled: true, fontMode: 'lexend' }, body: {}, computedFont: () => font, readyState: 'loading' });
+        await flush();
+        assert.equal(h.classes.has('d-away-active'), true);
+        assert.equal(h.props.get('--da-original-font'), 'serif');
+        font = 'Arial, sans-serif';
+        h.dispatchDocument('DOMContentLoaded');
+        await flush();
+        assert.equal(h.props.get('--da-original-font'), font);
+
+        const writesBeforeLoad = h.writes.length;
+        font = '"Noto Sans JP", sans-serif';
+        h.dispatchWindow('load');
+        await flush();
+        assert.equal(h.props.get('--da-original-font'), font);
+        assert.deepEqual(h.writes.slice(writesBeforeLoad), [['--da-original-font', font]]);
+    });
+
+    test('captures at DOMContentLoaded when the body was initially missing', async () => {
+        const h = createFontHarness({ settings: { enabled: true, fontMode: 'lexend' }, computedFont: 'serif', readyState: 'loading' });
+        await flush();
+        assert.equal(h.classes.has('d-away-active'), true);
+        assert.equal(h.props.has('--da-original-font'), false);
+        h.document.body = {};
+        h.dispatchDocument('DOMContentLoaded');
+        await flush();
+        assert.equal(h.props.get('--da-original-font'), 'serif');
+        assert.equal(h.classes.has('d-away-active'), true);
+    });
+
+    test('does not rewrite an unchanged fallback at load', async () => {
+        const h = createFontHarness({ settings: { enabled: true }, body: {}, computedFont: 'serif', readyState: 'interactive' });
+        await flush();
+        assert.equal(h.classes.has('d-away-active'), true);
+        const writesBeforeLoad = h.writes.length;
+        h.dispatchWindow('load');
+        await flush();
+        assert.equal(h.writes.length, writesBeforeLoad);
+    });
+
+    test('load does not restore a fallback after disabling or excluding the page', async () => {
+        for (const changes of [{ enabled: { newValue: false } }, { excludedDomains: { newValue: ['example.com'] } }]) {
+            const h = createFontHarness({ settings: { enabled: true }, body: {}, computedFont: 'serif', readyState: 'interactive' });
+            await flush();
+            h.changeSettings(changes);
+            await flush();
+            assert.equal(h.classes.has('d-away-active'), false);
+            assert.equal(h.props.has('--da-original-font'), false);
+            const writesBeforeLoad = h.writes.length;
+            h.dispatchWindow('load');
+            await flush();
+            assert.equal(h.writes.length, writesBeforeLoad);
+            assert.equal(h.props.has('--da-original-font'), false);
+        }
+    });
+
+    test('injection after load captures immediately without registering past events', async () => {
+        const h = createFontHarness({ settings: { enabled: true }, body: {}, computedFont: 'serif', readyState: 'complete' });
+        await flush();
+        assert.equal(h.classes.has('d-away-active'), true);
+        assert.equal(h.props.get('--da-original-font'), 'serif');
+        assert.equal(h.documentListeners.some(([type]) => type === 'DOMContentLoaded'), false);
+        assert.equal(h.windowListeners.some(([type]) => type === 'load'), false);
     });
 });
 
@@ -237,4 +364,78 @@ function loadIsSupportedUrl() {
     vm.runInContext(source, sandbox);
     assert.equal(typeof sandbox.isSupportedUrl, 'function', 'background.js must define isSupportedUrl at top level');
     return sandbox.isSupportedUrl;
+}
+
+async function flush() {
+    await new Promise(resolve => setImmediate(resolve));
+    await new Promise(resolve => setImmediate(resolve));
+}
+
+// Runs content.js in a fresh sandbox with a recording root element.
+function createFontHarness({ settings = {}, body = null, computedFont = '', readyState = 'complete' } = {}) {
+    const source = fs.readFileSync(path.join(APP, 'content.js'), 'utf8');
+    const props = new Map();
+    const classes = new Set();
+    const documentListeners = [];
+    const windowListeners = [];
+    const storageListeners = [];
+    const writes = [];
+    let rafSequence = 0;
+    const root = {
+        classList: {
+            add: (c) => classes.add(c),
+            remove: (...cs) => cs.forEach(c => classes.delete(c)),
+            toggle: (c, on) => { if (on) classes.add(c); else classes.delete(c); },
+            contains: (c) => classes.has(c)
+        },
+        style: {
+            setProperty: (k, v) => { props.set(k, v); writes.push([k, v]); },
+            removeProperty: (k) => props.delete(k),
+            getPropertyValue: (k) => props.get(k) || ''
+        }
+    };
+    const sandbox = {
+        browser: {
+            storage: {
+                local: { get: () => Promise.resolve(settings) },
+                onChanged: { addListener: (fn) => storageListeners.push(fn) }
+            },
+            runtime: {
+                sendMessage: () => Promise.resolve('example.com'),
+                onMessage: { addListener: () => {} }
+            }
+        },
+        location: { hostname: 'example.com' },
+        document: {
+            documentElement: root,
+            body,
+            readyState,
+            addEventListener: (type, fn, options) => documentListeners.push([type, fn, options])
+        },
+        window: { addEventListener: (type, fn, options) => windowListeners.push([type, fn, options]) },
+        getComputedStyle: () => ({ fontFamily: typeof computedFont === 'function' ? computedFont() : computedFont }),
+        MutationObserver: class { observe() {} disconnect() {} },
+        requestAnimationFrame(callback) { setImmediate(callback); return ++rafSequence; }
+    };
+    vm.createContext(sandbox);
+    vm.runInContext(source, sandbox);
+    function dispatch(listeners, type, event = {}) {
+        for (const listener of listeners.filter(([event]) => event === type)) {
+            const [, fn, options] = listener;
+            if (options?.once) listeners.splice(listeners.indexOf(listener), 1);
+            fn(event);
+        }
+    }
+    return {
+        props, classes, writes, documentListeners, windowListeners, document: sandbox.document,
+        dispatchDocument(type) {
+            if (type === 'DOMContentLoaded') sandbox.document.readyState = 'interactive';
+            dispatch(documentListeners, type);
+        },
+        dispatchWindow(type, event) {
+            if (type === 'load') sandbox.document.readyState = 'complete';
+            dispatch(windowListeners, type, event);
+        },
+        changeSettings(changes) { storageListeners.forEach(fn => fn(changes, 'local')); }
+    };
 }
