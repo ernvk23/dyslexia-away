@@ -43,11 +43,14 @@ function scheduleRender(callback) {
     renderRafId = requestAnimationFrame(() => { renderRafId = null; callback(); });
 }
 
+// Overlap both reads: wait is max(tabs, storage)
+const tabPromise = browser.tabs.query({ active: true, currentWindow: true });
+
 browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
     settings = { ...DEFAULTS, ...result };
     applyTheme(settings.theme);
 
-    const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
+    const [tab] = await tabPromise;
     const isRestricted = !isSupportedUrl(tab?.url);
     let isExcluded = false;
 
@@ -153,8 +156,9 @@ function broadcastChange(changedSettings, shouldNotifyTabs = true) {
 
     clearTimeout(saveTimeout);
     saveTimeout = setTimeout(async () => {
-        await browser.storage.local.set(settings);
+        // Clear first so a finishing write can't erase a newer pending save
         saveTimeout = null;
+        await browser.storage.local.set(settings);
     }, 100);
 }
 
