@@ -63,17 +63,24 @@
         <div class="settings-container">
 
             <div class="setting font-mode-setting">
-                <label for="fontModeSelect" data-i18n="fontModeLabel">Font Type</label>
-                <select id="fontModeSelect">
-                    <option value="andika">Andika</option>
-                    <option value="lexend">Lexend</option>
-                    <option value="shantell">Shantell Sans</option>
-                    <option value="opendyslexic">OpenDyslexic</option>
-                    <option value="atkinson">Atkinson Hyperlegible Next</option>
-                    <option value="custom" data-i18n="customFontOption">Custom</option>
-                </select>
+                <label for="fontModeSelect">
+                    <span data-i18n="fontModeLabel">Font Type</span>
+                    <select id="fontModeSelect">
+                        <option value="andika">Andika</option>
+                        <option value="lexend">Lexend</option>
+                        <option value="shantell">Shantell Sans</option>
+                        <option value="opendyslexic">OpenDyslexic</option>
+                        <option value="atkinson">Atkinson Hyperlegible Next</option>
+                        <option value="custom" data-i18n="customFontOption">Custom</option>
+                    </select>
+                </label>
                 <input type="text" id="customFontInput" class="custom-font-input"
                     placeholder="e.g., Arial, Verdana, Comic Sans MS" aria-label="Custom font name">
+                <div class="divider"></div>
+                <label for="includeCodeToggle">
+                    <span data-i18n="includeCode">Style <code>{code}</code></span>
+                    <input type="checkbox" id="includeCodeToggle">
+                </label>
             </div>
 
             <div class="setting">
@@ -91,13 +98,6 @@
                 <input type="range" id="lineHeight" min="100" max="200" value="140" step="1">
             </div>
 
-
-            <div class="setting exclusion-setting">
-                <label for="includeCodeToggle">
-                    <span data-i18n="includeCode"></span>
-                    <input type="checkbox" id="includeCodeToggle">
-                </label>
-            </div>
 
             <div class="setting exclusion-setting">
                 <label for="excludeSite">
