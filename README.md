@@ -53,7 +53,7 @@ For me, it made things click in a way they hadn't before.
 
 * **Manifest Version:** 3 (Chrome & Firefox)
 * **Font Loading:** Local font files bundled with extension
-* **Compatibility:** Chrome 88+, Firefox 142+ (including Firefox for Android)
+* **Compatibility:** Chrome 123+, Firefox 142+ (including Firefox for Android)
 * **Zero-footprint:** Stays asleep unless settings change
 * **Privacy First:** No tracking, no data collection, no external dependencies
 
