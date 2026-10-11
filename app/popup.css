@@ -17,8 +17,7 @@
     --accent-hover: #0284c7;
     --accent-active: #0369a1;
     --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-    --t-theme: 0.3s ease;
-    --t-phys: 0.15s ease;
+    --t-theme: 0.2s ease;
     --thumb-size: 0.875rem;
     --radius-pill: 0.625rem;
 }
@@ -115,7 +114,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform var(--t-phys);
+    transition: transform var(--t-theme);
     width: 2rem;
     height: 2rem;
     position: absolute;
@@ -128,11 +127,11 @@ body {
 
 .heart-button .heart-icon {
     color: var(--toggle-inactive);
-    transition: color var(--t-phys);
+    transition: color var(--t-theme);
 }
 
 .heart-button .heart-path {
-    transition: fill var(--t-phys), stroke var(--t-phys);
+    transition: fill var(--t-theme), stroke var(--t-theme);
     stroke: var(--toggle-inactive);
     fill: none;
 }
@@ -195,7 +194,7 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform var(--t-phys), box-shadow var(--t-phys);
+    transition: transform var(--t-theme), box-shadow var(--t-theme);
 }
 
 .toggle-button:active,
@@ -212,7 +211,7 @@ h2 {
     fill: currentColor;
     height: 4rem;
     width: 4rem;
-    transition: color var(--t-phys);
+    transition: color var(--t-theme);
 }
 
 .toggle-button.active .toggle-icon {
@@ -232,7 +231,7 @@ h2 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: color var(--t-phys);
+    transition: color var(--t-theme);
 }
 
 [data-theme="system"] .theme-icon.system,
@@ -356,7 +355,7 @@ label .value {
     cursor: pointer;
     position: relative;
     background-color: transparent;
-    transition: background-color var(--t-phys), border-color var(--t-phys);
+    transition: background-color var(--t-theme), border-color var(--t-theme);
 }
 
 .setting input[type="checkbox"]:checked {
@@ -403,7 +402,7 @@ input[type="range"]::-webkit-slider-thumb {
     background: var(--toggle-inactive);
     cursor: pointer;
     box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3);
-    transition: transform var(--t-phys), background-color var(--t-phys);
+    transition: transform var(--t-theme), background-color var(--t-theme);
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -414,7 +413,7 @@ input[type="range"]::-moz-range-thumb {
     cursor: pointer;
     border: none;
     box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3);
-    transition: transform var(--t-phys), background-color var(--t-phys);
+    transition: transform var(--t-theme), background-color var(--t-theme);
 }
 
 input[type="range"]:disabled::-webkit-slider-thumb {
@@ -451,7 +450,7 @@ input[type="range"]::-moz-range-thumb:active {
     cursor: pointer;
     margin-top: 1.25rem;
     margin-bottom: 0.5rem;
-    transition: background-color var(--t-theme), color var(--t-theme), border-color var(--t-theme), transform var(--t-phys);
+    transition: background-color var(--t-theme), color var(--t-theme), border-color var(--t-theme), transform var(--t-theme);
 }
 
 .reset-btn:active {
