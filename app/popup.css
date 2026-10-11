@@ -9,10 +9,10 @@
     --accent-glow: light-dark(rgba(14, 165, 233, .15), rgba(14, 165, 233, .1));
     --setting-bg: light-dark(#e5e7eb, #2a2a2a);
     --setting-border: light-dark(#d1d5db, #3a3a3a);
+    --inset-bg: light-dark(#e0e2e5, #282828);
     --slider-bg: light-dark(#d1d5db, #2e2e2e);
     --toggle-inactive: light-dark(#9ca3af, #5e5c64);
     --checkbox-border: light-dark(#9ca3af, #5e5c64);
-    --slider-number: light-dark(#1f2937, #b1b1b1);
     --accent-color: #0ea5e9;
     --accent-hover: #0284c7;
     --accent-active: #0369a1;
@@ -182,7 +182,6 @@ body {
 h2 {
     font-size: 0.7rem;
     font-weight: bold;
-    transition: color var(--t-theme);
 }
 
 /* Main Toggles & Icons */
@@ -285,22 +284,19 @@ label {
     justify-content: space-between;
     align-items: center;
     white-space: nowrap;
-    transition: color var(--t-theme);
 }
 
-label span {
-    color: var(--slider-number);
+label .value {
     font-variant-numeric: tabular-nums;
     min-width: 2rem;
     text-align: right;
     flex-shrink: 0;
-    transition: color var(--t-theme);
 }
 
 .setting label code {
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     font-size: 0.9em;
-    background: var(--bg-primary);
+    background: var(--inset-bg);
     border: 1px solid var(--setting-border);
     border-radius: 0.25rem;
     padding-inline: 0.3em;
@@ -312,32 +308,37 @@ label span {
     font-size: 0.6rem;
     min-width: 0;
     height: 1rem;
-    text-align: right;
+    text-align-last: right;
     border: none;
     outline: none;
     padding-block: 0.1rem;
+    padding-left: 0.4rem;
     background-color: var(--setting-bg);
-    color: var(--text-primary);
+    color: inherit;
     cursor: pointer;
     border-radius: 0.25rem;
-    transition: background-color var(--t-theme), color var(--t-theme);
+    transition: background-color var(--t-theme);
+}
+
+#fontModeSelect:disabled {
+    opacity: 1;
 }
 
 .custom-font-input {
     display: none;
     width: 100%;
     margin-block: 0.2rem;
-    padding-block: 0.25rem;
+    padding-block: 0.2rem;
     padding-inline: 0.5rem;
     border: none;
     outline: none;
     background-color: var(--bg-secondary);
-    color: var(--text-primary);
+    color: inherit;
     font-size: 0.65rem;
     border-radius: 0.25rem;
     user-select: text;
     -webkit-user-select: text;
-    transition: background-color var(--t-theme), color var(--t-theme);
+    transition: background-color var(--t-theme);
 }
 
 .font-mode-setting.show-custom-input .custom-font-input {
@@ -527,8 +528,18 @@ input[type="range"]::-moz-range-thumb:active {
         font-size: 0.9rem;
     }
 
-    .setting {
+    .setting,
+    .setting.font-mode-setting {
         flex-basis: 4.5rem;
+    }
+
+    .setting.exclusion-setting {
+        flex-basis: 2.75rem;
+    }
+
+    .setting.reset-btn {
+        flex-basis: 2.75rem;
+        padding-block: 0.6rem;
     }
 
     input[type="range"] {
