@@ -11,7 +11,7 @@ app/                 Extension source (shipped in both zips)
   popup.{js,html,css}      Popup UI
   style.css / fonts.css    Styles injected into pages / @font-face declarations
   build.js                 Build script (Node); not shipped
-  manifest-chrome.json     Chrome manifest (minimum Chrome 99; service worker = background.js)
+  manifest-chrome.json     Chrome manifest (minimum Chrome 123; service worker = background.js)
   manifest-firefox.json    Firefox manifest (background.scripts = [background.js])
   _locales/  fonts/  icons/   i18n / bundled fonts / icons
   extras/                  Dev helpers (font-comparison.html, generate-disabled-icons.py); NOT included in builds
@@ -22,8 +22,8 @@ dist/                Disposable build output (gitignored; local zips may exist)
 
 ## Architecture Notes
 
-- Firefox and Chrome 148+ expose the native Promise-based `browser` namespace. Chrome 99–147 aliases native `chrome` APIs to that namespace with a one-line runtime guard; no compatibility polyfill is shipped.
-- Chrome 99 is the floor because `runtime.sendMessage()` and `tabs.sendMessage()` are the newest Promise APIs used. While supporting Chrome 99–147, keep `runtime.onMessage` listeners on `sendResponse`/`return true`; Promise-returning listeners require Chrome 148.
+- Firefox and Chrome 148+ expose the native Promise-based `browser` namespace. Chrome 123–147 aliases native `chrome` APIs to that namespace with a one-line runtime guard; no compatibility polyfill is shipped.
+- Chrome 123 is the floor because `app/popup.css` uses `light-dark()`. Chrome 99 remains the historical minimum for the messaging Promise APIs (`runtime.sendMessage()`/`tabs.sendMessage()`). While supporting Chrome 123–147, keep `runtime.onMessage` listeners on `sendResponse`/`return true`; Promise-returning listeners require Chrome 148.
 - `background.js` is the direct background entry in both builds: a Chrome service worker and a Firefox background script.
 - Build output is two zips at `dist/dyslexia-away-chrome.zip` and `dist/dyslexia-away-firefox.zip`. The per-browser staging dir (`dist/chrome`, `dist/firefox`) is created then deleted after zipping, so it does not persist.
 - `build.js` fails closed when required runtime files/directories are missing (`srcFiles`, selected manifest, `fonts/`, `icons/`, `_locales/`). Project-root docs such as `README.md` are optional.
