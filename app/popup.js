@@ -32,6 +32,8 @@ const sliders = [els.letterSlider, els.wordSlider, els.lineSlider];
 
 let currentDomain = null;
 let activeTabId = null;
+let currentTab = null;
+let popupReady = false;
 let saveTimeout = null;
 let messageTimeout = null;
 let renderRafId = null;
@@ -44,22 +46,51 @@ function scheduleRender(callback) {
 }
 
 // Overlap both reads: wait is max(tabs, storage)
-const tabPromise = browser.tabs.query({ active: true, currentWindow: true });
+const tabPromise = browser.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
+    currentTab = tab;
+});
+
+// Buffer URL changes of the popup's tab until first render, then apply live
+browser.tabs.onUpdated.addListener((id, changeInfo, tab) => {
+    if (!changeInfo.url) return;
+    if (!currentTab) {
+        tabPromise.then(() => {
+            if (id === currentTab?.id) applyTab(tab);
+        });
+        return;
+    }
+    if (id === currentTab.id) applyTab(tab);
+});
+
+function applyTab(tab, ensureInjection = false) {
+    currentTab = tab;
+    if (!popupReady) return;
+
+    const isRestricted = !isSupportedUrl(tab?.url);
+    let isExcluded = false;
+
+    if (isRestricted) {
+        activeTabId = null;
+        currentDomain = null;
+    } else {
+        activeTabId = tab.id;
+        currentDomain = new URL(tab.url).hostname;
+        isExcluded = (Array.isArray(settings.excludedDomains) ? settings.excludedDomains : []).includes(currentDomain);
+        if (ensureInjection) {
+            browser.runtime.sendMessage({ action: 'ENSURE_INJECTED', tabId: tab.id, tabUrl: tab.url }).catch(() => { });
+        }
+    }
+
+    els.exclude.checked = isExcluded;
+    els.exclude.disabled = isRestricted;
+    updateSlidersState(isExcluded, settings.enabled);
+}
 
 browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
     settings = { ...DEFAULTS, ...result };
     applyTheme(settings.theme);
 
-    const [tab] = await tabPromise;
-    const isRestricted = !isSupportedUrl(tab?.url);
-    let isExcluded = false;
-
-    if (!isRestricted) {
-        activeTabId = tab.id;
-        currentDomain = new URL(tab.url).hostname;
-        isExcluded = (Array.isArray(settings.excludedDomains) ? settings.excludedDomains : []).includes(currentDomain);
-        browser.runtime.sendMessage({ action: 'ENSURE_INJECTED', tabId: tab.id, tabUrl: tab.url }).catch(() => { });
-    }
+    await tabPromise;
 
     const shouldShowHeart = !settings.heartRated &&
         settings.installDate &&
@@ -75,9 +106,8 @@ browser.storage.local.get(Object.keys(DEFAULTS)).then(async result => {
         updateCustomFontInputVisibility();
         updateDisplayValues();
         els.includeCodeToggle.checked = settings.includeCode === true;
-        els.exclude.checked = isExcluded;
-        els.exclude.disabled = isRestricted;
-        updateSlidersState(isExcluded, settings.enabled);
+        popupReady = true;
+        applyTab(currentTab, true);
 
         if (shouldShowHeart) {
             els.heartBtn.classList.remove('hidden');
