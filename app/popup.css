@@ -45,11 +45,6 @@
     -webkit-user-select: none;
 }
 
-html {
-    height: 100%;
-    width: 100%;
-}
-
 body,
 button,
 input,
@@ -502,6 +497,8 @@ input[type="range"]::-moz-range-thumb:active {
 /* Mobile & Touch Adjustments */
 @media ((any-hover: none) or (hover: none)) and (pointer: coarse) {
     html {
+        height: 100%;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -529,7 +526,7 @@ input[type="range"]::-moz-range-thumb:active {
 
     .setting,
     .setting.font-mode-setting {
-        flex-basis: 4.5rem;
+        flex-basis: 3.75rem;
     }
 
     .setting.exclusion-setting {
@@ -556,12 +553,12 @@ input[type="range"]::-moz-range-thumb:active {
     }
 
     .toggle-icon {
-        height: 5rem;
-        width: 5rem;
+        height: 4rem;
+        width: 4rem;
     }
 
     .main-toggle-container {
-        margin-block: 0.75rem;
+        margin-block: 0.5rem;
     }
 
     #fontModeSelect {
@@ -574,7 +571,7 @@ input[type="range"]::-moz-range-thumb:active {
     }
 
     .reset-btn {
-        margin-top: 0.75rem;
+        margin-top: 0.5rem;
         margin-bottom: 0.25rem;
     }
 }
