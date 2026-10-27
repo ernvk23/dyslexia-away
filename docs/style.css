@@ -1,3 +1,19 @@
+@font-face {
+    font-family: 'Shantell Sans';
+    src: url('assets/fonts/ShantellSans-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Shantell Sans';
+    src: url('assets/fonts/ShantellSans-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* DyslexiaAway Website Styles - Cleaned & Optimized */
 :root {
     /* Light theme (default) */
@@ -88,7 +104,7 @@ html {
 
 
 body {
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-family: 'Shantell Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
     color: var(--text-color);
     transition: background-color 0.5s ease, color 0.5s ease;
     padding-top: 4rem;
