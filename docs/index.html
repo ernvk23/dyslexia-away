@@ -35,7 +35,7 @@
     <meta property="og:title" content="DyslexiaAway - Read with Ease">
     <meta property="og:description"
         content="A simple browser extension that applies a dyslexic-friendly font. For some of us, that small change makes reading a lot easier.">
-    <meta property="og:image" content="https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg?v=3">
+    <meta property="og:image" content="https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg?v=6">
     <meta property="og:image:width" content="930">
     <meta property="og:image:height" content="580">
     <meta property="og:image:alt" content="DyslexiaAway browser extension showing dyslexic-friendly font in action">
@@ -50,7 +50,7 @@
     <meta property="twitter:title" content="DyslexiaAway - Read with Ease">
     <meta property="twitter:description"
         content="A simple browser extension that applies a dyslexic-friendly font. For some of us, that small change makes reading a lot easier.">
-    <meta property="twitter:image" content="https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg?v=3">
+    <meta property="twitter:image" content="https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg?v=6">
     <meta property="twitter:image:alt"
         content="DyslexiaAway browser extension showing dyslexic-friendly font in action">
     <meta property="twitter:site" content="@ernvk23">
@@ -82,8 +82,8 @@
       },
       "license": "https://www.gnu.org/licenses/gpl-3.0.html",
       "softwareVersion": "1.14.1",
-      "image": "https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg?v=3",
-      "screenshot": "https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg?v=3",
+      "image": "https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg?v=6",
+      "screenshot": "https://ernvk23.github.io/dyslexia-away/img/sample-full.jpg?v=6",
       "featureList": [
         "Applies dyslexic-friendly fonts",
         "Adjustable letter and line spacing",
@@ -133,22 +133,22 @@
         })();
     </script>
 
-    <!-- Critical inline CSS: particle colors, anti‑FOUC -->
+    <!-- Critical inline CSS: background glow, anti‑FOUC -->
     <style>
         :root {
-            --particle-color: rgba(4, 56, 104, 0.3);
-            --particle-connection-color: rgba(4, 56, 104, 0.2);
+            --glow: rgba(13, 143, 216, 0.1);
+            --dot: rgba(13, 143, 216, 0.15);
         }
 
         [data-theme="dark"] {
-            --particle-color: rgba(150, 200, 230, 0.3);
-            --particle-connection-color: rgba(150, 200, 230, 0.2);
+            --glow: rgba(150, 200, 230, 0.12);
+            --dot: rgba(150, 200, 230, 0.09);
         }
 
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme]) {
-                --particle-color: rgba(150, 200, 230, 0.3);
-                --particle-connection-color: rgba(150, 200, 230, 0.2);
+                --glow: rgba(150, 200, 230, 0.12);
+                --dot: rgba(150, 200, 230, 0.09);
             }
         }
 
@@ -169,10 +169,10 @@
     </style>
 
     <!-- Main CSS: Critical for layout -->
-    <link rel="preload" href="style.css?v=3" as="style">
+    <link rel="preload" href="style.css?v=6" as="style">
 
     <!-- Translation script: Critical for Spanish users -->
-    <link rel="preload" href="foac_script.js?v=3" as="script">
+    <link rel="preload" href="foac_script.js?v=6" as="script">
 
     <!-- Hero image: Above the fold -->
     <link rel="preload" href="./img/sample.webp" as="image" type="image/webp" fetchpriority="high">
@@ -182,13 +182,13 @@
 
     <!-- Translation script (async) -->
     <!-- Position before stylesheet = no stylesheet blocking -->
-    <script src="foac_script.js?v=3" async></script>
+    <script src="foac_script.js?v=6" async></script>
 
     <!-- Main stylesheet : loads in parallel with script-->
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=6">
 
     <!-- Main interaction script (deferred)-->
-    <script src="script.js?v=3" defer></script>
+    <script src="script.js?v=6" defer></script>
 
     <!-- Icons & manifest -->
     <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon.png">
@@ -198,8 +198,6 @@
 </head>
 
 <body>
-    <canvas id="canvas-bg"></canvas>
-
     <header>
         <nav aria-label="Main navigation">
             <a href="#hero" class="logo">DyslexiaAway</a>
@@ -327,7 +325,7 @@
                     </article>
                 </div>
                 <div class="sample-image">
-                    <img src="./img/sample-full.webp?v=3" alt="DyslexiaAway extension in action" height="580"
+                    <img src="./img/sample-full.webp?v=6" alt="DyslexiaAway extension in action" height="580"
                         width="930" loading="lazy" class="fade-img">
                 </div>
             </div>

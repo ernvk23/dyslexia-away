@@ -39,11 +39,10 @@
     --shadow-dark: rgba(0, 0, 0, 0.3);
     --shadow-subtle: rgba(0, 0, 0, 0.1);
 
-    /* Particle colors - using darker blue for light theme */
-    --particle-color: rgba(4, 56, 104, 0.3);
-    /* Darker blue (#0d64b4) with good opacity for light theme */
-    --particle-connection-color: rgba(4, 56, 104, 0.2);
-    /* Darker blue connections for light theme */
+    /* Background glow */
+    --glow: rgba(13, 143, 216, 0.1);
+    --dot: rgba(13, 143, 216, 0.15);
+
     /* UI colors */
     --border-color: #d1d5db;
     --card-bg: rgba(248, 248, 248, 0.7);
@@ -51,8 +50,8 @@
     --card-border: #e5e7eb;
 
     /* Component backgrounds - light theme */
-    --nav-initial: rgba(242, 242, 242, 0.2);
-    /* Slightly darker with blur effect */
+    --nav-initial: rgba(255, 255, 255, 0.55);
+    --nav-border: rgba(13, 143, 216, 0.14);
 }
 
 /* Dark theme */
@@ -63,15 +62,14 @@
     --border-color: #404040;
     --card-bg: rgba(42, 42, 42, 0.7);
     --card-border: #3a3a3a;
-    --particle-color: rgba(150, 200, 230, 0.3);
-    /* Subtle light blue (#96c8e6) with lower opacity for dark theme */
-    --particle-connection-color: rgba(150, 200, 230, 0.2);
-    /* Subtle light blue connections for dark theme */
+    --glow: rgba(150, 200, 230, 0.12);
+    --dot: rgba(150, 200, 230, 0.09);
     --primary-color-subtle: #8fa9c7;
     /* Subtle link color for dark theme */
 
     /* Component backgrounds - dark theme */
     --nav-initial: rgba(42, 42, 42, 0.4);
+    --nav-border: rgba(255, 255, 255, 0.08);
 }
 
 /* System preference */
@@ -83,9 +81,10 @@
         --border-color: #404040;
         --card-bg: rgba(42, 42, 42, 0.7);
         --card-border: #3a3a3a;
-        --particle-color: rgba(150, 200, 230, 0.3);
-        --particle-connection-color: rgba(150, 200, 230, 0.2);
+        --glow: rgba(150, 200, 230, 0.12);
+        --dot: rgba(150, 200, 230, 0.09);
         --nav-initial: rgba(42, 42, 42, 0.4);
+        --nav-border: rgba(255, 255, 255, 0.08);
     }
 }
 
@@ -121,19 +120,13 @@ body::before {
     width: 100%;
     height: 100dvh;
     background-color: var(--bg-color);
+    background-image:
+        radial-gradient(var(--dot) 1px, transparent 1px),
+        radial-gradient(ellipse at 50% -20%, var(--glow), transparent 60%);
+    background-size: 24px 24px, 100% 100%;
+    background-repeat: repeat, no-repeat;
     z-index: -2;
     transition: background-color 0.5s ease;
-}
-
-#canvas-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100dvh;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 1;
 }
 
 /* Header & Navigation */
@@ -162,7 +155,9 @@ nav {
     width: 100%;
     height: 100%;
     border-radius: 0.75rem;
-    transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
+    border: 1px solid var(--nav-border);
+    box-shadow: 0 6px 24px var(--shadow-light);
+    transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease, backdrop-filter 0.5s ease;
     padding-inline: 2rem;
     background: var(--nav-initial);
     backdrop-filter: blur(4px);
@@ -202,7 +197,7 @@ nav.scrolled {
     text-decoration: none;
     color: var(--text-color);
     font-weight: 500;
-    transition: var(--transition);
+    transition: var(--transition), color 0.5s ease;
 }
 
 /* Theme toggle */
@@ -222,6 +217,7 @@ nav.scrolled {
     margin-left: 1rem;
     color: var(--text-color);
     position: relative;
+    transition: var(--transition), color 0.5s ease;
 }
 
 .theme-icon {
@@ -377,6 +373,15 @@ section {
 
 
 /* Typography */
+h1,
+h2,
+h3,
+h4,
+p,
+li {
+    transition: color 0.5s ease;
+}
+
 h1 {
     font-size: 3.5rem;
     line-height: 1.1;
@@ -388,6 +393,7 @@ h1 {
     font-size: 1.4rem;
     color: var(--text-light);
     margin-bottom: 2.5rem;
+    transition: color 0.5s ease;
 }
 
 /* Buttons & CTA */
@@ -503,6 +509,7 @@ footer {
     border-top: 1px solid var(--border-color);
     position: relative;
     z-index: 1;
+    transition: color 0.5s ease, border-color 0.5s ease;
 }
 
 .footer-content {
@@ -518,13 +525,13 @@ footer {
     color: var(--primary-color-subtle);
     text-decoration: none;
     margin-left: 1rem;
-    transition: var(--transition);
+    transition: var(--transition), color 0.5s ease;
 }
 
 .author-link {
     color: var(--primary-color-subtle);
     text-decoration: none;
-    transition: var(--transition);
+    transition: var(--transition), color 0.5s ease;
     font-style: italic;
 }
 
