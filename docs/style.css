@@ -320,15 +320,30 @@ section {
     position: absolute;
     bottom: 2rem;
     left: 50%;
+    display: inline-flex;
+    padding: 0.5rem;
+    border-radius: 50%;
+    color: var(--text-color);
     transform: translateX(-50%);
     z-index: 10;
     opacity: 0.8;
+    transition: opacity 0.2s ease, color 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.scroll-indicator:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.scroll-indicator:active {
+    transform: translateX(-50%) scale(0.95);
 }
 
 .scroll-chevron {
     width: 3rem;
     height: 3rem;
-    color: var(--text-color);
+    color: currentColor;
     animation: float 2s ease-in-out infinite;
 }
 
@@ -519,6 +534,12 @@ footer {
 
     .feature-card .github-link:hover {
         color: var(--primary-hover);
+    }
+
+    .scroll-indicator:hover {
+        opacity: 1;
+        color: var(--primary-color);
+        background-color: var(--nav-initial);
     }
 
     .footer-links a:hover,
